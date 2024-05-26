@@ -12,6 +12,7 @@ namespace travel_api.Helpers
         {
             // ef
             CreateMap<User, UserVM>().ReverseMap();
+            CreateMap<City, CityVM>().ReverseMap();
 
             // utils
             CreateMap<Photo, PhotoVM>().ReverseMap();

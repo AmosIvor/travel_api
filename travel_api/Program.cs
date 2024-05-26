@@ -2,47 +2,19 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 using System.Text;
+using travel_api.Installers;
+using travel_api.Middleware;
 using travel_api.Models.EF;
-using travel_api.Models.Utils;
 using travel_api.Repositories;
-using travel_api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(option =>
-{
-    option.SwaggerDoc("v1", new OpenApiInfo { Title = "TRAVEL API", Version = "v1" });
-    option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        In = ParameterLocation.Header,
-        Description = "Please enter a valid token",
-        Name = "Authorization",
-        Type = SecuritySchemeType.Http,
-        BearerFormat = "JWT",
-        Scheme = "Bearer"
-    });
-    option.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type=ReferenceType.SecurityScheme,
-                    Id="Bearer"
-                }
-            },
-            new string[]{}
-        }
-    });
-});
+//builder.Services.AddControllers();
+builder.Services.InstallerServicesInAssembly(builder.Configuration);
+
 
 // ADD SERVICES 
 
@@ -52,8 +24,6 @@ builder.Services.AddCors(options => options.AddDefaultPolicy(policy => policy.Al
 // AutoMapper
 builder.Services.AddAutoMapper(typeof(Program));
 
-// Cloudinary
-builder.Services.Configure<CloudinarySetting>(builder.Configuration.GetSection("CloudinarySettings"));
 
 // Identity
 builder.Services.AddIdentity<User, IdentityRole>()
@@ -88,16 +58,7 @@ builder.Services
         };
     });
 
-// ADD SCOPED REPOSITORIES
 
-// repo-auths
-builder.Services.AddScoped<IAuthRepo, AuthRepo>();
-
-// repo-ef
-builder.Services.AddScoped<IUserRepo, UserRepo>();
-
-// repo-utils
-builder.Services.AddScoped<IPhotoService, PhotoService>();
 
 // Build app
 var app = builder.Build();
@@ -119,4 +80,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
+
 app.Run();
+

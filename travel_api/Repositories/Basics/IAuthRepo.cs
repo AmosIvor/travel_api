@@ -2,7 +2,7 @@
 using travel_api.ViewModels.EFViewModel;
 using travel_api.ViewModels.ResultResponseViewModel;
 
-namespace travel_api.Repositories
+namespace travel_api.Repositories.Basics
 {
     public interface IAuthRepo
     {

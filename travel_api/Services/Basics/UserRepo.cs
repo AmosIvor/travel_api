@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using travel_api.Repositories;
+using travel_api.Repositories.Basics;
 using travel_api.ViewModels.EFViewModel;
 
-namespace travel_api.Services
+namespace travel_api.Services.Basics
 {
     public class UserRepo : IUserRepo
     {

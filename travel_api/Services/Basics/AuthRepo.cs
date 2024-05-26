@@ -7,10 +7,11 @@ using travel_api.Helpers;
 using travel_api.Models.Auths;
 using travel_api.Models.EF;
 using travel_api.Repositories;
+using travel_api.Repositories.Basics;
 using travel_api.ViewModels.EFViewModel;
 using travel_api.ViewModels.ResultResponseViewModel;
 
-namespace travel_api.Services
+namespace travel_api.Services.Basics
 {
     public class AuthRepo : IAuthRepo
     {

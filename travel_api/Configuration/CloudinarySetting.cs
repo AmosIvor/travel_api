@@ -1,4 +1,4 @@
-﻿namespace travel_api.Models.Utils
+﻿namespace travel_api.Configuration
 {
     public class CloudinarySetting
     {

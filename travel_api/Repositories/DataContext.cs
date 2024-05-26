@@ -17,6 +17,7 @@ namespace travel_api.Repositories
 
         // EF
         public DbSet<User> Users { get; set; }
+        public DbSet<City> Cities { get; set; }
 
         // Utils
         public DbSet<Photo> Photos { get; set; }

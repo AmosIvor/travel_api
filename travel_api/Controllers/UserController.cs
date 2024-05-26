@@ -2,7 +2,8 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using travel_api.Repositories;
+using travel_api.Repositories.Basics;
+using travel_api.Repositories.Utils;
 using travel_api.ViewModels.EFViewModel;
 using travel_api.ViewModels.ResultResponseViewModel;
 using travel_api.ViewModels.UtilViewModel;

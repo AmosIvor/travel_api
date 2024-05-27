@@ -13,6 +13,11 @@ namespace travel_api.Helpers
             // ef
             CreateMap<User, UserVM>().ReverseMap();
             CreateMap<City, CityVM>().ReverseMap();
+            CreateMap<Post, PostVM>().ReverseMap();
+            CreateMap<Feedback, FeedbackVM>().ReverseMap();
+            CreateMap<Location, LocationVM>().ReverseMap();
+            CreateMap<FeedbackMedia,  FeedbackMediaVM>().ReverseMap();
+            CreateMap<PostMedia, PostMediaVM>().ReverseMap();
 
             // utils
             CreateMap<Photo, PhotoVM>().ReverseMap();

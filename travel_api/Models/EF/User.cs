@@ -10,5 +10,11 @@ namespace travel_api.Models.EF
         public DateTime? DateBirth { get; set; }
 
         public string? Avatar { get; set; }
+
+        public virtual ICollection<Post> Posts { get; set; }
+
+        public virtual ICollection<Feedback> Feedbacks { get; set; }
+
+        public virtual ICollection<Comment> Comments { get; set; }
     }
 }

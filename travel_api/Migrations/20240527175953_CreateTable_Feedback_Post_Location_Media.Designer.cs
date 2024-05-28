@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using travel_api.Repositories;
 
@@ -11,9 +12,10 @@ using travel_api.Repositories;
 namespace travel_api.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240527175953_CreateTable_Feedback_Post_Location_Media")]
+    partial class CreateTable_Feedback_Post_Location_Media
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -242,66 +244,6 @@ namespace travel_api.Migrations
                     b.HasKey("CityId");
 
                     b.ToTable("City");
-                });
-
-            modelBuilder.Entity("travel_api.Models.EF.Comment", b =>
-                {
-                    b.Property<int>("CommentId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CommentId"), 1L, 1);
-
-                    b.Property<string>("CommentContent")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CommentDate")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("CommentTotalLike")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PostId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("CommentId");
-
-                    b.HasIndex("PostId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Comment");
-                });
-
-            modelBuilder.Entity("travel_api.Models.EF.CommentMedia", b =>
-                {
-                    b.Property<int>("CommentMediaId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CommentMediaId"), 1L, 1);
-
-                    b.Property<int>("CommentId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CommentMediaOrder")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CommentMediaUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("CommentMediaId");
-
-                    b.HasIndex("CommentId");
-
-                    b.ToTable("CommentMedia");
                 });
 
             modelBuilder.Entity("travel_api.Models.EF.Feedback", b =>
@@ -536,36 +478,6 @@ namespace travel_api.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("travel_api.Models.EF.Comment", b =>
-                {
-                    b.HasOne("travel_api.Models.EF.Post", "Post")
-                        .WithMany("Comments")
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("travel_api.Models.EF.User", "User")
-                        .WithMany("Comments")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Post");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("travel_api.Models.EF.CommentMedia", b =>
-                {
-                    b.HasOne("travel_api.Models.EF.Comment", "Comment")
-                        .WithMany("CommentMedias")
-                        .HasForeignKey("CommentId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Comment");
-                });
-
             modelBuilder.Entity("travel_api.Models.EF.Feedback", b =>
                 {
                     b.HasOne("travel_api.Models.EF.Location", "Location")
@@ -626,11 +538,6 @@ namespace travel_api.Migrations
                     b.Navigation("Post");
                 });
 
-            modelBuilder.Entity("travel_api.Models.EF.Comment", b =>
-                {
-                    b.Navigation("CommentMedias");
-                });
-
             modelBuilder.Entity("travel_api.Models.EF.Feedback", b =>
                 {
                     b.Navigation("FeedbackMedias");
@@ -645,15 +552,11 @@ namespace travel_api.Migrations
 
             modelBuilder.Entity("travel_api.Models.EF.Post", b =>
                 {
-                    b.Navigation("Comments");
-
                     b.Navigation("PostMedias");
                 });
 
             modelBuilder.Entity("travel_api.Models.EF.User", b =>
                 {
-                    b.Navigation("Comments");
-
                     b.Navigation("Feedbacks");
 
                     b.Navigation("Posts");

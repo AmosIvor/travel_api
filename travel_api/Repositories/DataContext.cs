@@ -21,6 +21,9 @@ namespace travel_api.Repositories
         public DbSet<Feedback> Feedbacks { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<Location> Locations { get; set; }
+        public DbSet<PostMedia> PostMedias { get; set; }
+        public DbSet<FeedbackMedia> FeedbackMedias { get; set; }
+        public DbSet<CommentMedia> CommentMedias { get; set; }
 
         // Utils
         public DbSet<Photo> Photos { get; set; }
@@ -41,15 +44,15 @@ namespace travel_api.Repositories
             // Post_Location
             modelBuilder.Entity<Post>()
                 .HasOne(p => p.Location)
-                .WithMany(u => u.Posts)
+                .WithMany(l => l.Posts)
                 .HasForeignKey(p => p.LocationId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            // PostMedia
+            // PostMedia_Post
             modelBuilder.Entity<PostMedia>()
-                .HasOne(f => f.Post)
-                .WithMany(u => u.PostMedias)
-                .HasForeignKey(f => f.PostId)
+                .HasOne(pm => pm.Post)
+                .WithMany(p => p.PostMedias)
+                .HasForeignKey(pm => pm.PostId)
                 .OnDelete(DeleteBehavior.NoAction);
 
             // Feedback_User
@@ -62,15 +65,36 @@ namespace travel_api.Repositories
             // Feedback_Location
             modelBuilder.Entity<Feedback>()
                 .HasOne(f => f.Location)
-                .WithMany(u => u.Feedbacks)
+                .WithMany(l => l.Feedbacks)
                 .HasForeignKey(f => f.LocationId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            // FeedbackMedia
+            // FeedbackMedia_Feedback
             modelBuilder.Entity<FeedbackMedia>()
-                .HasOne(f => f.Feedback)
-                .WithMany(u => u.FeedbackMedias)
-                .HasForeignKey(f => f.FeedbackId)
+                .HasOne(fm => fm.Feedback)
+                .WithMany(f => f.FeedbackMedias)
+                .HasForeignKey(fm => fm.FeedbackId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            // Comment_User
+            modelBuilder.Entity<Comment>()
+                .HasOne(c => c.User)
+                .WithMany(u => u.Comments)
+                .HasForeignKey(c => c.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            // Comment_Post
+            modelBuilder.Entity<Comment>()
+                .HasOne(c => c.Post)
+                .WithMany(p => p.Comments)
+                .HasForeignKey(c => c.PostId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            // CommentMedia_Comment
+            modelBuilder.Entity<CommentMedia>()
+                .HasOne(cm => cm.Comment)
+                .WithMany(c => c.CommentMedias)
+                .HasForeignKey(cm => cm.CommentId)
                 .OnDelete(DeleteBehavior.NoAction);
         }
     }

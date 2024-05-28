@@ -27,5 +27,7 @@ namespace travel_api.Models.EF
         public virtual Location Location { get; set; }
 
         public virtual ICollection<PostMedia> PostMedias { get; set; }
+
+        public virtual ICollection<Comment> Comments { get; set; }
     }
 }

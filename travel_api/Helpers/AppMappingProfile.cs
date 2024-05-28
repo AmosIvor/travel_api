@@ -18,6 +18,8 @@ namespace travel_api.Helpers
             CreateMap<Location, LocationVM>().ReverseMap();
             CreateMap<FeedbackMedia,  FeedbackMediaVM>().ReverseMap();
             CreateMap<PostMedia, PostMediaVM>().ReverseMap();
+            CreateMap<Comment, CommentVM>().ReverseMap();
+            CreateMap<CommentMedia, CommentMediaVM>().ReverseMap();
 
             // utils
             CreateMap<Photo, PhotoVM>().ReverseMap();

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using travel_api.Models.EF;
 using travel_api.Repositories;
 using travel_api.ViewModels.EFViewModel;
@@ -13,11 +12,14 @@ namespace travel_api.Controllers
     {
         private readonly IBaseRepo<PostMedia, PostMediaVM, int> _postMediaRepo;
         private readonly IBaseRepo<FeedbackMedia, FeedbackMediaVM, int> _feedbackMediaRepo;
+        private readonly IBaseRepo<CommentMedia, CommentMediaVM, int> _commentMediaRepo;
         public MediaController(IBaseRepo<PostMedia, PostMediaVM, int> postMediaRepo, 
-                                IBaseRepo<FeedbackMedia, FeedbackMediaVM, int> feedbackMediaRepo)
+                                IBaseRepo<FeedbackMedia, FeedbackMediaVM, int> feedbackMediaRepo,
+                                IBaseRepo<CommentMedia, CommentMediaVM, int> commentMediaRepo)
         {
             _postMediaRepo = postMediaRepo;
             _feedbackMediaRepo = feedbackMediaRepo;
+            _commentMediaRepo = commentMediaRepo;
         }
 
         [HttpGet("post-medias")]
@@ -51,7 +53,7 @@ namespace travel_api.Controllers
 
             return Ok(new SuccessResponseVM<PostMediaVM>()
             {
-                Message = "Create new post media",
+                Message = "Create new post media successfully",
                 Data = postMediaVMResult
             });
         }
@@ -63,7 +65,7 @@ namespace travel_api.Controllers
 
             return Ok(new SuccessResponseVM<PostMediaVM>()
             {
-                Message = "Update post media",
+                Message = "Update post media successfully",
                 Data = postMediaVMResult
             });
         }
@@ -111,7 +113,7 @@ namespace travel_api.Controllers
 
             return Ok(new SuccessResponseVM<FeedbackMediaVM>()
             {
-                Message = "Create new feedback media",
+                Message = "Create new feedback media successfully",
                 Data = feedbackMediaVMResult
             });
         }
@@ -123,7 +125,7 @@ namespace travel_api.Controllers
 
             return Ok(new SuccessResponseVM<FeedbackMediaVM>()
             {
-                Message = "Update feedback media",
+                Message = "Update feedback media successfully",
                 Data = feedbackMediaVMResult
             });
         }
@@ -137,6 +139,66 @@ namespace travel_api.Controllers
             {
                 Message = "Delete feedback media by id successfully",
                 Data = feedbackMediaVM
+            });
+        }
+
+        [HttpGet("comment-medias")]
+        public async Task<IActionResult> GetAllCommentMedia()
+        {
+            var commentMediasVM = await _commentMediaRepo.GetAllAsync();
+
+            return Ok(new SuccessResponseVM<IEnumerable<CommentMediaVM>>()
+            {
+                Message = "Get all comment medias successfully",
+                Data = commentMediasVM
+            });
+        }
+
+        [HttpGet("comment-medias/{commentMediaId}")]
+        public async Task<IActionResult> GetCommentMediaById(int commentMediaId)
+        {
+            var commentMediaVM = await _commentMediaRepo.GetByIdAsync(commentMediaId);
+
+            return Ok(new SuccessResponseVM<CommentMediaVM>()
+            {
+                Message = "Get comment media by id successfully",
+                Data = commentMediaVM
+            });
+        }
+
+        [HttpPost("comment-medias")]
+        public async Task<IActionResult> CreateCommentMedia(CommentMediaVM commentMediaVM)
+        {
+            var commentMediaVMResult = await _commentMediaRepo.AddAsync(commentMediaVM);
+
+            return Ok(new SuccessResponseVM<CommentMediaVM>()
+            {
+                Message = "Create new comment media successfully",
+                Data = commentMediaVMResult
+            });
+        }
+
+        [HttpPut("comment-medias")]
+        public async Task<IActionResult> UpdateCommentMedia(CommentMediaVM commentMediaVM)
+        {
+            var commentMediaVMResult = await _commentMediaRepo.UpdateAsync(commentMediaVM);
+
+            return Ok(new SuccessResponseVM<CommentMediaVM>()
+            {
+                Message = "Update comment media successfully",
+                Data = commentMediaVMResult
+            });
+        }
+
+        [HttpDelete("comment-medias/{commentMediaId}")]
+        public async Task<IActionResult> DeleteCommentMediaById(int commentMediaId)
+        {
+            var commentMediaVM = await _commentMediaRepo.DeleteAsync(commentMediaId);
+
+            return Ok(new SuccessResponseVM<CommentMediaVM>()
+            {
+                Message = "Delete comment media by id successfully",
+                Data = commentMediaVM
             });
         }
     }

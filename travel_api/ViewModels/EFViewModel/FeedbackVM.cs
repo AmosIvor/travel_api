@@ -13,5 +13,9 @@
         public string UserId { get; set; }
 
         public int LocationId { get; set; }
+
+        public LocationVM? Location { get; set; }
+
+        public ICollection<FeedbackMediaVM>? FeedbackMedias { get; set; }
     }
 }

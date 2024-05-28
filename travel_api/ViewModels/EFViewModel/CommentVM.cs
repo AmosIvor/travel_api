@@ -13,5 +13,7 @@
         public string UserId { get; set; }
 
         public int PostId { get; set; }
+
+        public ICollection<CommentMediaVM>? CommentMedias { get; set; }
     }
 }

@@ -20,6 +20,7 @@ namespace travel_api.Repositories
         public DbSet<City> Cities { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
         public DbSet<Post> Posts { get; set; }
+        public DbSet<Comment> Comments { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<PostMedia> PostMedias { get; set; }
         public DbSet<FeedbackMedia> FeedbackMedias { get; set; }

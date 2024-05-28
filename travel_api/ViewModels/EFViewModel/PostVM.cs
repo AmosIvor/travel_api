@@ -13,5 +13,10 @@
         public string UserId { get; set; }
 
         public int LocationId { get; set; }
+
+        public LocationVM? Location { get; set; } 
+
+        public ICollection<PostMediaVM>? PostMedias { get; set; }
+        public ICollection<CommentVM>? Comments { get; set; }
     }
 }

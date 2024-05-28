@@ -18,7 +18,7 @@ namespace travel_api.Installers
 
             // repo-ef
             services.AddScoped<IUserRepo, UserRepo>();
-            services.AddScoped<ICityRepo, CityRepo>();
+            services.AddScoped<IPostRepo, PostRepo>();
 
             // repo-utils
             services.AddScoped<IPhotoService, PhotoService>();

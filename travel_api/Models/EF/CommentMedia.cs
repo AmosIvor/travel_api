@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace travel_api.Models.EF
 {
+    [Table("CommentMedia")]
     public class CommentMedia
     {
         [Key]

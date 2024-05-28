@@ -18,7 +18,7 @@ namespace travel_api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllCity()
+        public async Task<IActionResult> GetAllLocation()
         {
             var locationsVM = await _locationRepo.GetAllAsync();
 
@@ -30,7 +30,7 @@ namespace travel_api.Controllers
         }
 
         [HttpGet("{locationId}")]
-        public async Task<IActionResult> GetCityById(int locationId)
+        public async Task<IActionResult> GetLocationById(int locationId)
         {
             var locationVM = await _locationRepo.GetByIdAsync(locationId);
 
@@ -42,7 +42,7 @@ namespace travel_api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateCity(LocationVM locationVM)
+        public async Task<IActionResult> CreateLocation(LocationVM locationVM)
         {
             var locationVMResult = await _locationRepo.AddAsync(locationVM);
 
@@ -54,7 +54,7 @@ namespace travel_api.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateCity(LocationVM locationVM)
+        public async Task<IActionResult> UpdateLocation(LocationVM locationVM)
         {
             var locationVMResult = await _locationRepo.UpdateAsync(locationVM);
 
@@ -66,7 +66,7 @@ namespace travel_api.Controllers
         }
 
         [HttpDelete("{locationId}")]
-        public async Task<IActionResult> DeleteCityById(int locationId)
+        public async Task<IActionResult> DeleteLocationById(int locationId)
         {
             var locationVM = await _locationRepo.DeleteAsync(locationId);
 

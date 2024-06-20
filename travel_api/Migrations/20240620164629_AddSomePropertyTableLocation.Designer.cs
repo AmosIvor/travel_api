@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using travel_api.Repositories;
 
@@ -11,9 +12,10 @@ using travel_api.Repositories;
 namespace travel_api.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240620164629_AddSomePropertyTableLocation")]
+    partial class AddSomePropertyTableLocation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -234,9 +236,6 @@ namespace travel_api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CityId"), 1L, 1);
 
-                    b.Property<string>("CityDescription")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("CityName")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -322,14 +321,10 @@ namespace travel_api.Migrations
                     b.Property<DateTime>("FeedbackDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal>("FeedbackRate")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<float>("FeedbackRate")
+                        .HasColumnType("real");
 
                     b.Property<int>("LocationId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TripType")
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
@@ -397,9 +392,8 @@ namespace travel_api.Migrations
                     b.Property<DateTime>("LocationOpenTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal>("LocationRateAverage")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<float>("LocationRateAverage")
+                        .HasColumnType("real");
 
                     b.HasKey("LocationId");
 

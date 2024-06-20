@@ -9,5 +9,7 @@
         public string PostMediaUrl { get; set; }
 
         public int PostId { get; set; }
+
+        public PostVM? Post { get; set; }
     }
 }

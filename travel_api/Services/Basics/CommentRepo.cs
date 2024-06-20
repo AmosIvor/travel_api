@@ -52,7 +52,7 @@ namespace travel_api.Services.Basics
 
             if (comment == null)
             {
-                throw new NotFoundException("Comment not found");
+                throw new NotFoundException("Comment cannot found");
             }
 
             var commentVM = _mapper.Map<CommentVM>(comment);

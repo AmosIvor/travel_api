@@ -13,7 +13,13 @@ namespace travel_api.Models.EF
 
         public string LocationAddress { get; set; }
 
-        public float LocationRateAverage { get; set; }
+        public DateTime LocationOpenTime { get; set; }
+        
+        public decimal LocationLongtitude { get; set; }
+        
+        public decimal LocationLatitude { get; set; }
+
+        public decimal LocationRateAverage { get; set; }
 
         public virtual ICollection<Post> Posts { get; set; }
 

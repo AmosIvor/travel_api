@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using travel_api.Models.EF;
 using travel_api.Repositories;
+using travel_api.Repositories.Basics;
 using travel_api.ViewModels.EFViewModel;
 using travel_api.ViewModels.ResultResponseViewModel;
 
@@ -11,16 +12,18 @@ namespace travel_api.Controllers
     [ApiController]
     public class LocationController : ControllerBase
     {
-        private readonly IBaseRepo<Location, LocationVM, int> _locationRepo;
-        public LocationController(IBaseRepo<Location, LocationVM, int> locationRepo)
+        private readonly IBaseRepo<Location, LocationVM, int> _baseRepo;
+        private readonly ILocationRepo _locationRepo;
+        public LocationController(IBaseRepo<Location, LocationVM, int> baseRepo, ILocationRepo locationRepo)
         {
+            _baseRepo = baseRepo;
             _locationRepo = locationRepo;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllLocation()
         {
-            var locationsVM = await _locationRepo.GetAllAsync();
+            var locationsVM = await _baseRepo.GetAllAsync();
 
             return Ok(new SuccessResponseVM<IEnumerable<LocationVM>>()
             {
@@ -32,7 +35,7 @@ namespace travel_api.Controllers
         [HttpGet("{locationId}")]
         public async Task<IActionResult> GetLocationById(int locationId)
         {
-            var locationVM = await _locationRepo.GetByIdAsync(locationId);
+            var locationVM = await _baseRepo.GetByIdAsync(locationId);
 
             return Ok(new SuccessResponseVM<LocationVM>()
             {
@@ -44,7 +47,7 @@ namespace travel_api.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateLocation(LocationVM locationVM)
         {
-            var locationVMResult = await _locationRepo.AddAsync(locationVM);
+            var locationVMResult = await _baseRepo.AddAsync(locationVM);
 
             return Ok(new SuccessResponseVM<LocationVM>()
             {
@@ -56,7 +59,7 @@ namespace travel_api.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateLocation(LocationVM locationVM)
         {
-            var locationVMResult = await _locationRepo.UpdateAsync(locationVM);
+            var locationVMResult = await _baseRepo.UpdateAsync(locationVM);
 
             return Ok(new SuccessResponseVM<LocationVM>()
             {
@@ -68,12 +71,24 @@ namespace travel_api.Controllers
         [HttpDelete("{locationId}")]
         public async Task<IActionResult> DeleteLocationById(int locationId)
         {
-            var locationVM = await _locationRepo.DeleteAsync(locationId);
+            var locationVM = await _baseRepo.DeleteAsync(locationId);
 
             return Ok(new SuccessResponseVM<LocationVM>()
             {
                 Message = "Delete location by id successfully",
                 Data = locationVM
+            });
+        }
+
+        [HttpGet("top-10-location")]
+        public async Task<IActionResult> GetTop10LocationByRating()
+        {
+            var listLocationVM = await _locationRepo.GetTop10LocationByRatingAsync();
+
+            return Ok(new SuccessResponseVM<IEnumerable<LocationVM>>()
+            {
+                Message = "Get top 10 location successfully",
+                Data = listLocationVM
             });
         }
     }

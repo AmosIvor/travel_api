@@ -9,5 +9,7 @@
         public string FeedbackMediaUrl { get; set; }
 
         public int FeedbackId { get; set; }
+
+        public FeedbackVM? Feedback { get; set; }
     }
 }

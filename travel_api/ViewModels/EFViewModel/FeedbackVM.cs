@@ -8,7 +8,9 @@
 
         public string FeedbackContent { get; set; }
 
-        public float FeedbackRate { get; set; }
+        public decimal FeedbackRate { get; set; }
+
+        public int TripType { get; set; }
 
         public string UserId { get; set; }
 

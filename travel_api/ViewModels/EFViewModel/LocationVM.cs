@@ -14,7 +14,7 @@
 
         public decimal LocationLatitude { get; set; }
 
-        public float LocationRateAverage { get; set; }
+        public decimal LocationRateAverage { get; set; }
 
         public ICollection<PostVM>? Posts { get; set; }
 

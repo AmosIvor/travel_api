@@ -11,5 +11,7 @@ namespace travel_api.Models.EF
 
         [Required, MaxLength(100)]
         public string CityName { get; set; }
+
+        public string? CityDescription { get; set; }
     }
 }

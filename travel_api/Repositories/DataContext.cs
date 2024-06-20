@@ -106,6 +106,15 @@ namespace travel_api.Repositories
             modelBuilder.Entity<Location>()
                 .Property(l => l.LocationLatitude)
                 .HasPrecision(18, 2);
+
+            modelBuilder.Entity<Location>()
+                .Property(l => l.LocationRateAverage)
+                .HasPrecision(18, 2);
+
+            // Feedback - Decimal Config
+            modelBuilder.Entity<Feedback>()
+                .Property(f => f.FeedbackRate)
+                .HasPrecision(18, 2);
         }
     }
 }

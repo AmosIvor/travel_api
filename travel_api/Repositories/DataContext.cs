@@ -97,6 +97,15 @@ namespace travel_api.Repositories
                 .WithMany(c => c.CommentMedias)
                 .HasForeignKey(cm => cm.CommentId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            // Location - Decimal Config
+            modelBuilder.Entity<Location>()
+                .Property(l => l.LocationLongtitude)
+                .HasPrecision(18, 2);
+
+            modelBuilder.Entity<Location>()
+                .Property(l => l.LocationLatitude)
+                .HasPrecision(18, 2);
         }
     }
 }

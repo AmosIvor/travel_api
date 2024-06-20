@@ -8,6 +8,16 @@
 
         public string LocationAddress { get; set; }
 
+        public DateTime LocationOpenTime { get; set; }
+
+        public decimal LocationLongtitude { get; set; }
+
+        public decimal LocationLatitude { get; set; }
+
         public float LocationRateAverage { get; set; }
+
+        public ICollection<PostVM>? Posts { get; set; }
+
+        public ICollection<FeedbackVM>? Feedbacks { get; set; }
     }
 }

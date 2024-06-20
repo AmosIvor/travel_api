@@ -12,7 +12,11 @@
 
         public string UserId { get; set; }
 
+        public UserVM? User { get; set; }
+
         public int PostId { get; set; }
+
+        public PostVM? Post { get; set; }
 
         public ICollection<CommentMediaVM>? CommentMedias { get; set; }
     }

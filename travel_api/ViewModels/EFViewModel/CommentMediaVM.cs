@@ -9,5 +9,7 @@
         public string CommentMediaUrl { get; set; }
 
         public int CommentId { get; set; }
+
+        public CommentVM? Comment { get; set; }
     }
 }

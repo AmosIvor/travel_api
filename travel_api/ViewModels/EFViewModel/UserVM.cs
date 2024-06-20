@@ -15,5 +15,11 @@
         public DateTime? DateBirth { get; set; }
 
         public string? Avatar { get; set; }
+
+        public ICollection<PostVM>? Posts { get; set; }
+
+        public ICollection<FeedbackVM>? Feedbacks { get; set; }
+
+        public ICollection<CommentVM>? Comments { get; set; }
     }
 }

@@ -11,6 +11,7 @@
         public string PostContent { get; set; }
 
         public string UserId { get; set; }
+        public UserVM? User { get; set; }
 
         public int LocationId { get; set; }
 

@@ -7,5 +7,6 @@ namespace travel_api.Repositories.Basics
         Task<IEnumerable<PostVM>> GetAllPostsAsync();
         Task<IEnumerable<PostVM>> GetListPostsByUserId(string userId);
         Task<PostVM> GetPostById(int postId);
+        Task<IEnumerable<PostVM>> GetPostByContentAsync(string content);
     }
 }

@@ -1,6 +1,6 @@
-﻿namespace travel_api.ViewModels.EFViewModel
+﻿namespace travel_api.ViewModels.Requests.EFRequest
 {
-    public class CityVM
+    public class CityRequest
     {
         public int CityId { get; set; }
         public string CityName { get; set; }

@@ -1,11 +1,11 @@
-﻿using travel_api.ViewModels.EFViewModel;
+﻿using travel_api.ViewModels.Responses.EFViewModel;
 
 namespace travel_api.Repositories.Basics
 {
     public interface IPostRepo
     {
         Task<IEnumerable<PostVM>> GetAllPostsAsync();
-        Task<IEnumerable<PostVM>> GetListPostsByUserId(string userId);
-        Task<PostVM> GetPostById(int postId);
+        Task<IEnumerable<PostVM>> GetListPostsByUserIdAsync(string userId);
+        Task<PostVM> GetPostByIdAsync(int postId);
     }
 }

@@ -2,8 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using travel_api.Models.EF;
 using travel_api.Repositories;
-using travel_api.ViewModels.EFViewModel;
-using travel_api.ViewModels.ResultResponseViewModel;
+using travel_api.ViewModels.Requests.EFRequest;
+using travel_api.ViewModels.Responses.EFViewModel;
+using travel_api.ViewModels.Responses.ResultResponseViewModel;
 
 namespace travel_api.Controllers
 {
@@ -11,9 +12,9 @@ namespace travel_api.Controllers
     [ApiController]
     public class CityController : ControllerBase
     {
-        private readonly IBaseRepo<City, CityVM, int> _cityRepo;
+        private readonly IBaseRepo<City, CityVM, CityRequest, int> _cityRepo;
 
-        public CityController(IBaseRepo<City, CityVM, int> cityRepo)
+        public CityController(IBaseRepo<City, CityVM, CityRequest, int> cityRepo)
         {
             _cityRepo = cityRepo;
         }
@@ -43,7 +44,7 @@ namespace travel_api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateCity(CityVM cityVM)
+        public async Task<IActionResult> CreateCity(CityRequest cityVM)
         {
             var cityVMResult = await _cityRepo.AddAsync(cityVM);
 
@@ -55,7 +56,7 @@ namespace travel_api.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateCity(CityVM cityVM)
+        public async Task<IActionResult> UpdateCity(CityRequest cityVM)
         {
             var cityVMResult = await _cityRepo.UpdateAsync(cityVM);
 

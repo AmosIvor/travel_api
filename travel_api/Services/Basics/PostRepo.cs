@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using travel_api.Exceptions;
 using travel_api.Repositories;
 using travel_api.Repositories.Basics;
-using travel_api.ViewModels.EFViewModel;
+using travel_api.ViewModels.Responses.EFViewModel;
 
 namespace travel_api.Services.Basics
 {
@@ -23,6 +23,7 @@ namespace travel_api.Services.Basics
                               .Include(p => p.Location)
                               .Include(p => p.PostMedias)
                               .Include(p => p.Comments)
+                              .Include(p => p.User)
                               .OrderByDescending(p => p.PostDate)
                               .ToListAsync();
 
@@ -31,7 +32,7 @@ namespace travel_api.Services.Basics
             return postsVM;
         }
 
-        public async Task<IEnumerable<PostVM>> GetListPostsByUserId(string userId)
+        public async Task<IEnumerable<PostVM>> GetListPostsByUserIdAsync(string userId)
         {
             var posts = await _context.Posts
                                     .Include(p => p.Location)
@@ -47,13 +48,14 @@ namespace travel_api.Services.Basics
             return postsVM;
         }
 
-        public async Task<PostVM> GetPostById(int postId)
+        public async Task<PostVM> GetPostByIdAsync(int postId)
         {
             // find post
             var post = await _context.Posts
                                     .Include(p => p.Location)
                                     .Include(p => p.PostMedias)
                                     .Include(p => p.Comments)
+                                    .Include(p => p.User)
                                     .SingleOrDefaultAsync(p => p.PostId == postId);
 
             if (post == null)

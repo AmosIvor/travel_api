@@ -8,8 +8,8 @@ using travel_api.Models.Auths;
 using travel_api.Models.EF;
 using travel_api.Repositories;
 using travel_api.Repositories.Basics;
-using travel_api.ViewModels.EFViewModel;
-using travel_api.ViewModels.ResultResponseViewModel;
+using travel_api.ViewModels.Responses.EFViewModel;
+using travel_api.ViewModels.Responses.ResultResponseViewModel;
 
 namespace travel_api.Services.Basics
 {

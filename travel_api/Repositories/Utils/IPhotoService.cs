@@ -1,4 +1,4 @@
-﻿using travel_api.ViewModels.UtilViewModel;
+﻿using travel_api.ViewModels.Responses.UtilViewModel;
 
 namespace travel_api.Repositories.Utils
 {

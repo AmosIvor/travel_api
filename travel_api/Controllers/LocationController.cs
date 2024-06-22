@@ -3,8 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using travel_api.Models.EF;
 using travel_api.Repositories;
 using travel_api.Repositories.Basics;
-using travel_api.ViewModels.EFViewModel;
-using travel_api.ViewModels.ResultResponseViewModel;
+using travel_api.ViewModels.Requests.EFRequest;
+using travel_api.ViewModels.Responses.EFViewModel;
+using travel_api.ViewModels.Responses.ResultResponseViewModel;
 
 namespace travel_api.Controllers
 {
@@ -12,9 +13,9 @@ namespace travel_api.Controllers
     [ApiController]
     public class LocationController : ControllerBase
     {
-        private readonly IBaseRepo<Location, LocationVM, int> _baseRepo;
+        private readonly IBaseRepo<Location, LocationVM, LocationRequest, int> _baseRepo;
         private readonly ILocationRepo _locationRepo;
-        public LocationController(IBaseRepo<Location, LocationVM, int> baseRepo, ILocationRepo locationRepo)
+        public LocationController(IBaseRepo<Location, LocationVM, LocationRequest, int> baseRepo, ILocationRepo locationRepo)
         {
             _baseRepo = baseRepo;
             _locationRepo = locationRepo;
@@ -35,7 +36,7 @@ namespace travel_api.Controllers
         [HttpGet("{locationId}")]
         public async Task<IActionResult> GetLocationById(int locationId)
         {
-            var locationVM = await _baseRepo.GetByIdAsync(locationId);
+            var locationVM = await _locationRepo.GetLocationByIdAsync(locationId);
 
             return Ok(new SuccessResponseVM<LocationVM>()
             {
@@ -45,7 +46,7 @@ namespace travel_api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateLocation(LocationVM locationVM)
+        public async Task<IActionResult> CreateLocation(LocationRequest locationVM)
         {
             var locationVMResult = await _baseRepo.AddAsync(locationVM);
 
@@ -57,7 +58,7 @@ namespace travel_api.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateLocation(LocationVM locationVM)
+        public async Task<IActionResult> UpdateLocation(LocationRequest locationVM)
         {
             var locationVMResult = await _baseRepo.UpdateAsync(locationVM);
 

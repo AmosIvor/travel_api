@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using travel_api.Repositories;
 using travel_api.Repositories.Basics;
-using travel_api.ViewModels.EFViewModel;
+using travel_api.ViewModels.Responses.EFViewModel;
 
 namespace travel_api.Services.Basics
 {
@@ -14,6 +14,17 @@ namespace travel_api.Services.Basics
         {
             _context = context;
             _mapper = mapper;
+        }
+
+        public async Task<LocationVM> GetLocationByIdAsync(int locationId)
+        {
+            var location = await _context.Locations.Include(l => l.Feedbacks)
+                                                   .Include(l => l.Posts)
+                                                   .SingleOrDefaultAsync(l => l.LocationId == locationId);
+
+            var locationMap = _mapper.Map<LocationVM>(location);
+
+            return locationMap;
         }
 
         public async Task<IEnumerable<LocationVM>> GetTop10LocationByRatingAsync()

@@ -1,6 +1,6 @@
-﻿namespace travel_api.ViewModels.EFViewModel
+﻿namespace travel_api.ViewModels.Requests.EFRequest
 {
-    public class PostMediaVM
+    public class PostMediaRequest
     {
         public int PostMediaId { get; set; }
 
@@ -9,7 +9,5 @@
         public string PostMediaUrl { get; set; }
 
         public int PostId { get; set; }
-
-        public PostVM? Post { get; set; }
     }
 }

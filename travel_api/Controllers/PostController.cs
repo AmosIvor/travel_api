@@ -2,8 +2,9 @@
 using travel_api.Models.EF;
 using travel_api.Repositories;
 using travel_api.Repositories.Basics;
-using travel_api.ViewModels.EFViewModel;
-using travel_api.ViewModels.ResultResponseViewModel;
+using travel_api.ViewModels.Requests.EFRequest;
+using travel_api.ViewModels.Responses.EFViewModel;
+using travel_api.ViewModels.Responses.ResultResponseViewModel;
 
 namespace travel_api.Controllers
 {
@@ -11,9 +12,9 @@ namespace travel_api.Controllers
     [ApiController]
     public class PostController : ControllerBase
     {
-        private readonly IBaseRepo<Post, PostVM, int> _baseRepo;
+        private readonly IBaseRepo<Post, PostVM, PostRequest, int> _baseRepo;
         private readonly IPostRepo _postRepo;
-        public PostController(IBaseRepo<Post, PostVM, int> baseRepo, IPostRepo postRepo)
+        public PostController(IBaseRepo<Post, PostVM, PostRequest, int> baseRepo, IPostRepo postRepo)
         {
             _baseRepo = baseRepo;
             _postRepo = postRepo;
@@ -34,7 +35,7 @@ namespace travel_api.Controllers
         [HttpGet("{postId}")]
         public async Task<IActionResult> GetPostById(int postId)
         {
-            var postVMResult = await _postRepo.GetPostById(postId);
+            var postVMResult = await _postRepo.GetPostByIdAsync(postId);
 
             return Ok(new SuccessResponseVM<PostVM>()
             {
@@ -46,7 +47,7 @@ namespace travel_api.Controllers
         [HttpGet("{userId}/posts")]
         public async Task<IActionResult> GetListPostsByUserId(string userId)
         {
-            var postsVM = await _postRepo.GetListPostsByUserId(userId);
+            var postsVM = await _postRepo.GetListPostsByUserIdAsync(userId);
 
             return Ok(new SuccessResponseVM<IEnumerable<PostVM>>()
             {
@@ -56,7 +57,7 @@ namespace travel_api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreatePost(PostVM postVM)
+        public async Task<IActionResult> CreatePost(PostRequest postVM)
         {
             var postVMResult = await _baseRepo.AddAsync(postVM);
 
@@ -68,7 +69,7 @@ namespace travel_api.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdatePost(PostVM postVM)
+        public async Task<IActionResult> UpdatePost(PostRequest postVM)
         {
             var postVMResult = await _baseRepo.UpdateAsync(postVM);
 

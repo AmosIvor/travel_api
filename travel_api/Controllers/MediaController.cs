@@ -14,13 +14,16 @@ namespace travel_api.Controllers
         private readonly IBaseRepo<PostMedia, PostMediaVM, PostMediaRequest, int> _postMediaRepo;
         private readonly IBaseRepo<FeedbackMedia, FeedbackMediaVM, FeedbackMediaRequest, int> _feedbackMediaRepo;
         private readonly IBaseRepo<CommentMedia, CommentMediaVM, CommentMediaRequest, int> _commentMediaRepo;
+        private readonly IBaseRepo<LocationMedia, LocationMediaVM, LocationMediaRequest, int> _locationMediaRepo;
         public MediaController(IBaseRepo<PostMedia, PostMediaVM, PostMediaRequest, int> postMediaRepo, 
                                 IBaseRepo<FeedbackMedia, FeedbackMediaVM, FeedbackMediaRequest, int> feedbackMediaRepo,
-                                IBaseRepo<CommentMedia, CommentMediaVM, CommentMediaRequest, int> commentMediaRepo)
+                                IBaseRepo<CommentMedia, CommentMediaVM, CommentMediaRequest, int> commentMediaRepo,
+                                IBaseRepo<LocationMedia, LocationMediaVM, LocationMediaRequest, int> locationMediaRepo)
         {
             _postMediaRepo = postMediaRepo;
             _feedbackMediaRepo = feedbackMediaRepo;
             _commentMediaRepo = commentMediaRepo;
+            _locationMediaRepo = locationMediaRepo;
         }
 
         [HttpGet("post-medias")]
@@ -200,6 +203,66 @@ namespace travel_api.Controllers
             {
                 Message = "Delete comment media by id successfully",
                 Data = commentMediaVM
+            });
+        }
+
+        [HttpGet("location-medias")]
+        public async Task<IActionResult> GetAllLocationMedia()
+        {
+            var locationMediasVM = await _locationMediaRepo.GetAllAsync();
+
+            return Ok(new SuccessResponseVM<IEnumerable<LocationMediaVM>>()
+            {
+                Message = "Get all location medias successfully",
+                Data = locationMediasVM
+            });
+        }
+
+        [HttpGet("location-medias/{locationMediaId}")]
+        public async Task<IActionResult> GetLocationMediaById(int locationMediaId)
+        {
+            var locationMediaVM = await _locationMediaRepo.GetByIdAsync(locationMediaId);
+
+            return Ok(new SuccessResponseVM<LocationMediaVM>()
+            {
+                Message = "Get location media by id successfully",
+                Data = locationMediaVM
+            });
+        }
+
+        [HttpPost("location-medias")]
+        public async Task<IActionResult> CreateLocationMedia(LocationMediaRequest locationMediaVM)
+        {
+            var locationMediaVMResult = await _locationMediaRepo.AddAsync(locationMediaVM);
+
+            return Ok(new SuccessResponseVM<LocationMediaVM>()
+            {
+                Message = "Create new location media successfully",
+                Data = locationMediaVMResult
+            });
+        }
+
+        [HttpPut("location-medias")]
+        public async Task<IActionResult> UpdateLocationMedia(LocationMediaRequest locationMediaVM)
+        {
+            var locationMediaVMResult = await _locationMediaRepo.UpdateAsync(locationMediaVM);
+
+            return Ok(new SuccessResponseVM<LocationMediaVM>()
+            {
+                Message = "Update location media successfully",
+                Data = locationMediaVMResult
+            });
+        }
+
+        [HttpDelete("location-medias/{locationMediaId}")]
+        public async Task<IActionResult> DeleteLocationMediaById(int locationMediaId)
+        {
+            var locationMediaVM = await _locationMediaRepo.DeleteAsync(locationMediaId);
+
+            return Ok(new SuccessResponseVM<LocationMediaVM>()
+            {
+                Message = "Delete location media by id successfully",
+                Data = locationMediaVM
             });
         }
     }

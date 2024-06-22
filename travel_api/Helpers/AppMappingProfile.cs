@@ -27,10 +27,13 @@ namespace travel_api.Helpers
             CreateMap<Feedback, FeedbackBaseVM>().ReverseMap();
             CreateMap<Feedback, FeedbackVM>().ReverseMap();
 
-
             CreateMap<Location, LocationRequest>().ReverseMap();
             CreateMap<Location, LocationBaseVM>().ReverseMap();
             CreateMap<Location, LocationVM>().ReverseMap();
+
+            CreateMap<LocationMedia, LocationMediaRequest>().ReverseMap();
+            CreateMap<LocationMedia, LocationMediaBaseVM>().ReverseMap();
+            CreateMap<LocationMedia, LocationMediaVM>().ReverseMap();
 
             CreateMap<FeedbackMedia, FeedbackMediaRequest>().ReverseMap();
             CreateMap<FeedbackMedia, FeedbackMediaBaseVM>().ReverseMap();
@@ -39,7 +42,6 @@ namespace travel_api.Helpers
             CreateMap<PostMedia, PostMediaRequest>().ReverseMap();
             CreateMap<PostMedia, PostMediaBaseVM>().ReverseMap();
             CreateMap<PostMedia, PostMediaVM>().ReverseMap();
-
 
             CreateMap<Comment, CommentRequest>().ReverseMap();
             CreateMap<Comment, CommentBaseVM>().ReverseMap();

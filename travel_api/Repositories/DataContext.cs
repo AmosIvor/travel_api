@@ -25,6 +25,7 @@ namespace travel_api.Repositories
         public DbSet<PostMedia> PostMedias { get; set; }
         public DbSet<FeedbackMedia> FeedbackMedias { get; set; }
         public DbSet<CommentMedia> CommentMedias { get; set; }
+        public DbSet<LocationMedia> LocationMedias { get; set; }
 
         // Utils
         public DbSet<Photo> Photos { get; set; }
@@ -115,6 +116,13 @@ namespace travel_api.Repositories
             modelBuilder.Entity<Feedback>()
                 .Property(f => f.FeedbackRate)
                 .HasPrecision(18, 2);
+
+            // LocationMedia_Location
+            modelBuilder.Entity<LocationMedia>()
+                .HasOne(lm => lm.Location)
+                .WithMany(f => f.LocationMedias)
+                .HasForeignKey(fm => fm.LocationId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

@@ -20,6 +20,7 @@ namespace travel_api.Services.Basics
         {
             var location = await _context.Locations.Include(l => l.Feedbacks)
                                                    .Include(l => l.Posts)
+                                                   .Include(l => l.LocationMedias)
                                                    .SingleOrDefaultAsync(l => l.LocationId == locationId);
 
             var locationMap = _mapper.Map<LocationVM>(location);
@@ -31,6 +32,7 @@ namespace travel_api.Services.Basics
         {
             var top10Location = await _context.Locations
                                     .OrderByDescending(l => l.LocationRateAverage)
+                                    .Include(l => l.LocationMedias)
                                     .Take(10)
                                     .ToListAsync();
 

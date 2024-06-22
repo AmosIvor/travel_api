@@ -55,6 +55,18 @@ namespace travel_api.Controllers
             });
         }
 
+        [HttpGet("get-posts-by-content")]
+        public async Task<IActionResult> GetPostsByContent(string content)
+        {
+            var posts = await _postRepo.GetPostByContentAsync(content);
+
+            return Ok(new SuccessResponseVM<IEnumerable<PostVM>>()
+            {
+                Message = "Get posts by content successfully",
+                Data = posts
+            });
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreatePost(PostVM postVM)
         {

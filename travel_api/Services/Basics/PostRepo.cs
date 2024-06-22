@@ -47,6 +47,25 @@ namespace travel_api.Services.Basics
             return postsVM;
         }
 
+        public async Task<IEnumerable<PostVM>> GetPostByContentAsync(string content)
+        {
+            var post = await _context.Posts
+                .Include(p => p.Location)
+                .Include(p => p.PostMedias)
+                .Include(p => p.Comments)
+                .Where(p => p.PostContent.Contains(content))
+                .ToListAsync();
+
+            if (post == null)
+            {
+                throw new NotFoundException("Posts not found!");
+            }
+
+            var postVM = _mapper.Map<IEnumerable<PostVM>>(post);
+
+            return postVM;
+        }
+
         public async Task<PostVM> GetPostById(int postId)
         {
             // find post

@@ -44,6 +44,18 @@ namespace travel_api.Controllers
             });
         }
 
+        [HttpGet("search-locations-or-cities")]
+        public async Task<IActionResult> SearchLocationsOrCities(string search)
+        {
+            var result = await _locationRepo.GetLocationOrCityBySearchAsync(search);
+
+            return Ok(new SuccessResponseVM<IEnumerable<PlaceResponseVM>>()
+            {
+                Message = "Search locations or cities successfully",
+                Data = result
+            });
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateLocation(LocationVM locationVM)
         {

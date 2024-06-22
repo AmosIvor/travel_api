@@ -1,4 +1,4 @@
-﻿namespace travel_api.ViewModels.UtilViewModel
+﻿namespace travel_api.ViewModels.Responses.UtilViewModel
 {
     public class PhotoVM
     {

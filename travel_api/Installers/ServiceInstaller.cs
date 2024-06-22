@@ -27,7 +27,7 @@ namespace travel_api.Installers
             services.AddScoped<IPhotoService, PhotoService>();
 
             // custome base
-            services.AddScoped(typeof(IBaseRepo<,,>), typeof(BaseRepo<,,>));
+            services.AddScoped(typeof(IBaseRepo<,,,>), typeof(BaseRepo<,,,>));
         }
     }
 }

@@ -11,7 +11,7 @@
 
     public static class EnumTripTypeExtensions
     {
-        public static string GetTripTypeByEnum(EnumTripType tripType)
+        public static string GetTripTypeByEnum(this EnumTripType tripType)
         {
             switch (tripType)
             {

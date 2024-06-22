@@ -1,4 +1,4 @@
-﻿namespace travel_api.ViewModels.EFViewModel
+﻿namespace travel_api.ViewModels.Responses.EFViewModel
 {
     public class PostVM
     {

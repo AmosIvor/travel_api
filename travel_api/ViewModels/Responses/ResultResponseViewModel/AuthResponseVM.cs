@@ -1,6 +1,6 @@
-﻿using travel_api.ViewModels.EFViewModel;
+﻿using travel_api.ViewModels.Responses.EFViewModel;
 
-namespace travel_api.ViewModels.ResultResponseViewModel
+namespace travel_api.ViewModels.Responses.ResultResponseViewModel
 {
     public class AuthResponseVM
     {

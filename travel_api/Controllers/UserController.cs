@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using travel_api.Repositories.Basics;
 using travel_api.Repositories.Utils;
-using travel_api.ViewModels.EFViewModel;
-using travel_api.ViewModels.ResultResponseViewModel;
-using travel_api.ViewModels.UtilViewModel;
+using travel_api.ViewModels.Responses.EFViewModel;
+using travel_api.ViewModels.Responses.UtilViewModel;
+using travel_api.ViewModels.Responses.ResultResponseViewModel;
 
 namespace travel_api.Controllers
 {
@@ -24,7 +24,7 @@ namespace travel_api.Controllers
 
         [HttpGet("get-all")]
         [ProducesResponseType(200, Type = typeof(ICollection<UserVM>))]
-        public async Task<ActionResult> GetUsers()
+        public async Task<IActionResult> GetUsers()
         {
             try
             {

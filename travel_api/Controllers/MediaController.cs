@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using travel_api.Models.EF;
 using travel_api.Repositories;
-using travel_api.ViewModels.EFViewModel;
-using travel_api.ViewModels.ResultResponseViewModel;
+using travel_api.ViewModels.Requests.EFRequest;
+using travel_api.ViewModels.Responses.EFViewModel;
+using travel_api.ViewModels.Responses.ResultResponseViewModel;
 
 namespace travel_api.Controllers
 {
@@ -10,12 +11,12 @@ namespace travel_api.Controllers
     [ApiController]
     public class MediaController : ControllerBase
     {
-        private readonly IBaseRepo<PostMedia, PostMediaVM, int> _postMediaRepo;
-        private readonly IBaseRepo<FeedbackMedia, FeedbackMediaVM, int> _feedbackMediaRepo;
-        private readonly IBaseRepo<CommentMedia, CommentMediaVM, int> _commentMediaRepo;
-        public MediaController(IBaseRepo<PostMedia, PostMediaVM, int> postMediaRepo, 
-                                IBaseRepo<FeedbackMedia, FeedbackMediaVM, int> feedbackMediaRepo,
-                                IBaseRepo<CommentMedia, CommentMediaVM, int> commentMediaRepo)
+        private readonly IBaseRepo<PostMedia, PostMediaVM, PostMediaRequest, int> _postMediaRepo;
+        private readonly IBaseRepo<FeedbackMedia, FeedbackMediaVM, FeedbackMediaRequest, int> _feedbackMediaRepo;
+        private readonly IBaseRepo<CommentMedia, CommentMediaVM, CommentMediaRequest, int> _commentMediaRepo;
+        public MediaController(IBaseRepo<PostMedia, PostMediaVM, PostMediaRequest, int> postMediaRepo, 
+                                IBaseRepo<FeedbackMedia, FeedbackMediaVM, FeedbackMediaRequest, int> feedbackMediaRepo,
+                                IBaseRepo<CommentMedia, CommentMediaVM, CommentMediaRequest, int> commentMediaRepo)
         {
             _postMediaRepo = postMediaRepo;
             _feedbackMediaRepo = feedbackMediaRepo;
@@ -47,7 +48,7 @@ namespace travel_api.Controllers
         }
 
         [HttpPost("post-medias")]
-        public async Task<IActionResult> CreatePostMedia(PostMediaVM postMediaVM)
+        public async Task<IActionResult> CreatePostMedia(PostMediaRequest postMediaVM)
         {
             var postMediaVMResult = await _postMediaRepo.AddAsync(postMediaVM);
 
@@ -59,7 +60,7 @@ namespace travel_api.Controllers
         }
 
         [HttpPut("post-medias")]
-        public async Task<IActionResult> UpdatePostMedia(PostMediaVM postMediaVM)
+        public async Task<IActionResult> UpdatePostMedia(PostMediaRequest postMediaVM)
         {
             var postMediaVMResult = await _postMediaRepo.UpdateAsync(postMediaVM);
 
@@ -107,7 +108,7 @@ namespace travel_api.Controllers
         }
 
         [HttpPost("feedback-medias")]
-        public async Task<IActionResult> CreateFeedbackMedia(FeedbackMediaVM feedbackMediaVM)
+        public async Task<IActionResult> CreateFeedbackMedia(FeedbackMediaRequest feedbackMediaVM)
         {
             var feedbackMediaVMResult = await _feedbackMediaRepo.AddAsync(feedbackMediaVM);
 
@@ -119,7 +120,7 @@ namespace travel_api.Controllers
         }
 
         [HttpPut("feedback-medias")]
-        public async Task<IActionResult> UpdateFeedbackMedia(FeedbackMediaVM feedbackMediaVM)
+        public async Task<IActionResult> UpdateFeedbackMedia(FeedbackMediaRequest feedbackMediaVM)
         {
             var feedbackMediaVMResult = await _feedbackMediaRepo.UpdateAsync(feedbackMediaVM);
 
@@ -167,7 +168,7 @@ namespace travel_api.Controllers
         }
 
         [HttpPost("comment-medias")]
-        public async Task<IActionResult> CreateCommentMedia(CommentMediaVM commentMediaVM)
+        public async Task<IActionResult> CreateCommentMedia(CommentMediaRequest commentMediaVM)
         {
             var commentMediaVMResult = await _commentMediaRepo.AddAsync(commentMediaVM);
 
@@ -179,7 +180,7 @@ namespace travel_api.Controllers
         }
 
         [HttpPut("comment-medias")]
-        public async Task<IActionResult> UpdateCommentMedia(CommentMediaVM commentMediaVM)
+        public async Task<IActionResult> UpdateCommentMedia(CommentMediaRequest commentMediaVM)
         {
             var commentMediaVMResult = await _commentMediaRepo.UpdateAsync(commentMediaVM);
 

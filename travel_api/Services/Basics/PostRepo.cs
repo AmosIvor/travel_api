@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using travel_api.Exceptions;
 using travel_api.Repositories;
 using travel_api.Repositories.Basics;
-using travel_api.ViewModels.EFViewModel;
+using travel_api.ViewModels.Responses.EFViewModel;
 
 namespace travel_api.Services.Basics
 {

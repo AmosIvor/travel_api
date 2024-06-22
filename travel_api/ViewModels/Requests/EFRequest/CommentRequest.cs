@@ -1,6 +1,6 @@
-﻿namespace travel_api.ViewModels.EFViewModel
+﻿namespace travel_api.ViewModels.Requests.EFRequest
 {
-    public class CommentVM
+    public class CommentRequest
     {
         public int CommentId { get; set; }
 
@@ -12,12 +12,6 @@
 
         public string UserId { get; set; }
 
-        public UserVM? User { get; set; }
-
         public int PostId { get; set; }
-
-        public PostVM? Post { get; set; }
-
-        public ICollection<CommentMediaVM>? CommentMedias { get; set; }
     }
 }

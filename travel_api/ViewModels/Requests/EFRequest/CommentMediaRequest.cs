@@ -1,6 +1,6 @@
-﻿namespace travel_api.ViewModels.EFViewModel
+﻿namespace travel_api.ViewModels.Requests.EFRequest
 {
-    public class CommentMediaVM
+    public class CommentMediaRequest
     {
         public int CommentMediaId { get; set; }
 
@@ -9,7 +9,5 @@
         public string CommentMediaUrl { get; set; }
 
         public int CommentId { get; set; }
-
-        public CommentVM? Comment { get; set; }
     }
 }

@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using travel_api.Enums;
 using travel_api.Exceptions;
+using travel_api.Helpers;
 using travel_api.Repositories;
 using travel_api.Repositories.Basics;
-using travel_api.ViewModels.EFViewModel;
+using travel_api.ViewModels.Responses.EFViewModel;
 
 namespace travel_api.Services.Basics
 {
@@ -30,7 +32,7 @@ namespace travel_api.Services.Basics
             return feedbacksVM;
         }
 
-        public async Task<IEnumerable<FeedbackVM>> GetListFeedbacksByUserId(string userId)
+        public async Task<IEnumerable<FeedbackVM>> GetListFeedbacksByUserIdAsync(string userId)
         {
             var feedbacks = await _context.Feedbacks
                                     .Include(p => p.Location)
@@ -45,7 +47,7 @@ namespace travel_api.Services.Basics
             return feedbacksVM;
         }
 
-        public async Task<FeedbackVM> GetFeedbackById(int feedbackId)
+        public async Task<FeedbackVM> GetFeedbackByIdAsync(int feedbackId)
         {
             // find feedback
             var feedback = await _context.Feedbacks
@@ -61,6 +63,28 @@ namespace travel_api.Services.Basics
             var feedbackVM = _mapper.Map<FeedbackVM>(feedback);
 
             return feedbackVM;
+        }
+
+        public async Task<IEnumerable<FeedbackVM>> GetFeedbacksByFilterAsync(decimal rating = 5, int timeFeedbackType = 1, int tripType = 4)
+        {
+            EnumFilterDateFeedback timeFilter = (EnumFilterDateFeedback)timeFeedbackType;
+
+            DateTime startFilterDate = FeedbackFilterHelper.GetStartDateTimeFeedbackFilter(timeFilter);
+
+            var listFeedbackFilter = await _context.Feedbacks.OrderByDescending(f => f.FeedbackDate)
+                                                             .Include(f => f.FeedbackMedias)
+                                                             .Include(f => f.Location)
+                                                             .ToListAsync();
+
+            // fitler
+            listFeedbackFilter = listFeedbackFilter.Where(f => f.FeedbackRate >= rating).ToList();
+            listFeedbackFilter = listFeedbackFilter.Where(f => f.FeedbackDate >= startFilterDate).ToList();
+            listFeedbackFilter = listFeedbackFilter.Where(f => f.TripType == tripType).ToList();
+
+            // mapping
+            var listFeedbackMapping = _mapper.Map<IEnumerable<FeedbackVM>>(listFeedbackFilter);
+
+            return listFeedbackMapping;
         }
     }
 }

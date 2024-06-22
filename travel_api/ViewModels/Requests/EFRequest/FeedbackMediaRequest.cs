@@ -1,6 +1,6 @@
-﻿namespace travel_api.ViewModels.EFViewModel
+﻿namespace travel_api.ViewModels.Requests.EFRequest
 {
-    public class FeedbackMediaVM
+    public class FeedbackMediaRequest
     {
         public int FeedbackMediaId { get; set; }
 
@@ -9,7 +9,5 @@
         public string FeedbackMediaUrl { get; set; }
 
         public int FeedbackId { get; set; }
-
-        public FeedbackVM? Feedback { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using travel_api.Exceptions;
 using travel_api.Repositories;
 using travel_api.Repositories.Basics;
 using travel_api.ViewModels.Responses.EFViewModel;
@@ -23,7 +24,41 @@ namespace travel_api.Services.Basics
                                                    .Include(l => l.LocationMedias)
                                                    .SingleOrDefaultAsync(l => l.LocationId == locationId);
 
+            if (location == null)
+            {
+                throw new NotFoundException("Location not found");
+            }
+
             var locationMap = _mapper.Map<LocationVM>(location);
+
+            var ratingStatistic = new Dictionary<int, int>
+            {
+                { 1, 0 },
+                { 2, 0 },
+                { 3, 0 },
+                { 4, 0 },
+                { 5, 0 }
+            };
+
+            // Calculate star ratings distribution
+            var actualRatings = location.Feedbacks
+                                .GroupBy(f => f.FeedbackRate)
+                                .Select(g => new { Star = g.Key, Quantity = g.Count() });
+
+            int totalRatings = 0;
+            int totalCount = 0;
+
+            foreach (var rating in actualRatings)
+            {
+                ratingStatistic[rating.Star] = rating.Quantity;
+                totalRatings += rating.Star * rating.Quantity;
+                totalCount += rating.Quantity;
+            }
+
+            locationMap.RatingStatistic = ratingStatistic;
+
+            // Calculate LocationRateAverage
+            locationMap.LocationRateAverage = totalCount > 0 ? Math.Round((decimal)totalRatings / totalCount, 1) : 0;
 
             return locationMap;
         }

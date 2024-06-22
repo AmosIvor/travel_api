@@ -26,5 +26,7 @@ namespace travel_api.ViewModels.Responses.EFViewModel
         public ICollection<FeedbackBaseVM>? Feedbacks { get; set; }
 
         public ICollection<LocationMediaBaseVM>? LocationMedias { get; set; }
+
+        public Dictionary<int, int>? RatingStatistic { get; set; }
     }
 }

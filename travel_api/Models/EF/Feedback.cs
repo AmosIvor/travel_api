@@ -14,7 +14,7 @@ namespace travel_api.Models.EF
         [Required]
         public string FeedbackContent { get; set; }
 
-        public decimal FeedbackRate { get;set; }
+        public int FeedbackRate { get; set; }
 
         public int TripType { get; set; }
 

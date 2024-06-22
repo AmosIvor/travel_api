@@ -112,11 +112,6 @@ namespace travel_api.Repositories
                 .Property(l => l.LocationRateAverage)
                 .HasPrecision(18, 2);
 
-            // Feedback - Decimal Config
-            modelBuilder.Entity<Feedback>()
-                .Property(f => f.FeedbackRate)
-                .HasPrecision(18, 2);
-
             // LocationMedia_Location
             modelBuilder.Entity<LocationMedia>()
                 .HasOne(lm => lm.Location)

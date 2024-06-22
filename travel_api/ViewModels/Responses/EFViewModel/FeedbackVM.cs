@@ -8,7 +8,7 @@
 
         public string FeedbackContent { get; set; }
 
-        public decimal FeedbackRate { get; set; }
+        public int FeedbackRate { get; set; }
 
         public int TripType { get; set; }
 
@@ -24,5 +24,7 @@
         public LocationBaseVM? Location { get; set; }
 
         public ICollection<FeedbackMediaBaseVM>? FeedbackMedias { get; set; }
+
+        public Dictionary<int, int>? RatingStatistics { get; set; }
     }
 }

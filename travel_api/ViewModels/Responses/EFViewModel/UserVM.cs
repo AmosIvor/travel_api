@@ -1,6 +1,6 @@
 ﻿namespace travel_api.ViewModels.Responses.EFViewModel
 {
-    public class UserVM
+    public class UserBaseVM
     {
         public string? Id { get; set; }
 
@@ -15,11 +15,14 @@
         public DateTime? DateBirth { get; set; }
 
         public string? Avatar { get; set; }
+    }
 
-        public ICollection<PostVM>? Posts { get; set; }
+    public class UserVM : UserBaseVM
+    {
+        public ICollection<PostBaseVM>? Posts { get; set; }
 
-        public ICollection<FeedbackVM>? Feedbacks { get; set; }
+        public ICollection<FeedbackBaseVM>? Feedbacks { get; set; }
 
-        public ICollection<CommentVM>? Comments { get; set; }
+        public ICollection<CommentBaseVM>? Comments { get; set; }
     }
 }

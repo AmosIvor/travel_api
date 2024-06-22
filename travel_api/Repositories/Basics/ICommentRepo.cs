@@ -5,8 +5,8 @@ namespace travel_api.Repositories.Basics
     public interface ICommentRepo
     {
         Task<IEnumerable<CommentVM>> GetAllCommentsAsync();
-        Task<IEnumerable<CommentVM>> GetListCommentsByUserId(string userId);
-        Task<CommentVM> GetCommentById(int commentId);
-        Task<IEnumerable<CommentVM>> GetListCommentsByPostId(int postId);
+        Task<IEnumerable<CommentVM>> GetListCommentsByUserIdAsync(string userId);
+        Task<CommentVM> GetCommentByIdAsync(int commentId);
+        Task<IEnumerable<CommentVM>> GetListCommentsByPostIdAsync(int postId);
     }
 }

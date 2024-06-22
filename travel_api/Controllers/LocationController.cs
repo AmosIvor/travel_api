@@ -36,7 +36,7 @@ namespace travel_api.Controllers
         [HttpGet("{locationId}")]
         public async Task<IActionResult> GetLocationById(int locationId)
         {
-            var locationVM = await _baseRepo.GetByIdAsync(locationId);
+            var locationVM = await _locationRepo.GetLocationByIdAsync(locationId);
 
             return Ok(new SuccessResponseVM<LocationVM>()
             {

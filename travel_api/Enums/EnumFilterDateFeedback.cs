@@ -2,13 +2,13 @@
 {
     public enum EnumFilterDateFeedback
     {
-        TatCa,
-        MotNgayQua,
-        MotTuanQua,
-        MotThangQua,
-        BaThangQua,
-        SauThangQua,
-        MotNamQua
+        TatCa = 0,
+        MotNgayQua = 1,
+        MotTuanQua = 2,
+        MotThangQua = 3,
+        BaThangQua = 4,
+        SauThangQua = 5,
+        MotNamQua = 6
     }
 
     public static class EnumFilterDateFeedbackExtensions

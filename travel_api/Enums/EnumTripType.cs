@@ -2,11 +2,12 @@
 {
     public enum EnumTripType
     {
-        BusinessTrip,   // "Công tác"
-        Couple,         // "Cặp đôi"
-        Family,         // "Gia đình"
-        Friends,        // "Bạn bè"
-        Alone           // "Đi một mình"
+        All = 0,
+        BusinessTrip = 1,   // "Công tác"
+        Couple = 2,         // "Cặp đôi"
+        Family = 3,         // "Gia đình"
+        Friends = 4,        // "Bạn bè"
+        Alone = 5          // "Đi một mình"
     }
 
     public static class EnumTripTypeExtensions
@@ -25,8 +26,9 @@
                     return "Bạn bè";
                 case EnumTripType.Alone:
                     return "Đi một mình";
+                case EnumTripType.All:
                 default:
-                    return tripType.ToString();
+                    return "Tất cả";
             }
         }
     }

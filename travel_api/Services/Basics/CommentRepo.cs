@@ -29,7 +29,7 @@ namespace travel_api.Services.Basics
             return commentsVM;
         }
 
-        public async Task<IEnumerable<CommentVM>> GetListCommentsByUserId(string userId)
+        public async Task<IEnumerable<CommentVM>> GetListCommentsByUserIdAsync(string userId)
         {
             var comments = await _context.Comments
                                     .Include(c => c.CommentMedias)
@@ -43,7 +43,7 @@ namespace travel_api.Services.Basics
             return commentsVM;
         }
 
-        public async Task<CommentVM> GetCommentById(int commentId)
+        public async Task<CommentVM> GetCommentByIdAsync(int commentId)
         {
             // find comment
             var comment = await _context.Comments
@@ -60,7 +60,7 @@ namespace travel_api.Services.Basics
             return commentVM;
         }
 
-        public async Task<IEnumerable<CommentVM>> GetListCommentsByPostId(int postId)
+        public async Task<IEnumerable<CommentVM>> GetListCommentsByPostIdAsync(int postId)
         {
             var comments = await _context.Comments
                                     .Include(c => c.CommentMedias)

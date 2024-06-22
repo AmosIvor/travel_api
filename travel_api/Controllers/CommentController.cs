@@ -36,7 +36,7 @@ namespace travel_api.Controllers
         [HttpGet("{commentId}")]
         public async Task<IActionResult> GetCommentById(int commentId)
         {
-            var commentVMResult = await _commentRepo.GetCommentById(commentId);
+            var commentVMResult = await _commentRepo.GetCommentByIdAsync(commentId);
 
             return Ok(new SuccessResponseVM<CommentVM>()
             {
@@ -48,7 +48,7 @@ namespace travel_api.Controllers
         [HttpGet("{userId}/comments")]
         public async Task<IActionResult> GetListCommentsByUserId(string userId)
         {
-            var commentsVM = await _commentRepo.GetListCommentsByUserId(userId);
+            var commentsVM = await _commentRepo.GetListCommentsByUserIdAsync(userId);
 
             return Ok(new SuccessResponseVM<IEnumerable<CommentVM>>()
             {
@@ -60,7 +60,7 @@ namespace travel_api.Controllers
         [HttpGet("posts/{postId}/comments")]
         public async Task<IActionResult> GetListCommentsByPostId(int postId)
         {
-            var commentsVM = await _commentRepo.GetListCommentsByPostId(postId);
+            var commentsVM = await _commentRepo.GetListCommentsByPostIdAsync(postId);
 
             return Ok(new SuccessResponseVM<IEnumerable<CommentVM>>()
             {

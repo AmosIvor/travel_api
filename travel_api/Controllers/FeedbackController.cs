@@ -93,7 +93,7 @@ namespace travel_api.Controllers
         }
 
         [HttpGet("filter")]
-        public async Task<IActionResult> GetFeedbacksByFilter([FromQuery] decimal rating = 5, [FromQuery] int timeFeedbackType = 1, [FromQuery] int tripType = 4)
+        public async Task<IActionResult> GetFeedbacksByFilter([FromQuery] decimal rating = 5, [FromQuery] int timeFeedbackType = 0, [FromQuery] int tripType = 0)
         {
             var listFeedbackByFilterVM = await _feedbackRepo.GetFeedbacksByFilterAsync(rating, timeFeedbackType, tripType);
 

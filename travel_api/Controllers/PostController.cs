@@ -35,7 +35,7 @@ namespace travel_api.Controllers
         [HttpGet("{postId}")]
         public async Task<IActionResult> GetPostById(int postId)
         {
-            var postVMResult = await _postRepo.GetPostById(postId);
+            var postVMResult = await _postRepo.GetPostByIdAsync(postId);
 
             return Ok(new SuccessResponseVM<PostVM>()
             {
@@ -47,7 +47,7 @@ namespace travel_api.Controllers
         [HttpGet("{userId}/posts")]
         public async Task<IActionResult> GetListPostsByUserId(string userId)
         {
-            var postsVM = await _postRepo.GetListPostsByUserId(userId);
+            var postsVM = await _postRepo.GetListPostsByUserIdAsync(userId);
 
             return Ok(new SuccessResponseVM<IEnumerable<PostVM>>()
             {

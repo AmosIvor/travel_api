@@ -1,6 +1,8 @@
-﻿namespace travel_api.ViewModels.Responses.EFViewModel
+﻿using travel_api.ViewModels.Requests.EFRequest;
+
+namespace travel_api.ViewModels.Responses.EFViewModel
 {
-    public class LocationVM
+    public class LocationBaseVM
     {
         public int LocationId { get; set; }
 
@@ -15,9 +17,12 @@
         public decimal LocationLatitude { get; set; }
 
         public decimal LocationRateAverage { get; set; }
+    }
 
-        public ICollection<PostVM>? Posts { get; set; }
+    public class LocationVM : LocationBaseVM
+    {
+        public ICollection<PostBaseVM>? Posts { get; set; }
 
-        public ICollection<FeedbackVM>? Feedbacks { get; set; }
+        public ICollection<FeedbackBaseVM>? Feedbacks { get; set; }
     }
 }

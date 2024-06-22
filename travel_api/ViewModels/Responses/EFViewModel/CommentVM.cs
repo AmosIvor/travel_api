@@ -1,6 +1,6 @@
 ﻿namespace travel_api.ViewModels.Responses.EFViewModel
 {
-    public class CommentVM
+    public class CommentBaseVM
     {
         public int CommentId { get; set; }
 
@@ -12,12 +12,15 @@
 
         public string UserId { get; set; }
 
-        public UserVM? User { get; set; }
-
         public int PostId { get; set; }
+    }
 
-        public PostVM? Post { get; set; }
+    public class CommentVM : CommentBaseVM
+    {
+        public UserBaseVM? User { get; set; }
 
-        public ICollection<CommentMediaVM>? CommentMedias { get; set; }
+        public PostBaseVM? Post { get; set; }
+
+        public ICollection<CommentMediaBaseVM>? CommentMedias { get; set; }
     }
 }

@@ -57,5 +57,20 @@ namespace travel_api.Services.Basics
 
             return rooms;
         }
+
+        public async Task<Message> SendMessage(MessageVM vm)
+        {
+            var message = new Message
+            {
+                MessageType = "Text",
+                Content = vm.Content,
+                RoomId = vm.RoomId,
+                UserId = vm.UserId!
+            };
+            _context.Messages.Add(message);
+            await _context.SaveChangesAsync();
+
+            return message;
+        }
     }
 }

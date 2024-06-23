@@ -20,6 +20,9 @@ namespace travel_api.Models.EF
         [ForeignKey("RoomId")]
         public virtual ChatRoom? Room { get; set; }
 
+        [ForeignKey("UserId")]
+        public virtual User? User { get; set; }
+
         public virtual ICollection<MessageMedia>? MessageMedias { get; set; }
     }
 }

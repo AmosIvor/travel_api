@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using travel_api.Repositories.Basics;
+using travel_api.ViewModels.Responses.EFViewModel;
 
 namespace travel_api.Controllers
 {
@@ -30,6 +31,12 @@ namespace travel_api.Controllers
         public async Task<IActionResult> FindConversations(string search)
         {
             return Ok(await _service.FindConversations(search));
+        }
+
+        [HttpPost("send-message")]
+        public async Task<IActionResult> SendMessage(MessageVM vm)
+        {
+            return Ok(await _service.SendMessage(vm));
         }
     }
 }

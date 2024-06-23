@@ -1,6 +1,4 @@
-﻿using travel_api.ViewModels.Requests.EFRequest;
-
-namespace travel_api.ViewModels.Responses.EFViewModel
+﻿namespace travel_api.ViewModels.Responses.EFViewModel
 {
     public class LocationBaseVM
     {
@@ -17,6 +15,8 @@ namespace travel_api.ViewModels.Responses.EFViewModel
         public decimal LocationLatitude { get; set; }
 
         public decimal LocationRateAverage { get; set; }
+
+        public string LocationDescription { get; set; }
 
         public int CityId { get; set; }
     }

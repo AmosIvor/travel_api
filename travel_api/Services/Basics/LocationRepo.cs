@@ -4,6 +4,7 @@ using travel_api.Exceptions;
 using travel_api.Repositories;
 using travel_api.Repositories.Basics;
 using travel_api.ViewModels.Responses.EFViewModel;
+using travel_api.ViewModels.ResultResponseViewModel;
 
 namespace travel_api.Services.Basics
 {
@@ -50,8 +51,8 @@ namespace travel_api.Services.Basics
 
             foreach (var rating in actualRatings)
             {
-                ratingStatistic[rating.Star] = rating.Quantity;
-                totalRatings += rating.Star * rating.Quantity;
+                ratingStatistic[(int)rating.Star] = rating.Quantity;
+                totalRatings += (int)rating.Star * rating.Quantity;
                 totalCount += rating.Quantity;
             }
 

@@ -67,7 +67,7 @@ namespace travel_api.Services.Basics
             return postVM;
         }
 
-        public async Task<PostVM> GetPostById(int postId)
+        public async Task<PostVM> GetPostByIdAsync(int postId)
         {
             // find post
             var post = await _context.Posts

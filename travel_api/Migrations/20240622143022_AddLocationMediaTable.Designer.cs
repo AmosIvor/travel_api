@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using travel_api.Repositories;
 
@@ -11,9 +12,10 @@ using travel_api.Repositories;
 namespace travel_api.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240622143022_AddLocationMediaTable")]
+    partial class AddLocationMediaTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -322,8 +324,9 @@ namespace travel_api.Migrations
                     b.Property<DateTime>("FeedbackDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("FeedbackRate")
-                        .HasColumnType("int");
+                    b.Property<decimal>("FeedbackRate")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("LocationId")
                         .HasColumnType("int");

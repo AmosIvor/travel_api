@@ -1,4 +1,4 @@
-﻿namespace travel_api.ViewModels.ResultResponseViewModel
+﻿namespace travel_api.ViewModels.Responses.ResultResponseViewModel
 {
     public class SuccessResponseVM<T>
     {

@@ -5,9 +5,10 @@ using travel_api.Repositories;
 
 namespace travel_api.Services
 {
-    public class BaseRepo<TEntity, TEntityDTO, TKey> : IBaseRepo<TEntity, TEntityDTO, TKey>
+    public class BaseRepo<TEntity, TEntityDTO, TEntityRequest, TKey> : IBaseRepo<TEntity, TEntityDTO, TEntityRequest, TKey>
         where TEntity : class
         where TEntityDTO : class
+        where TEntityRequest : class
         where TKey : struct
     {
         protected readonly DataContext _context;
@@ -44,7 +45,7 @@ namespace travel_api.Services
             return entityDtoResult;
         }
 
-        public async Task<TEntityDTO> AddAsync(TEntityDTO entityDto)
+        public async Task<TEntityDTO> AddAsync(TEntityRequest entityDto)
         {
             // mapper
             var entity = _mapper.Map<TEntity>(entityDto);
@@ -58,7 +59,7 @@ namespace travel_api.Services
             return entityDtoResult;
         }
 
-        public async Task<TEntityDTO> UpdateAsync(TEntityDTO entityDto)
+        public async Task<TEntityDTO> UpdateAsync(TEntityRequest entityDto)
         {
             // mapper
             var entity = _mapper.Map<TEntity>(entityDto);

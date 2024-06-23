@@ -4,9 +4,9 @@ using CloudinaryDotNet;
 using Microsoft.Extensions.Options;
 using travel_api.Models.Utils;
 using travel_api.Repositories;
-using travel_api.ViewModels.UtilViewModel;
 using travel_api.Configuration;
 using travel_api.Repositories.Utils;
+using travel_api.ViewModels.Responses.UtilViewModel;
 
 namespace travel_api.Services.Utils
 {

@@ -3,8 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using travel_api.Models.EF;
 using travel_api.Repositories.Basics;
 using travel_api.Repositories;
-using travel_api.ViewModels.EFViewModel;
-using travel_api.ViewModels.ResultResponseViewModel;
+using travel_api.ViewModels.Responses.ResultResponseViewModel;
+using travel_api.ViewModels.Responses.EFViewModel;
+using travel_api.ViewModels.Requests.EFRequest;
 
 namespace travel_api.Controllers
 {
@@ -12,9 +13,9 @@ namespace travel_api.Controllers
     [ApiController]
     public class CommentController : ControllerBase
     {
-        private readonly IBaseRepo<Comment, CommentVM, int> _baseRepo;
+        private readonly IBaseRepo<Comment, CommentVM, CommentRequest, int> _baseRepo;
         private readonly ICommentRepo _commentRepo;
-        public CommentController(IBaseRepo<Comment, CommentVM, int> baseRepo, ICommentRepo commentRepo)
+        public CommentController(IBaseRepo<Comment, CommentVM, CommentRequest, int> baseRepo, ICommentRepo commentRepo)
         {
             _baseRepo = baseRepo;
             _commentRepo = commentRepo;
@@ -35,7 +36,7 @@ namespace travel_api.Controllers
         [HttpGet("{commentId}")]
         public async Task<IActionResult> GetCommentById(int commentId)
         {
-            var commentVMResult = await _commentRepo.GetCommentById(commentId);
+            var commentVMResult = await _commentRepo.GetCommentByIdAsync(commentId);
 
             return Ok(new SuccessResponseVM<CommentVM>()
             {
@@ -47,7 +48,7 @@ namespace travel_api.Controllers
         [HttpGet("{userId}/comments")]
         public async Task<IActionResult> GetListCommentsByUserId(string userId)
         {
-            var commentsVM = await _commentRepo.GetListCommentsByUserId(userId);
+            var commentsVM = await _commentRepo.GetListCommentsByUserIdAsync(userId);
 
             return Ok(new SuccessResponseVM<IEnumerable<CommentVM>>()
             {
@@ -59,7 +60,7 @@ namespace travel_api.Controllers
         [HttpGet("posts/{postId}/comments")]
         public async Task<IActionResult> GetListCommentsByPostId(int postId)
         {
-            var commentsVM = await _commentRepo.GetListCommentsByPostId(postId);
+            var commentsVM = await _commentRepo.GetListCommentsByPostIdAsync(postId);
 
             return Ok(new SuccessResponseVM<IEnumerable<CommentVM>>()
             {
@@ -69,7 +70,7 @@ namespace travel_api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateComment(CommentVM commentVM)
+        public async Task<IActionResult> CreateComment(CommentRequest commentVM)
         {
             var commentVMResult = await _baseRepo.AddAsync(commentVM);
 
@@ -81,7 +82,7 @@ namespace travel_api.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateComment(CommentVM commentVM)
+        public async Task<IActionResult> UpdateComment(CommentRequest commentVM)
         {
             var commentVMResult = await _baseRepo.UpdateAsync(commentVM);
 

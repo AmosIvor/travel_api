@@ -26,6 +26,10 @@ namespace travel_api.Repositories
         public DbSet<FeedbackMedia> FeedbackMedias { get; set; }
         public DbSet<CommentMedia> CommentMedias { get; set; }
         public DbSet<LocationMedia> LocationMedias { get; set; }
+        public DbSet<ChatRoom> ChatRooms { get; set; }
+        public DbSet<RoomDetail> RoomDetails { get; set; }
+        public DbSet<Message> Messages { get; set; }
+        public DbSet<MessageMedia> MessageMedias { get; set; }
 
         // Utils
         public DbSet<Photo> Photos { get; set; }

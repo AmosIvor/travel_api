@@ -129,6 +129,27 @@ namespace travel_api.Repositories
                 .WithMany(c => c.Locations)
                 .HasForeignKey(l => l.CityId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            // ChatRoom - RoomDetail
+            modelBuilder.Entity<RoomDetail>()
+                .HasOne(l => l.Room)
+                .WithMany(r => r.RoomDetails)
+                .HasForeignKey(r => r.RoomId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            // Messages - Room
+            modelBuilder.Entity<Message>()
+                .HasOne(m => m.Room)
+                .WithMany(r => r.Messages)
+                .HasForeignKey(m => m.RoomId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            // Message - MessageMedia
+            modelBuilder.Entity<MessageMedia>()
+                .HasOne(me => me.Message)
+                .WithMany(m => m.MessageMedias)
+                .HasForeignKey(me => me.MessageId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

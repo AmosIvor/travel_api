@@ -14,5 +14,8 @@ namespace travel_api.Models.EF
         public int Order { get; set; }
 
         public string URL { get; set; }
+
+        [ForeignKey("MessageId")]
+        public virtual Message Message { get; set; }
     }
 }

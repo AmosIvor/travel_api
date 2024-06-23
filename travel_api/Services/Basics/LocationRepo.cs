@@ -111,6 +111,17 @@ namespace travel_api.Services.Basics
             return cityResults.Concat(locationResults);
         }
 
+        public async Task<IEnumerable<LocationVM>> GetLocationsByCity(int cityId)
+        {
+            var locations = await _context.Locations
+                .Where(l => l.CityId == cityId)
+                .ToListAsync();
+
+            var locationsMap = _mapper.Map<IEnumerable<LocationVM>>(locations);
+
+            return locationsMap;
+        }
+
         public async Task<IEnumerable<LocationVM>> GetTop10LocationByRatingAsync()
         {
             var top10Location = await _context.Locations

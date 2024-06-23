@@ -4,7 +4,7 @@ using travel_api.Exceptions;
 using travel_api.Repositories;
 using travel_api.Repositories.Basics;
 using travel_api.ViewModels.Responses.EFViewModel;
-using travel_api.ViewModels.ResultResponseViewModel;
+using travel_api.ViewModels.Responses.ResultResponseViewModel;
 
 namespace travel_api.Services.Basics
 {
@@ -64,28 +64,51 @@ namespace travel_api.Services.Basics
             return locationMap;
         }
 
-        public async Task<IEnumerable<PlaceResponseVM>> GetLocationOrCityBySearchAsync(string search)
+        public async Task<IEnumerable<PlaceResponse<object>>> GetLocationOrCityBySearchAsync(string searchString)
         {
-            var locations = await _context.Locations
-                .Where(l => l.LocationName.Contains(search) || l.LocationAddress.Contains(search))
-                .ToListAsync();
-
-            var places = new List<PlaceResponseVM>();
-            foreach (var location in locations)
+            if (string.IsNullOrEmpty(searchString))
             {
-                places.Add(_mapper.Map<PlaceResponseVM>(location));
+                return Enumerable.Empty<PlaceResponse<object>>();
             }
 
-            var cities = await _context.Cities
-                .Where(c => c.CityName.Contains(search))
-                .ToListAsync();
+            searchString = searchString.Trim().ToLower();
 
-            foreach (var city in cities)
+            var cityResults = await _context.Cities
+            .Where(c => c.CityName.ToLower().Contains(searchString))
+            .Select(c => new PlaceResponse<object>
             {
-                places.Add(_mapper.Map<PlaceResponseVM>(city));
-            }
+                Result = new CityBaseVM
+                {
+                    CityId = c.CityId,
+                    CityName = c.CityName,
+                    CityDescription = c.CityDescription
+                },
+                IsCity = true,
+                IsLocation = false
+            })
+            .ToListAsync();
 
-            return places;
+            var locationResults = await _context.Locations
+            .Where(l => l.LocationName.ToLower().Contains(searchString))
+            .Select(l => new PlaceResponse<object>
+            {
+                Result = new LocationBaseVM
+                {
+                    LocationId = l.LocationId,
+                    LocationName = l.LocationName,
+                    LocationAddress = l.LocationAddress,
+                    LocationOpenTime = l.LocationOpenTime,
+                    LocationLongtitude = l.LocationLongtitude,
+                    LocationLatitude = l.LocationLatitude,
+                    LocationRateAverage = l.LocationRateAverage,
+                    CityId = l.CityId,
+                },
+                IsCity = false,
+                IsLocation = true
+            })
+            .ToListAsync();
+
+            return cityResults.Concat(locationResults);
         }
 
         public async Task<IEnumerable<LocationVM>> GetTop10LocationByRatingAsync()

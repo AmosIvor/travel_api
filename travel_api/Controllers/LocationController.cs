@@ -47,11 +47,11 @@ namespace travel_api.Controllers
         }
 
         [HttpGet("search-locations-or-cities")]
-        public async Task<IActionResult> SearchLocationsOrCities(string search)
+        public async Task<IActionResult> SearchLocationsOrCities([FromQuery] string searchString)
         {
-            var result = await _locationRepo.GetLocationOrCityBySearchAsync(search);
+            var result = await _locationRepo.GetLocationOrCityBySearchAsync(searchString);
 
-            return Ok(new SuccessResponseVM<IEnumerable<PlaceResponseVM>>()
+            return Ok(new SuccessResponseVM<IEnumerable<PlaceResponse<object>>>()
             {
                 Message = "Search locations or cities successfully",
                 Data = result

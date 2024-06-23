@@ -1,5 +1,5 @@
 ﻿using travel_api.ViewModels.Responses.EFViewModel;
-using travel_api.ViewModels.ResultResponseViewModel;
+using travel_api.ViewModels.Responses.ResultResponseViewModel;
 
 namespace travel_api.Repositories.Basics
 {
@@ -8,6 +8,6 @@ namespace travel_api.Repositories.Basics
         Task<LocationVM> GetLocationByIdAsync(int locationId);
         Task<IEnumerable<LocationVM>> GetTop10LocationByRatingAsync();
 
-        Task<IEnumerable<PlaceResponseVM>> GetLocationOrCityBySearchAsync(string search);
+        Task<IEnumerable<PlaceResponse<object>>> GetLocationOrCityBySearchAsync(string searchString);
     }
 }

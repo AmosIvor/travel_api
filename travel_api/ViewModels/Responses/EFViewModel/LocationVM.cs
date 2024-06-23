@@ -17,6 +17,8 @@ namespace travel_api.ViewModels.Responses.EFViewModel
         public decimal LocationLatitude { get; set; }
 
         public decimal LocationRateAverage { get; set; }
+
+        public int CityId { get; set; }
     }
 
     public class LocationVM : LocationBaseVM
@@ -28,5 +30,7 @@ namespace travel_api.ViewModels.Responses.EFViewModel
         public ICollection<LocationMediaBaseVM>? LocationMedias { get; set; }
 
         public Dictionary<int, int>? RatingStatistic { get; set; }
+
+        public CityBaseVM City { get; set; }
     }
 }

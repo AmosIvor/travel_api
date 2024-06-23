@@ -23,6 +23,11 @@ namespace travel_api.Models.EF
 
         public virtual ICollection<Post> Posts { get; set; }
 
+        public int CityId { get; set; }
+
+        [ForeignKey("CityId")]
+        public virtual City City { get; set; }
+
         public virtual ICollection<Feedback> Feedbacks { get; set; }
 
         public virtual ICollection<LocationMedia> LocationMedias { get; set; }

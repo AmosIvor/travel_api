@@ -11,6 +11,6 @@
 
     public class CityVM : CityBaseVM
     {
-
+        public virtual ICollection<LocationBaseVM>? Locations { get; set; }
     }
 }

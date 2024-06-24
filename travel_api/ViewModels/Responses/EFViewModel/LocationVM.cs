@@ -18,6 +18,8 @@ namespace travel_api.ViewModels.Responses.EFViewModel
 
         public decimal LocationRateAverage { get; set; }
 
+        public string LocationDescription { get; set; }
+
         public int CityId { get; set; }
     }
 

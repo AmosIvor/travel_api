@@ -14,6 +14,8 @@ namespace travel_api.Models.EF
 
         public string? CityDescription { get; set; }
 
+        public string? CityUrl { get; set; }
+
         public virtual ICollection<Location> Locations { get; set; }
     }
 }

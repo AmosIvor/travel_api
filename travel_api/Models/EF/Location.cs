@@ -21,6 +21,8 @@ namespace travel_api.Models.EF
 
         public decimal LocationRateAverage { get; set; }
 
+        public string LocationDescription { get; set; }
+
         public virtual ICollection<Post> Posts { get; set; }
 
         public int CityId { get; set; }

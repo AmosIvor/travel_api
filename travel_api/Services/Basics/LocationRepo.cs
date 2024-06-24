@@ -92,13 +92,13 @@ namespace travel_api.Services.Basics
                 IsLocation = false
             });
 
-            var locations = await _context.Locations.ToListAsync();
+            var locations = await _context.Locations.Include(x => x.City).ToListAsync();
 
             var locationResults = locations
             .Where(l => AppUtils.RemoveDiacritics(l.LocationName.ToLower()).Contains(searchString))
             .Select(l => new PlaceResponse<object>
             {
-                Result = new LocationBaseVM
+                Result = new LocationBaseWithCityVM
                 {
                     LocationId = l.LocationId,
                     LocationName = l.LocationName,
@@ -109,6 +109,7 @@ namespace travel_api.Services.Basics
                     LocationRateAverage = l.LocationRateAverage,
                     LocationDescription = l.LocationDescription,
                     CityId = l.CityId,
+                    CityName = l.City.CityName,
                 },
                 IsCity = false,
                 IsLocation = true
@@ -117,11 +118,24 @@ namespace travel_api.Services.Basics
             return cityResults.Concat(locationResults);
         }
 
+        public async Task<IEnumerable<LocationVM>> GetLocationsAsync()
+        {
+            var locations = await _context.Locations.OrderByDescending(l => l.LocationRateAverage)
+                                                    .Include(l => l.LocationMedias)
+                                                    .Include(l => l.City)
+                                                    .ToListAsync();
+
+            var locationsMap = _mapper.Map<IEnumerable<LocationVM>>(locations);
+
+            return locationsMap;
+        }
+
         public async Task<IEnumerable<LocationVM>> GetTop10LocationByRatingAsync()
         {
             var top10Location = await _context.Locations
                                     .OrderByDescending(l => l.LocationRateAverage)
                                     .Include(l => l.LocationMedias)
+                                    .Include(l => l.City)
                                     .Take(10)
                                     .ToListAsync();
 

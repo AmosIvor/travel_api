@@ -23,7 +23,7 @@ namespace travel_api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllLocation()
         {
-            var locationsVM = await _baseRepo.GetAllAsync();
+            var locationsVM = await _locationRepo.GetLocationsAsync();
 
             return Ok(new SuccessResponseVM<IEnumerable<LocationVM>>()
             {

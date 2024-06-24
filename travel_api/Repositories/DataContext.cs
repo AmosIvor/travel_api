@@ -102,11 +102,11 @@ namespace travel_api.Repositories
             // Location - Decimal Config
             modelBuilder.Entity<Location>()
                 .Property(l => l.LocationLongtitude)
-                .HasPrecision(18, 2);
+                .HasPrecision(9, 6);
 
             modelBuilder.Entity<Location>()
                 .Property(l => l.LocationLatitude)
-                .HasPrecision(18, 2);
+                .HasPrecision(8, 6);
 
             modelBuilder.Entity<Location>()
                 .Property(l => l.LocationRateAverage)

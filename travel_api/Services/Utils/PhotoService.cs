@@ -7,6 +7,8 @@ using travel_api.Repositories;
 using travel_api.Configuration;
 using travel_api.Repositories.Utils;
 using travel_api.ViewModels.Responses.UtilViewModel;
+using System.Buffers.Text;
+using travel_api.ViewModels.Requests.MediaRequest;
 
 namespace travel_api.Services.Utils
 {
@@ -30,27 +32,29 @@ namespace travel_api.Services.Utils
             _cloudinary = new Cloudinary(account);
         }
 
-        public async Task<PhotoVM> CreatePhotoAsync(IFormFile file)
+        public async Task<PhotoVM> CreatePhotoAsync(FileRequest file)
         {
             var uploadResult = new ImageUploadResult();
 
-            if (file == null || file.Length <= 0)
+            if (string.IsNullOrEmpty(file.Base64))
             {
                 throw new Exception("File is empty");
             }
 
-            using (var stream = file.OpenReadStream())
+            byte[] bytes = Convert.FromBase64String(file.Base64);
+
+            using (var stream = new MemoryStream(bytes))
             {
                 var uploadParams = new ImageUploadParams
                 {
                     File = new FileDescription(file.FileName, stream),
-                    UniqueFilename = true,
                     UseFilename = true,
-                    Overwrite = true,
+                    UniqueFilename = false,
+                    Overwrite = true
                 };
 
                 uploadResult = await _cloudinary.UploadAsync(uploadParams);
-            };
+            }
 
             var newPhoto = new Photo()
             {
@@ -68,7 +72,7 @@ namespace travel_api.Services.Utils
             return newPhotoVM;
         }
 
-        public async Task<ICollection<PhotoVM>> CreatePhotosAsync(ICollection<IFormFile> files)
+        public async Task<ICollection<PhotoVM>> CreatePhotosAsync(ICollection<FileRequest> files)
         {
             var newPhotosVM = new List<PhotoVM>();
 

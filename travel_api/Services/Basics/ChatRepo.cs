@@ -10,9 +10,12 @@ namespace travel_api.Services.Basics
     public class ChatRepo : IChatRepo
     {
         private readonly DataContext _context;
-        public ChatRepo(DataContext context)
+        private readonly IMapper _mapper;
+
+        public ChatRepo(DataContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task<IEnumerable<ChatRoomVM>> GetUserConversations(string userId)
@@ -60,13 +63,8 @@ namespace travel_api.Services.Basics
 
         public async Task<Message> SendMessage(MessageVM vm)
         {
-            var message = new Message
-            {
-                MessageType = "Text",
-                Content = vm.Content,
-                RoomId = vm.RoomId,
-                UserId = vm.UserId!
-            };
+            var message = _mapper.Map<Message>(vm);
+
             _context.Messages.Add(message);
             await _context.SaveChangesAsync();
 

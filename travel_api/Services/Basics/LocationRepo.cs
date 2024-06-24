@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using travel_api.Exceptions;
+using travel_api.Helpers;
 using travel_api.Repositories;
 using travel_api.Repositories.Basics;
 using travel_api.ViewModels.Responses.EFViewModel;
@@ -71,10 +72,12 @@ namespace travel_api.Services.Basics
                 return Enumerable.Empty<PlaceResponse<object>>();
             }
 
-            searchString = searchString.Trim().ToLower();
+            searchString = AppUtils.RemoveDiacritics(searchString.Trim().ToLower());
 
-            var cityResults = await _context.Cities
-            .Where(c => c.CityName.ToLower().Contains(searchString))
+            var cities = await _context.Cities.ToListAsync();
+
+            var cityResults = cities
+            .Where(c => AppUtils.RemoveDiacritics(c.CityName.ToLower()).Contains(searchString))
             .Select(c => new PlaceResponse<object>
             {
                 Result = new CityBaseVM
@@ -85,11 +88,12 @@ namespace travel_api.Services.Basics
                 },
                 IsCity = true,
                 IsLocation = false
-            })
-            .ToListAsync();
+            });
 
-            var locationResults = await _context.Locations
-            .Where(l => l.LocationName.ToLower().Contains(searchString))
+            var locations = await _context.Locations.ToListAsync();
+
+            var locationResults = locations
+            .Where(l => AppUtils.RemoveDiacritics(l.LocationName.ToLower()).Contains(searchString))
             .Select(l => new PlaceResponse<object>
             {
                 Result = new LocationBaseVM
@@ -105,8 +109,7 @@ namespace travel_api.Services.Basics
                 },
                 IsCity = false,
                 IsLocation = true
-            })
-            .ToListAsync();
+            });
 
             return cityResults.Concat(locationResults);
         }

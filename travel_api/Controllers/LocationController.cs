@@ -1,12 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using travel_api.Models.EF;
 using travel_api.Repositories;
 using travel_api.Repositories.Basics;
 using travel_api.ViewModels.Requests.EFRequest;
 using travel_api.ViewModels.Responses.EFViewModel;
 using travel_api.ViewModels.Responses.ResultResponseViewModel;
-using travel_api.ViewModels.ResultResponseViewModel;
 
 namespace travel_api.Controllers
 {

@@ -24,6 +24,7 @@ namespace travel_api.Services.Basics
             var location = await _context.Locations.Include(l => l.Feedbacks)
                                                    .Include(l => l.Posts)
                                                    .Include(l => l.LocationMedias)
+                                                   .Include(l => l.City)
                                                    .SingleOrDefaultAsync(l => l.LocationId == locationId);
 
             if (location == null)
@@ -84,7 +85,8 @@ namespace travel_api.Services.Basics
                 {
                     CityId = c.CityId,
                     CityName = c.CityName,
-                    CityDescription = c.CityDescription
+                    CityDescription = c.CityDescription,
+                    CityUrl = c.CityUrl
                 },
                 IsCity = true,
                 IsLocation = false
@@ -105,6 +107,7 @@ namespace travel_api.Services.Basics
                     LocationLongtitude = l.LocationLongtitude,
                     LocationLatitude = l.LocationLatitude,
                     LocationRateAverage = l.LocationRateAverage,
+                    LocationDescription = l.LocationDescription,
                     CityId = l.CityId,
                 },
                 IsCity = false,

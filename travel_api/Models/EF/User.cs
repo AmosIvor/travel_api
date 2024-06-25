@@ -16,5 +16,7 @@ namespace travel_api.Models.EF
         public virtual ICollection<Feedback> Feedbacks { get; set; }
 
         public virtual ICollection<Comment> Comments { get; set; }
+
+        public virtual ICollection<TravelPlan> TravelPlans { get; set; }
     }
 }

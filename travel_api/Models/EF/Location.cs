@@ -21,7 +21,7 @@ namespace travel_api.Models.EF
 
         public decimal LocationRateAverage { get; set; }
 
-        public string LocationDescription { get; set; }
+        public string LocationDescription { get; set; } = "";
 
         public virtual ICollection<Post> Posts { get; set; }
 
@@ -33,5 +33,7 @@ namespace travel_api.Models.EF
         public virtual ICollection<Feedback> Feedbacks { get; set; }
 
         public virtual ICollection<LocationMedia> LocationMedias { get; set; }
+
+        public virtual ICollection<PlanDetail> PlanDetails { get; set; }
     }
 }

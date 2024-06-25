@@ -239,7 +239,7 @@ namespace travel_api.Migrations
 
                     b.HasKey("RoomId");
 
-                    b.ToTable("ChatRoom");
+                    b.ToTable("ChatRoom", (string)null);
                 });
 
             modelBuilder.Entity("travel_api.Models.EF.City", b =>
@@ -263,7 +263,7 @@ namespace travel_api.Migrations
 
                     b.HasKey("CityId");
 
-                    b.ToTable("City");
+                    b.ToTable("City", (string)null);
                 });
 
             modelBuilder.Entity("travel_api.Models.EF.Comment", b =>
@@ -298,7 +298,7 @@ namespace travel_api.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Comment");
+                    b.ToTable("Comment", (string)null);
                 });
 
             modelBuilder.Entity("travel_api.Models.EF.CommentMedia", b =>
@@ -323,7 +323,7 @@ namespace travel_api.Migrations
 
                     b.HasIndex("CommentId");
 
-                    b.ToTable("CommentMedia");
+                    b.ToTable("CommentMedia", (string)null);
                 });
 
             modelBuilder.Entity("travel_api.Models.EF.Feedback", b =>
@@ -360,7 +360,7 @@ namespace travel_api.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Feedback");
+                    b.ToTable("Feedback", (string)null);
                 });
 
             modelBuilder.Entity("travel_api.Models.EF.FeedbackMedia", b =>
@@ -385,7 +385,7 @@ namespace travel_api.Migrations
 
                     b.HasIndex("FeedbackId");
 
-                    b.ToTable("FeedbackMedia");
+                    b.ToTable("FeedbackMedia", (string)null);
                 });
 
             modelBuilder.Entity("travel_api.Models.EF.Location", b =>
@@ -430,7 +430,7 @@ namespace travel_api.Migrations
 
                     b.HasIndex("CityId");
 
-                    b.ToTable("Location");
+                    b.ToTable("Location", (string)null);
                 });
 
             modelBuilder.Entity("travel_api.Models.EF.LocationMedia", b =>
@@ -455,7 +455,7 @@ namespace travel_api.Migrations
 
                     b.HasIndex("LocationId");
 
-                    b.ToTable("LocationMedia");
+                    b.ToTable("LocationMedia", (string)null);
                 });
 
             modelBuilder.Entity("travel_api.Models.EF.Message", b =>
@@ -485,7 +485,7 @@ namespace travel_api.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Message");
+                    b.ToTable("Message", (string)null);
                 });
 
             modelBuilder.Entity("travel_api.Models.EF.MessageMedia", b =>
@@ -510,7 +510,30 @@ namespace travel_api.Migrations
 
                     b.HasIndex("MessageId");
 
-                    b.ToTable("MessageMedia");
+                    b.ToTable("MessageMedia", (string)null);
+                });
+
+            modelBuilder.Entity("travel_api.Models.EF.PlanDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("LocationId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PlanId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LocationId");
+
+                    b.HasIndex("PlanId");
+
+                    b.ToTable("PlanDetail", (string)null);
                 });
 
             modelBuilder.Entity("travel_api.Models.EF.Post", b =>
@@ -544,7 +567,7 @@ namespace travel_api.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Post");
+                    b.ToTable("Post", (string)null);
                 });
 
             modelBuilder.Entity("travel_api.Models.EF.PostMedia", b =>
@@ -569,7 +592,7 @@ namespace travel_api.Migrations
 
                     b.HasIndex("PostId");
 
-                    b.ToTable("PostMedia");
+                    b.ToTable("PostMedia", (string)null);
                 });
 
             modelBuilder.Entity("travel_api.Models.EF.RoomDetail", b =>
@@ -591,7 +614,28 @@ namespace travel_api.Migrations
 
                     b.HasIndex("RoomId");
 
-                    b.ToTable("RoomDetail");
+                    b.ToTable("RoomDetail", (string)null);
+                });
+
+            modelBuilder.Entity("travel_api.Models.EF.TravelPlan", b =>
+                {
+                    b.Property<string>("PlanId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PlanName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("PlanId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("TravelPlan", (string)null);
                 });
 
             modelBuilder.Entity("travel_api.Models.Utils.Photo", b =>
@@ -614,7 +658,7 @@ namespace travel_api.Migrations
 
                     b.HasKey("PhotoId");
 
-                    b.ToTable("Photo");
+                    b.ToTable("Photo", (string)null);
                 });
 
             modelBuilder.Entity("travel_api.Models.EF.User", b =>
@@ -796,6 +840,24 @@ namespace travel_api.Migrations
                     b.Navigation("Message");
                 });
 
+            modelBuilder.Entity("travel_api.Models.EF.PlanDetail", b =>
+                {
+                    b.HasOne("travel_api.Models.EF.Location", "Location")
+                        .WithMany("PlanDetails")
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("travel_api.Models.EF.TravelPlan", "TravelPlan")
+                        .WithMany("PlanDetails")
+                        .HasForeignKey("PlanId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("Location");
+
+                    b.Navigation("TravelPlan");
+                });
+
             modelBuilder.Entity("travel_api.Models.EF.Post", b =>
                 {
                     b.HasOne("travel_api.Models.EF.Location", "Location")
@@ -837,6 +899,16 @@ namespace travel_api.Migrations
                     b.Navigation("Room");
                 });
 
+            modelBuilder.Entity("travel_api.Models.EF.TravelPlan", b =>
+                {
+                    b.HasOne("travel_api.Models.EF.User", "User")
+                        .WithMany("TravelPlans")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("travel_api.Models.EF.ChatRoom", b =>
                 {
                     b.Navigation("Messages");
@@ -865,6 +937,8 @@ namespace travel_api.Migrations
 
                     b.Navigation("LocationMedias");
 
+                    b.Navigation("PlanDetails");
+
                     b.Navigation("Posts");
                 });
 
@@ -880,6 +954,11 @@ namespace travel_api.Migrations
                     b.Navigation("PostMedias");
                 });
 
+            modelBuilder.Entity("travel_api.Models.EF.TravelPlan", b =>
+                {
+                    b.Navigation("PlanDetails");
+                });
+
             modelBuilder.Entity("travel_api.Models.EF.User", b =>
                 {
                     b.Navigation("Comments");
@@ -887,6 +966,8 @@ namespace travel_api.Migrations
                     b.Navigation("Feedbacks");
 
                     b.Navigation("Posts");
+
+                    b.Navigation("TravelPlans");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
+using travel_api.Hubs;
 using travel_api.Repositories.Basics;
 using travel_api.ViewModels.Responses.EFViewModel;
 
@@ -9,10 +11,12 @@ namespace travel_api.Controllers
     public class ChatController : ControllerBase
     {
         private readonly IChatRepo _service;
+        private readonly IHubContext<ChatHub> _hub;
 
-        public ChatController(IChatRepo service)
+        public ChatController(IChatRepo service, IHubContext<ChatHub> hub)
         {
             _service = service;
+            _hub = hub;
         }
 
         [HttpGet("get-conversations")]
@@ -36,7 +40,16 @@ namespace travel_api.Controllers
         [HttpPost("send-message")]
         public async Task<IActionResult> SendMessage(MessageVM vm)
         {
-            return Ok(await _service.SendMessage(vm));
+            var result = await _service.SendMessage(vm);
+            await _hub.Clients.All.SendAsync("ReceiveMessage", result);
+
+            return Ok(result);
+        }
+
+        [HttpPost("new-room")]
+        public async Task<IActionResult> NewRoom(ChatRoomVM vm)
+        {
+            return Ok(await _service.CreateNewRoom(vm));
         }
     }
 }

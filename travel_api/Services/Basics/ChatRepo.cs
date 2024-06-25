@@ -70,5 +70,63 @@ namespace travel_api.Services.Basics
 
             return message;
         }
+
+        public async Task<ChatRoom> CreateNewRoom(ChatRoomVM vm)
+        {
+            var room = new ChatRoom()
+            {
+                RoomName = GetRoomName(vm)
+            };
+
+            _context.ChatRooms.Add(room);
+            await _context.SaveChangesAsync();
+
+            if (vm.Users != null)
+            {
+                foreach (var u in vm.Users)
+                {
+                    _context.RoomDetails.Add(new RoomDetail
+                    {
+                        RoomId = room.RoomId,
+                        UserId = u.Id!
+                    });
+                }
+
+                await _context.SaveChangesAsync();
+            }
+
+            return room;
+        }
+
+        public string GetRoomName(ChatRoomVM vm)
+        {
+            if (vm.Users != null && vm.Users.Count == 2)
+            {
+                return "";
+            }
+
+            if (vm.Users != null && vm.Users.Count > 2)
+            {
+                if (!string.IsNullOrEmpty(vm.RoomName))
+                {
+                    return vm.RoomName;
+                }
+
+                string roomName = vm.Users.ElementAt(0).UserName!;
+                for (int i = 1; i < 3; i++)
+                {
+                    roomName += ", " + vm.Users.ElementAt(i).UserName;
+                }
+
+                if (vm.Users.Count > 3)
+                {
+                    roomName += $" + {vm.Users.Count - 1}";
+                }
+
+                return roomName;
+            }
+
+            return "";
+        }
     }
 }

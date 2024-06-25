@@ -9,5 +9,6 @@ namespace travel_api.Repositories.Basics
         Task<LocationVM> GetLocationByIdAsync(int locationId);
         Task<IEnumerable<LocationVM>> GetTop10LocationByRatingAsync();
         Task<IEnumerable<PlaceResponse<object>>> GetLocationOrCityBySearchAsync(string searchString);
+        Task<IEnumerable<LocationVM>> GetLocationsByCity(int cityId);
     }
 }

@@ -51,6 +51,9 @@ namespace travel_api.Helpers
             CreateMap<CommentMedia, CommentMediaBaseVM>().ReverseMap();
             CreateMap<CommentMedia, CommentMediaVM>().ReverseMap();
 
+            CreateMap<Message, MessageVM>().ReverseMap();
+            CreateMap<MessageMedia, MessageMediaVM>().ReverseMap();
+
             // utils
             CreateMap<Photo, PhotoVM>().ReverseMap();
         }

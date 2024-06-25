@@ -1,6 +1,4 @@
-﻿using travel_api.ViewModels.Requests.EFRequest;
-
-namespace travel_api.ViewModels.Responses.EFViewModel
+﻿namespace travel_api.ViewModels.Responses.EFViewModel
 {
     public class LocationBaseVM
     {

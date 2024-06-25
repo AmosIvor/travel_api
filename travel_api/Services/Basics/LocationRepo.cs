@@ -118,6 +118,16 @@ namespace travel_api.Services.Basics
             return cityResults.Concat(locationResults);
         }
 
+        public async Task<IEnumerable<LocationVM>> GetLocationsByCity(int cityId)
+        {
+            var locations = await _context.Locations
+                .Where(l => l.CityId == cityId)
+                .ToListAsync();
+                var locationsMap = _mapper.Map<IEnumerable<LocationVM>>(locations);
+
+            return locationsMap;
+        }
+        
         public async Task<IEnumerable<LocationVM>> GetLocationsAsync()
         {
             var locations = await _context.Locations.OrderByDescending(l => l.LocationRateAverage)

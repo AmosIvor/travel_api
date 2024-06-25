@@ -26,6 +26,10 @@ namespace travel_api.Repositories
         public DbSet<FeedbackMedia> FeedbackMedias { get; set; }
         public DbSet<CommentMedia> CommentMedias { get; set; }
         public DbSet<LocationMedia> LocationMedias { get; set; }
+        public DbSet<ChatRoom> ChatRooms { get; set; }
+        public DbSet<RoomDetail> RoomDetails { get; set; }
+        public DbSet<Message> Messages { get; set; }
+        public DbSet<MessageMedia> MessageMedias { get; set; }
 
         // Utils
         public DbSet<Photo> Photos { get; set; }
@@ -124,6 +128,27 @@ namespace travel_api.Repositories
                 .HasOne(l => l.City)
                 .WithMany(c => c.Locations)
                 .HasForeignKey(l => l.CityId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            // ChatRoom - RoomDetail
+            modelBuilder.Entity<RoomDetail>()
+                .HasOne(l => l.Room)
+                .WithMany(r => r.RoomDetails)
+                .HasForeignKey(r => r.RoomId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            // Messages - Room
+            modelBuilder.Entity<Message>()
+                .HasOne(m => m.Room)
+                .WithMany(r => r.Messages)
+                .HasForeignKey(m => m.RoomId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            // Message - MessageMedia
+            modelBuilder.Entity<MessageMedia>()
+                .HasOne(me => me.Message)
+                .WithMany(m => m.MessageMedias)
+                .HasForeignKey(me => me.MessageId)
                 .OnDelete(DeleteBehavior.NoAction);
         }
     }

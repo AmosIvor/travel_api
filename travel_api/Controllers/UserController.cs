@@ -1,12 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using travel_api.Repositories.Basics;
 using travel_api.Repositories.Utils;
+using travel_api.ViewModels.Requests.MediaRequest;
 using travel_api.ViewModels.Responses.EFViewModel;
-using travel_api.ViewModels.Responses.UtilViewModel;
 using travel_api.ViewModels.Responses.ResultResponseViewModel;
+using travel_api.ViewModels.Responses.UtilViewModel;
 
 namespace travel_api.Controllers
 {
@@ -48,7 +47,7 @@ namespace travel_api.Controllers
         }
 
         [HttpPost("photo")]
-        public async Task<IActionResult> CreatePhoto(IFormFile file)
+        public async Task<IActionResult> CreatePhoto(FileRequest file)
         {
             try
             {
@@ -72,7 +71,7 @@ namespace travel_api.Controllers
         }
 
         [HttpPost("photos")]
-        public async Task<IActionResult> CreatePhotos(ICollection<IFormFile> files)
+        public async Task<IActionResult> CreatePhotos(ICollection<FileRequest> files)
         {
             try
             {

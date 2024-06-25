@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using travel_api.Repositories;
 
@@ -11,9 +12,10 @@ using travel_api.Repositories;
 namespace travel_api.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240623142912_AddChatFeature")]
+    partial class AddChatFeature
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -235,6 +237,7 @@ namespace travel_api.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RoomId"), 1L, 1);
 
                     b.Property<string>("RoomName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("RoomId");
@@ -257,9 +260,6 @@ namespace travel_api.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("CityUrl")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("CityId");
 
@@ -408,12 +408,12 @@ namespace travel_api.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("LocationLatitude")
-                        .HasPrecision(8, 6)
-                        .HasColumnType("decimal(8,6)");
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("LocationLongtitude")
-                        .HasPrecision(9, 6)
-                        .HasColumnType("decimal(9,6)");
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("LocationName")
                         .IsRequired()
@@ -467,9 +467,11 @@ namespace travel_api.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MessageId"), 1L, 1);
 
                     b.Property<string>("Content")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MessageType")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("RoomId")
@@ -477,13 +479,9 @@ namespace travel_api.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("MessageId");
-
-                    b.HasIndex("RoomId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Message");
                 });
@@ -507,8 +505,6 @@ namespace travel_api.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("MessageId");
 
                     b.ToTable("MessageMedia");
                 });
@@ -588,8 +584,6 @@ namespace travel_api.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("RoomId");
 
                     b.ToTable("RoomDetail");
                 });
@@ -766,36 +760,6 @@ namespace travel_api.Migrations
                     b.Navigation("Location");
                 });
 
-            modelBuilder.Entity("travel_api.Models.EF.Message", b =>
-                {
-                    b.HasOne("travel_api.Models.EF.ChatRoom", "Room")
-                        .WithMany("Messages")
-                        .HasForeignKey("RoomId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("travel_api.Models.EF.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Room");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("travel_api.Models.EF.MessageMedia", b =>
-                {
-                    b.HasOne("travel_api.Models.EF.Message", "Message")
-                        .WithMany("MessageMedias")
-                        .HasForeignKey("MessageId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Message");
-                });
-
             modelBuilder.Entity("travel_api.Models.EF.Post", b =>
                 {
                     b.HasOne("travel_api.Models.EF.Location", "Location")
@@ -826,24 +790,6 @@ namespace travel_api.Migrations
                     b.Navigation("Post");
                 });
 
-            modelBuilder.Entity("travel_api.Models.EF.RoomDetail", b =>
-                {
-                    b.HasOne("travel_api.Models.EF.ChatRoom", "Room")
-                        .WithMany("RoomDetails")
-                        .HasForeignKey("RoomId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Room");
-                });
-
-            modelBuilder.Entity("travel_api.Models.EF.ChatRoom", b =>
-                {
-                    b.Navigation("Messages");
-
-                    b.Navigation("RoomDetails");
-                });
-
             modelBuilder.Entity("travel_api.Models.EF.City", b =>
                 {
                     b.Navigation("Locations");
@@ -866,11 +812,6 @@ namespace travel_api.Migrations
                     b.Navigation("LocationMedias");
 
                     b.Navigation("Posts");
-                });
-
-            modelBuilder.Entity("travel_api.Models.EF.Message", b =>
-                {
-                    b.Navigation("MessageMedias");
                 });
 
             modelBuilder.Entity("travel_api.Models.EF.Post", b =>

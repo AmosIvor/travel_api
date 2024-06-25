@@ -15,5 +15,9 @@
         public decimal LocationLatitude { get; set; }
 
         public decimal? LocationRateAverage { get; set; }
+
+        public string? LocationDescription { get; set; }
+
+        public int CityId { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using travel_api.Exceptions;
+using travel_api.Helpers;
 using travel_api.Repositories;
 using travel_api.Repositories.Basics;
 using travel_api.ViewModels.Responses.EFViewModel;
@@ -23,6 +24,7 @@ namespace travel_api.Services.Basics
             var location = await _context.Locations.Include(l => l.Feedbacks)
                                                    .Include(l => l.Posts)
                                                    .Include(l => l.LocationMedias)
+                                                   .Include(l => l.City)
                                                    .SingleOrDefaultAsync(l => l.LocationId == locationId);
 
             if (location == null)
@@ -71,28 +73,32 @@ namespace travel_api.Services.Basics
                 return Enumerable.Empty<PlaceResponse<object>>();
             }
 
-            searchString = searchString.Trim().ToLower();
+            searchString = AppUtils.RemoveDiacritics(searchString.Trim().ToLower());
 
-            var cityResults = await _context.Cities
-            .Where(c => c.CityName.ToLower().Contains(searchString))
+            var cities = await _context.Cities.ToListAsync();
+
+            var cityResults = cities
+            .Where(c => AppUtils.RemoveDiacritics(c.CityName.ToLower()).Contains(searchString))
             .Select(c => new PlaceResponse<object>
             {
                 Result = new CityBaseVM
                 {
                     CityId = c.CityId,
                     CityName = c.CityName,
-                    CityDescription = c.CityDescription
+                    CityDescription = c.CityDescription,
+                    CityUrl = c.CityUrl
                 },
                 IsCity = true,
                 IsLocation = false
-            })
-            .ToListAsync();
+            });
 
-            var locationResults = await _context.Locations
-            .Where(l => l.LocationName.ToLower().Contains(searchString))
+            var locations = await _context.Locations.Include(x => x.City).ToListAsync();
+
+            var locationResults = locations
+            .Where(l => AppUtils.RemoveDiacritics(l.LocationName.ToLower()).Contains(searchString))
             .Select(l => new PlaceResponse<object>
             {
-                Result = new LocationBaseVM
+                Result = new LocationBaseWithCityVM
                 {
                     LocationId = l.LocationId,
                     LocationName = l.LocationName,
@@ -101,12 +107,13 @@ namespace travel_api.Services.Basics
                     LocationLongtitude = l.LocationLongtitude,
                     LocationLatitude = l.LocationLatitude,
                     LocationRateAverage = l.LocationRateAverage,
+                    LocationDescription = l.LocationDescription,
                     CityId = l.CityId,
+                    CityName = l.City.CityName,
                 },
                 IsCity = false,
                 IsLocation = true
-            })
-            .ToListAsync();
+            });
 
             return cityResults.Concat(locationResults);
         }
@@ -116,6 +123,17 @@ namespace travel_api.Services.Basics
             var locations = await _context.Locations
                 .Where(l => l.CityId == cityId)
                 .ToListAsync();
+                var locationsMap = _mapper.Map<IEnumerable<LocationVM>>(locations);
+
+            return locationsMap;
+        }
+        
+        public async Task<IEnumerable<LocationVM>> GetLocationsAsync()
+        {
+            var locations = await _context.Locations.OrderByDescending(l => l.LocationRateAverage)
+                                                    .Include(l => l.LocationMedias)
+                                                    .Include(l => l.City)
+                                                    .ToListAsync();
 
             var locationsMap = _mapper.Map<IEnumerable<LocationVM>>(locations);
 
@@ -127,6 +145,7 @@ namespace travel_api.Services.Basics
             var top10Location = await _context.Locations
                                     .OrderByDescending(l => l.LocationRateAverage)
                                     .Include(l => l.LocationMedias)
+                                    .Include(l => l.City)
                                     .Take(10)
                                     .ToListAsync();
 

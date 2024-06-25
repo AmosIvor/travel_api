@@ -7,6 +7,8 @@
         public string CityName { get; set; }
 
         public string? CityDescription { get; set; }
+
+        public string? CityUrl { get; set; }
     }
 
     public class CityVM : CityBaseVM

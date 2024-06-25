@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Text;
 using travel_api.Repositories;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace travel_api.Helpers
 {
@@ -56,6 +57,23 @@ namespace travel_api.Helpers
             }
 
             return ID + numeric;
+        }
+
+        public static string RemoveDiacritics(string text)
+        {
+            var normalizedString = text.Normalize(NormalizationForm.FormD);
+            var stringBuilder = new System.Text.StringBuilder();
+
+            foreach (var c in normalizedString)
+            {
+                var unicodeCategory = CharUnicodeInfo.GetUnicodeCategory(c);
+                if (unicodeCategory != UnicodeCategory.NonSpacingMark)
+                {
+                    stringBuilder.Append(c);
+                }
+            }
+
+            return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
         }
     }
 }

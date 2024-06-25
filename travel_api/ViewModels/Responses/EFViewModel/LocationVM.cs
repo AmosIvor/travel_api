@@ -33,4 +33,9 @@
 
         public CityBaseVM City { get; set; }
     }
+
+    public class LocationBaseWithCityVM : LocationBaseVM
+    {
+        public string CityName { get; set; }
+    }
 }

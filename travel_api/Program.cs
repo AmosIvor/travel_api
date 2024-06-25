@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using travel_api.Hubs;
 using travel_api.Installers;
 using travel_api.Middleware;
 using travel_api.Models.EF;
@@ -58,12 +59,10 @@ builder.Services
         };
     });
 
-
+builder.Services.AddSignalR();
 
 // Build app
 var app = builder.Build();
-
-
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -79,6 +78,10 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHub<ChatHub>("/chathub");
+
+app.MapHub<NotificationHub>("/notificationhub");
 
 app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 

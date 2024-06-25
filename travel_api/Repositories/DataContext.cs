@@ -32,6 +32,7 @@ namespace travel_api.Repositories
         public DbSet<MessageMedia> MessageMedias { get; set; }
         public DbSet<TravelPlan> TravelPlans { get; set; }
         public DbSet<PlanDetail> PlanDetails { get; set; }
+        public DbSet<Notification> Notifications { get; set; } 
 
         // Utils
         public DbSet<Photo> Photos { get; set; }

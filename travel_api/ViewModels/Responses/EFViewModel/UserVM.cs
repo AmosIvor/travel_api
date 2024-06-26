@@ -15,6 +15,10 @@
         public DateTime? DateBirth { get; set; }
 
         public string? Avatar { get; set; }
+
+        public string? UserDescription { get; set; }
+
+        public int CityId { get; set; }
     }
 
     public class UserVM : UserBaseVM
@@ -24,5 +28,7 @@
         public ICollection<FeedbackBaseVM>? Feedbacks { get; set; }
 
         public ICollection<CommentBaseVM>? Comments { get; set; }
+
+        public CityBaseVM? City { get; set; }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using travel_api.Exceptions;
 using travel_api.Repositories;
 using travel_api.Repositories.Basics;
+using travel_api.ViewModels.Requests.EFRequest;
 using travel_api.ViewModels.Responses.EFViewModel;
 
 namespace travel_api.Services.Basics
@@ -17,6 +19,20 @@ namespace travel_api.Services.Basics
             _mapper = mapper;
         }
 
+        public async Task<UserVM> GetUserByIdAsync(string userId)
+        {
+            var user = await _context.Users.FindAsync(userId);
+
+            if (user == null)
+            {
+                throw new NotFoundException("User not found");
+            }
+
+            var userMap = _mapper.Map<UserVM>(user);
+
+            return userMap;
+        }
+
         public async Task<ICollection<UserVM>> GetUsersAsync()
         {
             var users = await _context.Users.ToListAsync();
@@ -24,6 +40,28 @@ namespace travel_api.Services.Basics
             var usersVM = _mapper.Map<ICollection<UserVM>>(users);
 
             return usersVM;
+        }
+
+        public async Task<UserVM> UpdateUserAsync(UserUpdateRequest req)
+        {
+            var user = await _context.Users.FindAsync(req.UserId);
+
+            if (user == null)
+            {
+                throw new NotFoundException("User not found");
+            }
+
+            user.CityId = req.CityId;
+            user.UserDescription = req.UserDescription;
+            user.Avatar = req.Avatar;
+
+            _context.Update(user);
+
+            await _context.SaveChangesAsync();
+
+            var userMap = _mapper.Map<UserVM>(user);
+
+            return userMap;
         }
     }
 }

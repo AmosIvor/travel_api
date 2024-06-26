@@ -173,6 +173,13 @@ namespace travel_api.Repositories
                 .WithMany(l => l.PlanDetails)
                 .HasForeignKey(d => d.LocationId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            // User_City
+            modelBuilder.Entity<User>()
+                .HasOne(u => u.City)
+                .WithMany(c => c.Users)
+                .HasForeignKey(c => c.CityId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

@@ -115,5 +115,17 @@ namespace travel_api.Controllers
                 Data = listLocationVM
             });
         }
+
+        [HttpGet("{locationId}/feedbacks")]
+        public async Task<IActionResult> GetFeedbacksByLocation(int locationId)
+        {
+            var feedbacksByLocationVM = await _locationRepo.GetFeedbacksByLocationAsync(locationId);
+
+            return Ok(new SuccessResponseVM<IEnumerable<FeedbackVM>>()
+            {
+                Message = "Get list feedback by location successfully",
+                Data = feedbacksByLocationVM
+            });
+        }
     }
 }

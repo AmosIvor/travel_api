@@ -153,5 +153,19 @@ namespace travel_api.Services.Basics
 
             return top10LocationMap;
         }
+
+        public async Task<IEnumerable<FeedbackVM>> GetFeedbacksByLocationAsync(int locationId)
+        {
+            var feedbacksByLocation = await _context.Feedbacks
+                                                    .Where(x => x.LocationId == locationId)
+                                                    .OrderByDescending(x => x.FeedbackDate)
+                                                    .Include(x => x.FeedbackMedias)
+                                                    .AsNoTracking()
+                                                    .ToListAsync();
+
+            var feedbacksByLocationVM = _mapper.Map<IEnumerable<FeedbackVM>>(feedbacksByLocation);
+
+            return feedbacksByLocationVM;
+        }
     }
 }

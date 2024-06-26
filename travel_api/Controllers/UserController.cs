@@ -2,6 +2,7 @@
 using System.Net;
 using travel_api.Repositories.Basics;
 using travel_api.Repositories.Utils;
+using travel_api.ViewModels.Requests.EFRequest;
 using travel_api.ViewModels.Requests.MediaRequest;
 using travel_api.ViewModels.Responses.EFViewModel;
 using travel_api.ViewModels.Responses.ResultResponseViewModel;
@@ -44,6 +45,30 @@ namespace travel_api.Controllers
                     Title = e.Message
                 });
             }
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateUser(UserUpdateRequest req)
+        {
+            var userVM = await _userRepo.UpdateUserAsync(req);
+
+            return Ok(new SuccessResponseVM<UserVM>()
+            {
+                Message = "Update user successfully",
+                Data = userVM
+            });
+        }
+
+        [HttpGet("{userId}")]
+        public async Task<IActionResult> GetUserById(string userId)
+        {
+            var userVM = await _userRepo.GetUserByIdAsync(userId);
+
+            return Ok(new SuccessResponseVM<UserVM>()
+            {
+                Message = "Get user by id successfully",
+                Data = userVM
+            });
         }
 
         [HttpPost("photo")]

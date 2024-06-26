@@ -17,4 +17,9 @@
 
         public virtual ICollection<UserBaseVM>? Users { get; set; }
     }
+
+    public class CityHasQuantityFeedbackVM : CityBaseVM
+    {
+        public int FeedbackQuantity { get; set; }
+    }
 }

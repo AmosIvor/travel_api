@@ -25,6 +25,7 @@ namespace travel_api.Installers
             services.AddScoped<IChatRepo, ChatRepo>();
             services.AddScoped<ITravelPlanRepo, TravelPlanRepo>();
             services.AddScoped<INotificationRepo, NotificationRepo>();
+            services.AddScoped<ICityRepo, CityRepo>();
 
             // repo-utils
             services.AddScoped<IPhotoService, PhotoService>();

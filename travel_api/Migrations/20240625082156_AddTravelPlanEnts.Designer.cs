@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using travel_api.Repositories;
 
@@ -11,9 +12,10 @@ using travel_api.Repositories;
 namespace travel_api.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240625082156_AddTravelPlanEnts")]
+    partial class AddTravelPlanEnts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -513,36 +515,6 @@ namespace travel_api.Migrations
                     b.ToTable("MessageMedia");
                 });
 
-            modelBuilder.Entity("travel_api.Models.EF.Notification", b =>
-                {
-                    b.Property<string>("NotiId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("CreateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsRead")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("NotiContent")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NotiTitle")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Redirect")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("NotiId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Notification");
-                });
-
             modelBuilder.Entity("travel_api.Models.EF.PlanDetail", b =>
                 {
                     b.Property<int>("Id")
@@ -868,15 +840,6 @@ namespace travel_api.Migrations
                         .IsRequired();
 
                     b.Navigation("Message");
-                });
-
-            modelBuilder.Entity("travel_api.Models.EF.Notification", b =>
-                {
-                    b.HasOne("travel_api.Models.EF.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("travel_api.Models.EF.PlanDetail", b =>

@@ -4,23 +4,23 @@
 
 namespace travel_api.Migrations
 {
-    public partial class AddLocationDesc : Migration
+    public partial class AddIsReadNotiField : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "LocationDescription",
-                table: "Location",
-                type: "nvarchar(max)",
+            migrationBuilder.AddColumn<bool>(
+                name: "IsRead",
+                table: "Notification",
+                type: "bit",
                 nullable: false,
-                defaultValue: "");
+                defaultValue: false);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "LocationDescription",
-                table: "Location");
+                name: "IsRead",
+                table: "Notification");
         }
     }
 }

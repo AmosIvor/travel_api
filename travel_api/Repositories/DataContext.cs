@@ -30,6 +30,9 @@ namespace travel_api.Repositories
         public DbSet<RoomDetail> RoomDetails { get; set; }
         public DbSet<Message> Messages { get; set; }
         public DbSet<MessageMedia> MessageMedias { get; set; }
+        public DbSet<TravelPlan> TravelPlans { get; set; }
+        public DbSet<PlanDetail> PlanDetails { get; set; }
+        public DbSet<Notification> Notifications { get; set; } 
 
         // Utils
         public DbSet<Photo> Photos { get; set; }
@@ -149,6 +152,26 @@ namespace travel_api.Repositories
                 .HasOne(me => me.Message)
                 .WithMany(m => m.MessageMedias)
                 .HasForeignKey(me => me.MessageId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            // User - TravelPlan
+            modelBuilder.Entity<TravelPlan>()
+                .HasOne(t => t.User)
+                .WithMany(u => u.TravelPlans)
+                .HasForeignKey(t => t.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            // PlanDetail - Plan
+            modelBuilder.Entity<PlanDetail>()
+                .HasOne(d => d.TravelPlan)
+                .WithMany(t => t.PlanDetails)
+                .HasForeignKey(d => d.PlanId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<PlanDetail>()
+                .HasOne(d => d.Location)
+                .WithMany(l => l.PlanDetails)
+                .HasForeignKey(d => d.LocationId)
                 .OnDelete(DeleteBehavior.NoAction);
         }
     }

@@ -160,6 +160,8 @@ namespace travel_api.Services.Basics
                                                     .Where(x => x.LocationId == locationId)
                                                     .OrderByDescending(x => x.FeedbackDate)
                                                     .Include(x => x.FeedbackMedias)
+                                                    .Include(x => x.User)
+                                                    .Include(x => x.Location)
                                                     .AsNoTracking()
                                                     .ToListAsync();
 

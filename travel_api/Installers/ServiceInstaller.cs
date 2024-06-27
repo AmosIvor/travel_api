@@ -29,6 +29,9 @@ namespace travel_api.Installers
             // repo-utils
             services.AddScoped<IPhotoService, PhotoService>();
 
+            // singleton
+            services.AddSingleton<Web3Service>();
+
             // custome base
             services.AddScoped(typeof(IBaseRepo<,,,>), typeof(BaseRepo<,,,>));
         }

@@ -5,6 +5,7 @@ using travel_api.Exceptions;
 using travel_api.Helpers;
 using travel_api.Repositories;
 using travel_api.Repositories.Basics;
+using travel_api.Services.Utils;
 using travel_api.ViewModels.Responses.EFViewModel;
 
 namespace travel_api.Services.Basics
@@ -13,10 +14,13 @@ namespace travel_api.Services.Basics
     {
         private readonly DataContext _context;
         private readonly IMapper _mapper;
-        public FeedbackRepo(DataContext context, IMapper mapper)
+        private readonly Web3Service _chain;
+
+        public FeedbackRepo(DataContext context, IMapper mapper, Web3Service chain)
         {
             _context = context;
             _mapper = mapper;
+            _chain = chain;
         }
 
         public async Task<IEnumerable<FeedbackVM>> GetAllFeedbacksAsync()
@@ -94,6 +98,17 @@ namespace travel_api.Services.Basics
             var listFeedbackMapping = _mapper.Map<IEnumerable<FeedbackVM>>(listFeedbackFilter);
 
             return listFeedbackMapping;
+        }
+
+        public async Task AddFeedback(int fbId, int score, string userId, string comment)
+        {
+            await _chain.SubmitAFeedback(fbId, score, userId, comment);
+        }
+
+        public async Task<object> ReadChain()
+        {
+            var feedbacks = await _chain.GetFeedbacks();
+            return feedbacks;
         }
     }
 }

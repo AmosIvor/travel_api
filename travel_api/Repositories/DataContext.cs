@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using travel_api.Models.EF;
 using travel_api.Models.Utils;
+using travel_api.Models.BlockChain;
 
 namespace travel_api.Repositories
 {

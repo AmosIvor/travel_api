@@ -92,27 +92,34 @@ namespace travel_api.Services.Basics
                 IsLocation = false
             });
 
-            var locations = await _context.Locations.Include(x => x.City).ToListAsync();
+            var locations = await _context.Locations.Include(x => x.LocationMedias)
+                                                    .Include(x => x.City)
+                                                    .ToListAsync();
 
             var locationResults = locations
             .Where(l => AppUtils.RemoveDiacritics(l.LocationName.ToLower()).Contains(searchString))
-            .Select(l => new PlaceResponse<object>
+            .Select(l =>
             {
-                Result = new LocationBaseWithCityVM
+                var locationMedias = _mapper.Map<ICollection<LocationMediaBaseVM>>(l.LocationMedias);
+                return new PlaceResponse<object>
                 {
-                    LocationId = l.LocationId,
-                    LocationName = l.LocationName,
-                    LocationAddress = l.LocationAddress,
-                    LocationOpenTime = l.LocationOpenTime,
-                    LocationLongtitude = l.LocationLongtitude,
-                    LocationLatitude = l.LocationLatitude,
-                    LocationRateAverage = l.LocationRateAverage,
-                    LocationDescription = l.LocationDescription,
-                    CityId = l.CityId,
-                    CityName = l.City.CityName,
-                },
-                IsCity = false,
-                IsLocation = true
+                    Result = new LocationBaseWithCityVM
+                    {
+                        LocationId = l.LocationId,
+                        LocationName = l.LocationName,
+                        LocationAddress = l.LocationAddress,
+                        LocationOpenTime = l.LocationOpenTime,
+                        LocationLongtitude = l.LocationLongtitude,
+                        LocationLatitude = l.LocationLatitude,
+                        LocationRateAverage = l.LocationRateAverage,
+                        LocationDescription = l.LocationDescription,
+                        CityId = l.CityId,
+                        CityName = l.City.CityName,
+                        LocationMedias = locationMedias
+                    },
+                    IsCity = false,
+                    IsLocation = true
+                };
             });
 
             return cityResults.Concat(locationResults);

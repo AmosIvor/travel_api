@@ -37,5 +37,7 @@
     public class LocationBaseWithCityVM : LocationBaseVM
     {
         public string CityName { get; set; }
+
+        public ICollection<LocationMediaBaseVM>? LocationMedias { get; set; }
     }
 }

@@ -698,7 +698,8 @@ namespace travel_api.Migrations
                     b.Property<string>("Avatar")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CityId")
+                    b.Property<int?>("CityId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("DateBirth")

@@ -22,7 +22,7 @@ namespace travel_api.Models.EF
 
         public virtual ICollection<TravelPlan> TravelPlans { get; set; }
 
-        public int CityId { get; set; }
+        public int? CityId { get; set; }
 
         [ForeignKey("CityId")]
         public virtual City City { get; set; }

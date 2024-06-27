@@ -24,5 +24,7 @@
         public ICollection<PostMediaBaseVM>? PostMedias { get; set; }
 
         public ICollection<CommentBaseVM>? Comments { get; set; }
+
+        public int CommentQuantity { get; set; }
     }
 }

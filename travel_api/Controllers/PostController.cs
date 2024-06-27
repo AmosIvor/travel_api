@@ -103,5 +103,17 @@ namespace travel_api.Controllers
                 Data = postVMResult
             });
         }
+
+        [HttpGet("top-10-post")]
+        public async Task<IActionResult> GetTop10PostWithHighestQuantityComment()
+        {
+            var postVMResult = await _postRepo.GetTop10PostWithHighestQuantityCommentAsync();
+
+            return Ok(new SuccessResponseVM<IEnumerable<PostVM>>()
+            {
+                Message = "Delete post successfully",
+                Data = postVMResult
+            });
+        }
     }
 }

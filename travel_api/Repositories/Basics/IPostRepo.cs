@@ -8,5 +8,6 @@ namespace travel_api.Repositories.Basics
         Task<IEnumerable<PostVM>> GetListPostsByUserIdAsync(string userId);
         Task<PostVM> GetPostByIdAsync(int postId);
         Task<IEnumerable<PostVM>> GetPostByContentAsync(string content);
+        Task<IEnumerable<PostVM>> GetTop10PostWithHighestQuantityCommentAsync();
     }
 }

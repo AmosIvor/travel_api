@@ -86,5 +86,41 @@ namespace travel_api.Services.Basics
 
             return postVM;
         }
+
+        public async Task<IEnumerable<PostVM>> GetTop10PostWithHighestQuantityCommentAsync()
+        {
+            var top10Post = await _context.Posts.OrderByDescending(x => x.Comments.Count)
+                                                .Include(x => x.PostMedias)
+                                                .Include(x => x.Comments)
+                                                .Include(x => x.User)
+                                                .Include(x => x.Location)
+                                                .Take(10)
+                                                .AsNoTracking()
+                                                .ToListAsync();
+
+            var top10PostResult = top10Post.Select(p =>
+            {
+                var postMedias = _mapper.Map<ICollection<PostMediaBaseVM>>(p.PostMedias);
+                var user = _mapper.Map<UserBaseVM>(p.User);
+                var location = _mapper.Map<LocationBaseVM>(p.Location);
+                return new PostVM
+                {
+                    PostId = p.PostId,
+                    PostDate = p.PostDate,
+                    PostTotalLike = p.PostTotalLike,
+                    PostContent = p.PostContent,
+                    PostMedias = postMedias,
+                    LocationId = p.LocationId,
+                    Location = location,
+                    UserId = p.UserId,
+                    User = user,
+                    CommentQuantity = p.Comments.Count
+                };
+            });
+
+            var top10PostVM = _mapper.Map<IEnumerable<PostVM>>(top10PostResult);
+
+            return top10PostVM;
+        }
     }
 }

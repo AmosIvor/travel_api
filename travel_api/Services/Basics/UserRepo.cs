@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using travel_api.Exceptions;
+using travel_api.Models.EF;
 using travel_api.Repositories;
 using travel_api.Repositories.Basics;
 using travel_api.ViewModels.Requests.EFRequest;
@@ -51,7 +52,16 @@ namespace travel_api.Services.Basics
                 throw new NotFoundException("User not found");
             }
 
-            user.CityId = req.CityId;
+            if (req.CityId != null)
+            {
+                user.CityId = req.CityId;
+                var city = await _context.Cities.FindAsync(req.CityId);
+                
+                if (city != null)
+                {
+                    user.City = city;
+                }
+            }
             user.UserDescription = req.UserDescription;
             user.Avatar = req.Avatar;
 

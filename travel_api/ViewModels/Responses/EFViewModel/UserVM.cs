@@ -18,7 +18,7 @@
 
         public string? UserDescription { get; set; }
 
-        public int CityId { get; set; }
+        public int? CityId { get; set; }
     }
 
     public class UserVM : UserBaseVM

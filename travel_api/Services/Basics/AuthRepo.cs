@@ -41,6 +41,17 @@ namespace travel_api.Services.Basics
                 throw new ArgumentNullException("User not found");
             }
 
+            // add city
+            if (user.CityId != null)
+            {
+                var city = await _context.Cities.FindAsync(user.CityId);
+
+                if (city != null)
+                {
+                    user.City = city;
+                }
+            }
+
             //check password
 
             var passwordValid = await _userManager.CheckPasswordAsync(user, userLogin.Password);
@@ -75,7 +86,12 @@ namespace travel_api.Services.Basics
                 {
                     Id = user.Id,
                     UserName = user.UserName,
-                    Email = user.Email
+                    Email = user.Email,
+                    UserDescription = user.UserDescription,
+                    Male = user.Male,
+                    CityId = user.CityId,
+                    City = _mapper.Map<CityBaseVM>(user.City),
+                    Avatar = user.Avatar
                 }
             };
 

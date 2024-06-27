@@ -12,12 +12,13 @@ namespace travel_api.Controllers
     [ApiController]
     public class FeedbackController : ControllerBase
     {
-        private readonly IBaseRepo<Feedback, FeedbackVM, FeedbackRequest, int> _baseRepo;
         private readonly IFeedbackRepo _feedbackRepo;
+        private readonly IBaseRepo<Feedback, FeedbackVM, FeedbackRequest, int> _baseRepo;
+
         public FeedbackController(IBaseRepo<Feedback, FeedbackVM, FeedbackRequest, int> baseRepo, IFeedbackRepo feedbackRepo)
         {
-            _baseRepo = baseRepo;
             _feedbackRepo = feedbackRepo;
+            _baseRepo = baseRepo;
         }
 
         [HttpGet]
@@ -56,7 +57,7 @@ namespace travel_api.Controllers
             });
         }
 
-        [HttpPost]
+        [HttpPost("add-to-db")]
         public async Task<IActionResult> CreateFeedback(FeedbackRequest feedbackVM)
         {
             var feedbackVMResult = await _baseRepo.AddAsync(feedbackVM);
@@ -66,6 +67,13 @@ namespace travel_api.Controllers
                 Message = "Create new feedback successfully",
                 Data = feedbackVMResult
             });
+        }
+
+        [HttpPost("add-to-block")]
+        public async Task<IActionResult> AddToBlock(int fbId, int score, string userId, string comment)
+        {
+            await _feedbackRepo.AddFeedback(fbId, score, userId, comment);
+            return Ok();
         }
 
         [HttpPut]
@@ -102,6 +110,12 @@ namespace travel_api.Controllers
                 Message = "Get feedbacks by filter successfully",
                 Data = listFeedbackByFilterVM
             });
+        }
+
+        [HttpGet("read-chain")]
+        public async Task<IActionResult> ReadChain()
+        {
+            return Ok(await _feedbackRepo.ReadChain());
         }
     }
 }

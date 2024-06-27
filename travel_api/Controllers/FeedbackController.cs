@@ -92,10 +92,10 @@ namespace travel_api.Controllers
             });
         }
 
-        [HttpGet("filter")]
-        public async Task<IActionResult> GetFeedbacksByFilter([FromQuery] decimal rating = 5, [FromQuery] int timeFeedbackType = 0, [FromQuery] int tripType = 0)
+        [HttpGet("filter/{locationId}")]
+        public async Task<IActionResult> GetFeedbacksByFilter(int locationId, [FromQuery] decimal rating = 5, [FromQuery] int timeFeedbackType = 0, [FromQuery] int tripType = 0)
         {
-            var listFeedbackByFilterVM = await _feedbackRepo.GetFeedbacksByFilterAsync(rating, timeFeedbackType, tripType);
+            var listFeedbackByFilterVM = await _feedbackRepo.GetFeedbacksByFilterAsync(locationId, rating, timeFeedbackType, tripType);
 
             return Ok(new SuccessResponseVM<IEnumerable<FeedbackVM>>()
             {

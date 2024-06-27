@@ -38,6 +38,7 @@ namespace travel_api.Services.Basics
             var feedbacks = await _context.Feedbacks
                                     .Include(p => p.Location)
                                     .Include(p => p.FeedbackMedias)
+                                    .Include(p => p.User)
                                     .Where(p => p.UserId == userId)
                                     .OrderByDescending(p => p.FeedbackDate)
                                     .ToListAsync();
@@ -67,17 +68,18 @@ namespace travel_api.Services.Basics
             return feedbackVM;
         }
 
-        public async Task<IEnumerable<FeedbackVM>> GetFeedbacksByFilterAsync(decimal rating = 5, 
+        public async Task<IEnumerable<FeedbackVM>> GetFeedbacksByFilterAsync(int locationId, decimal rating = 5, 
             int timeFeedbackType = 0, int tripType = 0)
         {
             EnumFilterDateFeedback timeFilter = (EnumFilterDateFeedback)timeFeedbackType;
 
             DateTime startFilterDate = FeedbackFilterHelper.GetStartDateTimeFeedbackFilter(timeFilter);
 
-            var listFeedbackFilter = await _context.Feedbacks.OrderByDescending(f => f.FeedbackDate)
+            var listFeedbackFilter = await _context.Feedbacks.Where(x => x.LocationId == locationId)
+                                                             .OrderByDescending(f => f.FeedbackDate)
                                                              .Include(f => f.FeedbackMedias)
-                                                             .Include(f => f.Location)
                                                              .Include(f => f.User)
+                                                             .AsNoTracking()
                                                              .ToListAsync();
 
             // fitler

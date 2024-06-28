@@ -103,5 +103,17 @@ namespace travel_api.Controllers
                 Data = listFeedbackByFilterVM
             });
         }
+
+        [HttpGet("{userId}/{cityId}/feedbacks")]
+        public async Task<IActionResult> GetFeedbackByUserIdAndCityId(string userId, int cityId)
+        {
+            var listFeedbackVM = await _feedbackRepo.GetFeedbacksByUserIdAndCityIdAsync(userId, cityId);
+
+            return Ok(new SuccessResponseVM<IEnumerable<FeedbackVM>>()
+            {
+                Message = "Get feedbacks by user and city successfully",
+                Data = listFeedbackVM
+            });
+        }
     }
 }

@@ -25,6 +25,7 @@ namespace travel_api.Services.Basics
                               .Include(p => p.Comments)
                               .Include(p => p.User)
                               .OrderByDescending(p => p.PostDate)
+                              .AsNoTracking()
                               .ToListAsync();
 
             var postsVM = _mapper.Map<IEnumerable<PostVM>>(posts);
@@ -40,6 +41,7 @@ namespace travel_api.Services.Basics
                                     .Include(p => p.Comments)
                                     .Where(p => p.UserId == userId)
                                     .OrderByDescending(p => p.PostDate)
+                                    .AsNoTracking()
                                     .ToListAsync();
 
             // mapper
@@ -55,6 +57,7 @@ namespace travel_api.Services.Basics
                 .Include(p => p.PostMedias)
                 .Include(p => p.Comments)
                 .Where(p => p.PostContent.Contains(content))
+                .AsNoTracking()
                 .ToListAsync();
 
             if (post == null)
@@ -75,6 +78,7 @@ namespace travel_api.Services.Basics
                                     .Include(p => p.PostMedias)
                                     .Include(p => p.Comments)
                                     .Include(p => p.User)
+                                    .AsNoTracking()
                                     .SingleOrDefaultAsync(p => p.PostId == postId);
 
             if (post == null)
@@ -85,6 +89,22 @@ namespace travel_api.Services.Basics
             var postVM = _mapper.Map<PostVM>(post);
 
             return postVM;
+        }
+
+        public async Task<IEnumerable<PostVM>> GetPostsByCityIdAsync(int cityId)
+        {
+            var postsByCity = await _context.Posts.Where(x => x.Location.CityId == cityId)
+                                                .OrderByDescending(x => x.PostDate)
+                                                .Include(x => x.PostMedias)
+                                                .Include(x => x.Comments)
+                                                .Include(x => x.User)
+                                                .Include(x => x.Location)
+                                                .AsNoTracking()
+                                                .ToListAsync();
+
+            var postsByCityMap = _mapper.Map<IEnumerable<PostVM>>(postsByCity);
+
+            return postsByCityMap;
         }
 
         public async Task<IEnumerable<PostVM>> GetTop10PostWithHighestQuantityCommentAsync()

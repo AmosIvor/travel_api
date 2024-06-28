@@ -128,7 +128,8 @@ namespace travel_api.Services.Basics
                 // custom field
                 Male = true,
                 DateBirth = DateTime.MinValue,
-                Avatar = AppConstant.Avatar
+                Avatar = AppConstant.Avatar,
+                CityId = userRegister.CityId
             };
 
             var result = await _userManager.CreateAsync(user, userRegister.Password);

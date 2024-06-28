@@ -14,5 +14,6 @@ namespace travel_api.Models.Auths
         [DataType(DataType.Password), Required(ErrorMessage = "Password is required!")]
         public string? Password { get; set; }
         public string? Phone { get; set; }
+        public int? CityId { get; set; }
     }
 }

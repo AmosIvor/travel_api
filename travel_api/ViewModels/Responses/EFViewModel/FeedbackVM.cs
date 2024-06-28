@@ -25,6 +25,6 @@
 
         public ICollection<FeedbackMediaBaseVM>? FeedbackMedias { get; set; }
 
-        public Dictionary<int, int>? RatingStatistics { get; set; }
+        //public Dictionary<int, int>? RatingStatistics { get; set; }
     }
 }

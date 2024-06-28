@@ -9,5 +9,6 @@ namespace travel_api.Repositories.Basics
         Task<FeedbackVM> GetFeedbackByIdAsync(int feedbackId);
         Task<IEnumerable<FeedbackVM>> GetFeedbacksByFilterAsync(int locationId, decimal rating = 5,
             int timeFeedbackType = 0, int tripType = 0);
+        Task<IEnumerable<FeedbackVM>> GetFeedbacksByUserIdAndCityIdAsync(string userId, int cityId);
     }
 }

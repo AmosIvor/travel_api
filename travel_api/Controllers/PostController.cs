@@ -93,7 +93,7 @@ namespace travel_api.Controllers
         }
 
         [HttpDelete("{postId}")]
-        public async Task<IActionResult> UpdatePost(int postId)
+        public async Task<IActionResult> DeletePost(int postId)
         {
             var postVMResult = await _baseRepo.DeleteAsync(postId);
 
@@ -107,12 +107,24 @@ namespace travel_api.Controllers
         [HttpGet("top-10-post")]
         public async Task<IActionResult> GetTop10PostWithHighestQuantityComment()
         {
-            var postVMResult = await _postRepo.GetTop10PostWithHighestQuantityCommentAsync();
+            var postsVMResult = await _postRepo.GetTop10PostWithHighestQuantityCommentAsync();
 
             return Ok(new SuccessResponseVM<IEnumerable<PostVM>>()
             {
-                Message = "Delete post successfully",
-                Data = postVMResult
+                Message = "Get top 10 post successfully",
+                Data = postsVMResult
+            });
+        }
+
+        [HttpGet("{cityId}/posts")]
+        public async Task<IActionResult> GetPostsByCityId(int cityId)
+        {
+            var postsVMResult = await _postRepo.GetPostsByCityIdAsync(cityId);
+
+            return Ok(new SuccessResponseVM<IEnumerable<PostVM>>()
+            {
+                Message = "Get list post by city successfully",
+                Data = postsVMResult
             });
         }
     }

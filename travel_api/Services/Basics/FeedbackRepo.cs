@@ -26,6 +26,7 @@ namespace travel_api.Services.Basics
                               .Include(p => p.FeedbackMedias)
                               .Include(p => p.User)
                               .OrderByDescending(p => p.FeedbackDate)
+                              .AsNoTracking()
                               .ToListAsync();
 
             var feedbacksVM = _mapper.Map<IEnumerable<FeedbackVM>>(feedbacks);
@@ -41,6 +42,7 @@ namespace travel_api.Services.Basics
                                     .Include(p => p.User)
                                     .Where(p => p.UserId == userId)
                                     .OrderByDescending(p => p.FeedbackDate)
+                                    .AsNoTracking()
                                     .ToListAsync();
 
             // mapper
@@ -56,6 +58,7 @@ namespace travel_api.Services.Basics
                                     .Include(p => p.Location)
                                     .Include(p => p.FeedbackMedias)
                                     .Include(p => p.User)
+                                    .AsNoTracking()
                                     .SingleOrDefaultAsync(p => p.FeedbackId == feedbackId);
 
             if (feedback == null)
@@ -94,6 +97,21 @@ namespace travel_api.Services.Basics
 
             // mapping
             var listFeedbackMapping = _mapper.Map<IEnumerable<FeedbackVM>>(listFeedbackFilter);
+
+            return listFeedbackMapping;
+        }
+
+        public async Task<IEnumerable<FeedbackVM>> GetFeedbacksByUserIdAndCityIdAsync(string userId, int cityId)
+        {
+            var listFeedback = await _context.Feedbacks.Where(x => x.UserId == userId && x.Location.CityId == cityId)
+                                                       .OrderByDescending(f => f.FeedbackDate)
+                                                       .Include(x => x.User)
+                                                       .Include(x => x.FeedbackMedias)
+                                                       .Include(x => x.Location)
+                                                       .AsNoTracking()
+                                                       .ToListAsync();
+
+            var listFeedbackMapping = _mapper.Map<IEnumerable<FeedbackVM>>(listFeedback);
 
             return listFeedbackMapping;
         }

@@ -1,4 +1,5 @@
-﻿using travel_api.ViewModels.Responses.EFViewModel;
+﻿using travel_api.Services.Utils;
+using travel_api.ViewModels.Responses.EFViewModel;
 
 namespace travel_api.Repositories.Basics
 {
@@ -11,7 +12,8 @@ namespace travel_api.Repositories.Basics
         Task<IEnumerable<FeedbackVM>> GetFeedbacksByFilterAsync(int locationId, decimal rating = 5,
             int timeFeedbackType = 0, int tripType = 0);
 
-        Task<object> ReadChain();
+        Task<object> GetBlockDetail(int feedbackId);
+        Task<IEnumerable<Rating>> GetChain();
         Task<IEnumerable<FeedbackVM>> GetFeedbacksByUserIdAndCityIdAsync(string userId, int cityId);
     }
 }

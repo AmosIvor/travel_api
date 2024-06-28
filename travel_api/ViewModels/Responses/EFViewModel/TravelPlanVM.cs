@@ -15,6 +15,6 @@ namespace travel_api.ViewModels.Responses.EFViewModel
     public class TravelPlanVM : TravelPlanBaseVM
     {
         public UserBaseVM? User { get; set; }
-        public ICollection<PlanDetail>? PlanDetails { get; set; }
+        public ICollection<PlanDetailBaseVM>? PlanDetails { get; set; }
     }
 }

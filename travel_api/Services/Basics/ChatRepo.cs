@@ -34,7 +34,7 @@ namespace travel_api.Services.Basics
             return rooms;
         }
 
-        public async Task<IEnumerable<MessageVM>> GetMessages(int roomId)
+        public async Task<IEnumerable<MessageVM>> GetMessagesByRoomIdAsync(int roomId)
         {
             var messages = await _context.Messages
                 .Where(m => m.RoomId == roomId)
@@ -43,7 +43,7 @@ namespace travel_api.Services.Basics
                 .Include(m => m.Room)
                 .OrderBy(m => m.MessageCreateAt)
                 .AsNoTracking()
-                .FirstOrDefaultAsync();
+                .ToListAsync();
 
             var messagesMap = _mapper.Map<IEnumerable<MessageVM>>(messages);
 

@@ -7,7 +7,7 @@ namespace travel_api.Repositories.Basics
     public interface IChatRepo
     {
         Task<IEnumerable<ChatRoomVM>> GetUserConversations(string userId);
-        Task<IEnumerable<MessageVM>> GetMessages(int roomId);
+        Task<IEnumerable<MessageVM>> GetMessagesByRoomIdAsync(int roomId);
         Task<IEnumerable<ChatRoomVM>> FindConversations(string search);
         Task<ChatRoomVM> CreateNewRoom(ChatRoomRequest vm);
         Task<ChatRoomVM> UpdateRoomAsync(ChatRoomRequest vm);

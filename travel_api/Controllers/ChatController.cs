@@ -25,7 +25,7 @@ namespace travel_api.Controllers
             _baseRepo = baseRepo;
         }
 
-        [HttpGet("get-conversations")]
+        [HttpGet("{userId}/conversations")]
         public async Task<IActionResult> GetConversations(string userId)
         {
             var result = await _service.GetUserConversations(userId);
@@ -37,11 +37,11 @@ namespace travel_api.Controllers
             });
         }
 
-        [HttpGet("get-messages")]
+        [HttpGet("{roomId}/messages")]
         public async Task<IActionResult> GetMessages(int roomId)
         {
             //return Ok(await _service.GetMessages(roomId));
-            var result = await _service.GetMessages(roomId);
+            var result = await _service.GetMessagesByRoomIdAsync(roomId);
 
             return Ok(new SuccessResponseVM<IEnumerable<MessageVM>>()
             {
@@ -50,10 +50,10 @@ namespace travel_api.Controllers
             });
         }
 
-        [HttpGet("find-conversations")]
-        public async Task<IActionResult> FindConversations(string search)
+        [HttpGet("conversations/{searchString}")]
+        public async Task<IActionResult> FindConversations(string searchString)
         {
-            var result = await _service.FindConversations(search);
+            var result = await _service.FindConversations(searchString);
 
             return Ok(new SuccessResponseVM<IEnumerable<ChatRoomVM>>()
             {

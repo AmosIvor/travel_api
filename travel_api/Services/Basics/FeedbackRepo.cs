@@ -110,12 +110,6 @@ namespace travel_api.Services.Basics
             await _chain.SubmitAFeedback(fbId, score, userId, comment);
         }
 
-        public async Task<object> ReadChain()
-        {
-            var feedbacks = await _chain.GetFeedbacks();
-            return feedbacks;
-        }
-
         public async Task<IEnumerable<FeedbackVM>> GetFeedbacksByUserIdAndCityIdAsync(string userId, int cityId)
         {
             var listFeedback = await _context.Feedbacks.Where(x => x.UserId == userId && x.Location.CityId == cityId)
@@ -129,6 +123,24 @@ namespace travel_api.Services.Basics
             var listFeedbackMapping = _mapper.Map<IEnumerable<FeedbackVM>>(listFeedback);
 
             return listFeedbackMapping;
+        }
+
+        public async Task<object> GetBlockDetail(int feedbackId)
+        {
+            var feedback = await _chain.GetFeedbackDetail(feedbackId);
+
+            if (feedback == null)
+            {
+                throw new Exception("Feedback not found!");
+            }
+
+            return feedback;
+        }
+
+        public async Task<IEnumerable<Rating>> GetChain()
+        {
+            var feedbacks = await _chain.GetFeedbacks();
+            return feedbacks;
         }
     }
 }

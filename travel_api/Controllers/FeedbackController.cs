@@ -115,7 +115,13 @@ namespace travel_api.Controllers
         [HttpGet("read-chain")]
         public async Task<IActionResult> ReadChain()
         {
-            return Ok(await _feedbackRepo.ReadChain());
+            return Ok(await _feedbackRepo.GetChain());
+        }
+
+        [HttpGet("read-block")]
+        public async Task<IActionResult> ReadBlock(int feedbackId)
+        {
+            return Ok(await _feedbackRepo.GetBlockDetail(feedbackId));
         }
 
         [HttpGet("{userId}/{cityId}/feedbacks")]

@@ -149,12 +149,33 @@ namespace travel_api.Services.Utils
             Console.WriteLine("Add new feedback to blockchain");
         }
 
+        public async Task<Rating> GetFeedbackDetail(int feedbackId)
+        {
+            var contract = GetContract();
+            var getFunc = contract.GetFunction("getRatings");
+
+            var ratings = await getFunc.CallAsync<List<Rating>>(feedbackId);
+
+            if (ratings == null) return null;
+
+            return ratings.FirstOrDefault()!;
+        }
+
         public async Task<List<Rating>> GetFeedbacks()
         {
             var contract = GetContract();
             var getFunc = contract.GetFunction("getRatings");
 
-            var ratings = await getFunc.CallAsync<List<Rating>>(1);
+            var numOfBlocks = await web3.Eth.Blocks.GetBlockNumber.SendRequestAsync();
+
+            var ratings = new List<Rating>();
+
+            for (int i = 1; i <= (int)numOfBlocks.Value; i++)
+            {
+                var rate = await getFunc.CallAsync<List<Rating>>(i);
+                ratings.AddRange(rate);
+            }
+
             return ratings;
         }
     }

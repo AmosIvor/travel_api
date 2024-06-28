@@ -13,8 +13,8 @@ namespace travel_api.ViewModels.Responses.EFViewModel
     {
         public virtual ICollection<UserBaseVM>? Users { get; set; }
 
-        public virtual ICollection<RoomDetail>? RoomDetails { get; set; }
+        public virtual ICollection<RoomDetailBaseVM>? RoomDetails { get; set; }
 
-        public virtual ICollection<Message>? Messages { get; set; }
+        public virtual ICollection<MessageVM>? Messages { get; set; }
     }
 }

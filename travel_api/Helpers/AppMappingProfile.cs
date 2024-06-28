@@ -67,6 +67,9 @@ namespace travel_api.Helpers
 
             CreateMap<ChatRoom, ChatRoomVM>().ReverseMap();
 
+            CreateMap<RoomDetail, RoomDetailVM>().ReverseMap();
+            CreateMap<RoomDetail, RoomDetailBaseVM>().ReverseMap();
+
             // utils
             CreateMap<Photo, PhotoVM>().ReverseMap();
         }

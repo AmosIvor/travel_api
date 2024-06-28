@@ -9,7 +9,7 @@ namespace travel_api.Models.EF
         [Key]
         public int CommentId { get; set; }
 
-        public string CommentDate { get; set; }
+        public DateTime CommentDate { get; set; } = DateTime.Now;
 
         public int CommentTotalLike { get; set; }
 

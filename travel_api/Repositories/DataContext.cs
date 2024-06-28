@@ -166,9 +166,10 @@ namespace travel_api.Repositories
             modelBuilder.Entity<PlanDetail>()
                 .HasOne(d => d.TravelPlan)
                 .WithMany(t => t.PlanDetails)
-                .HasForeignKey(d => d.PlanId)
+                .HasForeignKey(d => d.TravelPlanId)
                 .OnDelete(DeleteBehavior.NoAction);
 
+            // Location - PlanDetail
             modelBuilder.Entity<PlanDetail>()
                 .HasOne(d => d.Location)
                 .WithMany(l => l.PlanDetails)

@@ -4,7 +4,7 @@
     {
         public int FeedbackId { get; set; }
 
-        public DateTime FeedbackDate { get; set; }
+        public DateTime FeedbackDate { get; set; } = DateTime.Now;
 
         public string FeedbackContent { get; set; }
 

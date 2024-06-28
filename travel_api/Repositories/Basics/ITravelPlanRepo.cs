@@ -5,9 +5,9 @@ namespace travel_api.Repositories.Basics
 {
     public interface ITravelPlanRepo
     {
-        Task<TravelPlan> AddPlan(TravelPlanVM vm);
-
-        Task<IEnumerable<TravelPlan>> GetPlans(string userId);
-        Task<IEnumerable<PlanDetail>> GetPlanDetails(string planId);
+        Task<IEnumerable<TravelPlanVM>> GetTravelPlansAsync();
+        Task<IEnumerable<TravelPlanVM>> GetTravelPlansByUserIdAsync(string userId);
+        Task<IEnumerable<PlanDetailVM>> GetPlanDetailByTravelPlanIdAsync(int travelPlanId);
+        Task<TravelPlanVM> GetTravelPlanByIdAsync(int travelPlanId);
     }
 }

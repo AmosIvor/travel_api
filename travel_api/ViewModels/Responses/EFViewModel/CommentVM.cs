@@ -4,7 +4,7 @@
     {
         public int CommentId { get; set; }
 
-        public string CommentDate { get; set; }
+        public DateTime CommentDate { get; set; }
 
         public int CommentTotalLike { get; set; }
 

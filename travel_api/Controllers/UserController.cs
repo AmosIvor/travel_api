@@ -70,6 +70,18 @@ namespace travel_api.Controllers
                 Data = userVM
             });
         }
+        
+        [HttpGet("search")]
+        public async Task<IActionResult> SearchUsersByUserName([FromQuery] string userNameSearchString)
+        {
+            var usersVM = await _userRepo.SearchUsersByUserNameAsync(userNameSearchString);
+
+            return Ok(new SuccessResponseVM<IEnumerable<UserBaseVM>>()
+            {
+                Message = "Get list user by search successfully",
+                Data = usersVM
+            });
+        }
 
         [HttpPost("photo")]
         public async Task<IActionResult> CreatePhoto(FileRequest file)

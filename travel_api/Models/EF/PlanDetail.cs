@@ -7,14 +7,18 @@ namespace travel_api.Models.EF
     public class PlanDetail
     {
         [Key]
-        public int Id { get; set; }
-        public string? PlanId { get; set; }
+        public int PlanDetailId { get; set; }
+
+        public string? PlanDetailDescription { get; set; }
+
         public int LocationId { get; set; }
 
         [ForeignKey("LocationId")]
-        public Location? Location { get; set; }
+        public virtual Location Location { get; set; }
+
+        public int TravelPlanId { get; set; }
 
         [ForeignKey("PlanId")]
-        public TravelPlan? TravelPlan { get; set; }
+        public virtual TravelPlan TravelPlan { get; set; }
     }
 }

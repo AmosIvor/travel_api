@@ -2,10 +2,19 @@
 
 namespace travel_api.ViewModels.Responses.EFViewModel
 {
-    public class TravelPlanVM
+    public class TravelPlanBaseVM
     {
-        public string? PlanName { get; set; }
+        public int TravelPlanId { get; set; }
+        public string? TravelPlanName { get; set; }
+        public DateTime PlanCreateAt { get; set; } = DateTime.Now;
+        public DateTime TravelDate { get; set; } = DateTime.Now;
+        public string? TravelDescription { get; set; }
+        public string? TravelUrl { get; set; }
         public string? UserId { get; set; }
-        public virtual ICollection<PlanDetail>? PlanDetails { get; set; }
+    }
+    public class TravelPlanVM : TravelPlanBaseVM
+    {
+        public UserBaseVM? User { get; set; }
+        public ICollection<PlanDetail>? PlanDetails { get; set; }
     }
 }

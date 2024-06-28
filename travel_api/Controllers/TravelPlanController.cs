@@ -1,6 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using travel_api.Models.EF;
+using travel_api.Repositories;
 using travel_api.Repositories.Basics;
+using travel_api.ViewModels.Requests.EFRequest;
 using travel_api.ViewModels.Responses.EFViewModel;
+using travel_api.ViewModels.Responses.ResultResponseViewModel;
 
 namespace travel_api.Controllers
 {
@@ -8,29 +12,84 @@ namespace travel_api.Controllers
     [ApiController]
     public class TravelPlanController : ControllerBase
     {
-        private readonly ITravelPlanRepo _service;
-
-        public TravelPlanController(ITravelPlanRepo service)
+        private readonly IBaseRepo<TravelPlan, TravelPlanVM, TravelPlanRequest, int> _baseRepo;
+        private readonly ITravelPlanRepo _travelPlanRepo;
+        public TravelPlanController(IBaseRepo<TravelPlan, TravelPlanVM, TravelPlanRequest, int> baseRepo, ITravelPlanRepo travelPlanRepo)
         {
-            _service = service;
+            _baseRepo = baseRepo;
+            _travelPlanRepo = travelPlanRepo;
         }
 
-        [HttpPost("new-plan")]
-        public async Task<IActionResult> NewPlan(TravelPlanVM vm)
+        [HttpPost]
+        public async Task<IActionResult> CreateTravelPlan(TravelPlanRequest travelPlanVM)
         {
-            return Ok(await _service.AddPlan(vm));
+            var travelPlanVMResult = await _baseRepo.AddAsync(travelPlanVM);
+
+            return Ok(new SuccessResponseVM<TravelPlanVM>()
+            {
+                Message = "Create new travel plan successfully",
+                Data = travelPlanVMResult
+            });
         }
 
-        [HttpGet("get-plans/{userId}")]
-        public async Task<IActionResult> GetPlans(string userId)
+        [HttpPut]
+        public async Task<IActionResult> UpdateTravelPlan(TravelPlanRequest travelPlanVM)
         {
-            return Ok(await _service.GetPlans(userId));
+            var travelPlanVMResult = await _baseRepo.UpdateAsync(travelPlanVM);
+
+            return Ok(new SuccessResponseVM<TravelPlanVM>()
+            {
+                Message = "Update travel plan successfully",
+                Data = travelPlanVMResult
+            });
         }
 
-        [HttpGet("get-plan-details")]
-        public async Task<IActionResult> GetPlanDetails(string planId)
+        [HttpGet]
+        public async Task<IActionResult> GetTravelPlans()
         {
-            return Ok(await _service.GetPlanDetails(planId));
+            var travelPlansVMResult = await _travelPlanRepo.GetTravelPlansAsync();
+
+            return Ok(new SuccessResponseVM<IEnumerable<TravelPlanVM>>()
+            {
+                Message = "Get list travel plan successfully",
+                Data = travelPlansVMResult
+            });
+        }
+
+        [HttpGet("{userId}/travel-plans")]
+        public async Task<IActionResult> GetTravelPlansByUserId(string userId)
+        {
+            var travelPlansVMResult = await _travelPlanRepo.GetTravelPlansByUserIdAsync(userId);
+
+            return Ok(new SuccessResponseVM<IEnumerable<TravelPlanVM>>()
+            {
+                Message = "Get list travel plan by user successfully",
+                Data = travelPlansVMResult
+            });
+        }
+
+        [HttpGet("{travelPlanId}/plan-detail")]
+        public async Task<IActionResult> GetPlanDetailByTravelPlanId(int travelPlanId)
+        {
+            var planDetailsVMResult = await _travelPlanRepo.GetPlanDetailByTravelPlanIdAsync(travelPlanId);
+
+            return Ok(new SuccessResponseVM<IEnumerable<PlanDetailVM>>()
+            {
+                Message = "Get list plan detail by travel plan successfully",
+                Data = planDetailsVMResult
+            });
+        }
+
+        [HttpGet("{travelPlanId}")]
+        public async Task<IActionResult> GetTravelPlanByIdAsync(int travelPlanId)
+        {
+            var travelPlanVMResult = await _travelPlanRepo.GetTravelPlanByIdAsync(travelPlanId);
+
+            return Ok(new SuccessResponseVM<TravelPlanVM>()
+            {
+                Message = "Get travel plan by id successfully",
+                Data = travelPlanVMResult
+            });
         }
     }
 }

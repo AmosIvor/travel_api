@@ -5,18 +5,43 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace travel_api.Migrations
 {
-    public partial class AddTravelPlanEnts : Migration
+    public partial class RemoveTravelPlanAndPlanDetail : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "PlanDetail");
+
+            migrationBuilder.DropTable(
+                name: "TravelPlan");
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CommentDate",
+                table: "Comment",
+                type: "datetime2",
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(max)");
+        }
+
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.AlterColumn<string>(
+                name: "CommentDate",
+                table: "Comment",
+                type: "nvarchar(max)",
+                nullable: false,
+                oldClrType: typeof(DateTime),
+                oldType: "datetime2");
+
             migrationBuilder.CreateTable(
                 name: "TravelPlan",
                 columns: table => new
                 {
                     PlanId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    PlanName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CreateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    PlanName = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -34,8 +59,8 @@ namespace travel_api.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    PlanId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    LocationId = table.Column<int>(type: "int", nullable: false)
+                    LocationId = table.Column<int>(type: "int", nullable: false),
+                    PlanId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -66,15 +91,6 @@ namespace travel_api.Migrations
                 name: "IX_TravelPlan_UserId",
                 table: "TravelPlan",
                 column: "UserId");
-        }
-
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropTable(
-                name: "PlanDetail");
-
-            migrationBuilder.DropTable(
-                name: "TravelPlan");
         }
     }
 }

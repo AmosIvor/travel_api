@@ -4,7 +4,7 @@
     {
         public int PostId { get; set; }
 
-        public DateTime PostDate { get; set; }
+        public DateTime PostDate { get; set; } = DateTime.Now;
 
         public int PostTotalLike { get; set; }
 

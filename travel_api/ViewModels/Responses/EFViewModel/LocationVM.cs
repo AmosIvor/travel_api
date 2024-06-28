@@ -1,4 +1,6 @@
-﻿namespace travel_api.ViewModels.Responses.EFViewModel
+﻿using travel_api.Models.EF;
+
+namespace travel_api.ViewModels.Responses.EFViewModel
 {
     public class LocationBaseVM
     {
@@ -31,7 +33,9 @@
 
         public Dictionary<int, int>? RatingStatistic { get; set; }
 
-        public CityBaseVM City { get; set; }
+        public CityBaseVM? City { get; set; }
+
+        public ICollection<PlanDetail>? PlanDetails { get; set; }
     }
 
     public class LocationBaseWithCityVM : LocationBaseVM

@@ -7,13 +7,16 @@ namespace travel_api.Models.EF
     public class TravelPlan
     {
         [Key]
-        public string? PlanId { get; set; }
-        public string? PlanName { get; set; }
-        public DateTime CreateTime { get; set; } = DateTime.Now;
+        public int TravelPlanId { get; set; }
+        public string? TravelPlanName { get; set; }
+        public DateTime PlanCreateAt { get; set; } = DateTime.Now;
+        public DateTime TravelDate { get; set; } = DateTime.Now;
+        public string? TravelDescription { get; set; }
+        public string? TravelUrl { get; set; }
         public string? UserId { get; set; }
 
         [ForeignKey("UserId")]
-        public virtual User? User { get; set; }
-        public virtual ICollection<PlanDetail>? PlanDetails { get; set; }
+        public virtual User User { get; set; }
+        public virtual ICollection<PlanDetail> PlanDetails { get; set; }
     }
 }

@@ -4,7 +4,7 @@
     {
         public int CommentId { get; set; }
 
-        public DateTime CommentDate { get; set; }
+        public DateTime CommentDate { get; set; } = DateTime.Now;
 
         public int CommentTotalLike { get; set; }
 

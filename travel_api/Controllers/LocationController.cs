@@ -57,9 +57,9 @@ namespace travel_api.Controllers
         }
 
         [HttpGet("get-locations-by-city")]
-        public async Task<IActionResult> GetLocationsByCity(int cityId)
+        public IActionResult GetLocationsByCity(int cityId)
         {
-            var result = await _locationRepo.GetLocationsByCity(cityId);
+            var result = _locationRepo.GetLocationsByCity(cityId);
 
             return Ok(new SuccessResponseVM<IEnumerable<LocationVM>>()
             {

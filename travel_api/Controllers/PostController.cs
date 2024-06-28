@@ -44,7 +44,7 @@ namespace travel_api.Controllers
             });
         }
 
-        [HttpGet("{userId}/posts")]
+        [HttpGet("{userId}/posts-by-user")]
         public async Task<IActionResult> GetListPostsByUserId(string userId)
         {
             var postsVM = await _postRepo.GetListPostsByUserIdAsync(userId);
@@ -116,7 +116,7 @@ namespace travel_api.Controllers
             });
         }
 
-        [HttpGet("{cityId}/posts")]
+        [HttpGet("{cityId}/posts-by-city")]
         public async Task<IActionResult> GetPostsByCityId(int cityId)
         {
             var postsVMResult = await _postRepo.GetPostsByCityIdAsync(cityId);

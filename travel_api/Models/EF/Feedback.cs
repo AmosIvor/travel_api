@@ -9,7 +9,7 @@ namespace travel_api.Models.EF
         [Key]
         public int FeedbackId { get; set; }
 
-        public DateTime FeedbackDate { get; set; } = new DateTime();
+        public DateTime FeedbackDate { get; set; } = DateTime.Now;
 
         [Required]
         public string FeedbackContent { get; set; }

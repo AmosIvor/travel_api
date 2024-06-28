@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using travel_api.Models.EF;
 using travel_api.Repositories;
 using travel_api.Repositories.Basics;
+using travel_api.ViewModels.Requests.EFRequest;
 using travel_api.ViewModels.Responses.EFViewModel;
 
 namespace travel_api.Services.Basics
@@ -32,19 +33,16 @@ namespace travel_api.Services.Basics
             return rooms;
         }
 
-        public async Task<IEnumerable<Message>> GetMessages(int roomId)
+        public async Task<IEnumerable<MessageVM>> GetMessages(int roomId)
         {
             var messages = await _context.ChatRooms
                 .Where(r => r.RoomId == roomId)
                 .Select(r => r.Messages)
                 .FirstOrDefaultAsync();
 
-            if (messages == null)
-            {
-                return new List<Message>();
-            }
+            var messagesMap = _mapper.Map<IEnumerable<MessageVM>>(messages);
 
-            return messages;
+            return messagesMap;
         }
 
         public async Task<IEnumerable<ChatRoomVM>> FindConversations(string search)
@@ -61,66 +59,63 @@ namespace travel_api.Services.Basics
             return rooms;
         }
 
-        public async Task<Message> SendMessage(MessageVM vm)
-        {
-            var message = _mapper.Map<Message>(vm);
-
-            _context.Messages.Add(message);
-            await _context.SaveChangesAsync();
-
-            return message;
-        }
-
-        public async Task<ChatRoom> CreateNewRoom(ChatRoomVM vm)
+        public async Task<ChatRoomVM> CreateNewRoom(ChatRoomRequest req)
         {
             var room = new ChatRoom()
             {
-                RoomName = GetRoomName(vm)
+                RoomName = await GetRoomName(req)
             };
 
             _context.ChatRooms.Add(room);
             await _context.SaveChangesAsync();
 
-            if (vm.Users != null)
+            if (req.userIds != null)
             {
-                foreach (var u in vm.Users)
+                foreach (var userId in req.userIds)
                 {
                     _context.RoomDetails.Add(new RoomDetail
                     {
                         RoomId = room.RoomId,
-                        UserId = u.Id!
+                        UserId = userId
                     });
                 }
 
                 await _context.SaveChangesAsync();
             }
 
-            return room;
+            var roomMap = _mapper.Map<ChatRoomVM>(room);
+
+            return roomMap;
         }
 
-        public string GetRoomName(ChatRoomVM vm)
+        public async Task<string> GetRoomName(ChatRoomRequest req)
         {
-            if (vm.Users != null && vm.Users.Count == 2)
+            
+            if (req.userIds != null && req.userIds.Count == 2)
             {
                 return "";
             }
 
-            if (vm.Users != null && vm.Users.Count > 2)
+            if (req.userIds != null && req.userIds.Count > 2)
             {
-                if (!string.IsNullOrEmpty(vm.RoomName))
+                if (!string.IsNullOrEmpty(req.RoomName))
                 {
-                    return vm.RoomName;
+                    return req.RoomName;
                 }
 
-                string roomName = vm.Users.ElementAt(0).UserName!;
+                var users = await _context.Users.Where(x => req.userIds.Contains(x.Id))
+                                                .AsNoTracking()
+                                                .ToListAsync();
+                                                
+                string roomName = users.ElementAt(0).UserName!;
                 for (int i = 1; i < 3; i++)
                 {
-                    roomName += ", " + vm.Users.ElementAt(i).UserName;
+                    roomName += ", " + users.ElementAt(i).UserName;
                 }
 
-                if (vm.Users.Count > 3)
+                if (req.userIds.Count > 3)
                 {
-                    roomName += $" + {vm.Users.Count - 1}";
+                    roomName += $" + {req.userIds.Count - 1}";
                 }
 
                 return roomName;

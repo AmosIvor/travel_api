@@ -43,6 +43,20 @@ namespace travel_api.Services.Basics
             return usersVM;
         }
 
+        public async Task<IEnumerable<UserBaseVM>> SearchUsersByUserNameAsync(string userNameSearchString)
+        {
+            var userNameSearchStringStandardized = userNameSearchString.ToLower().Trim();
+            var users = await _context.Users
+                                           .Where(x => x.UserName.ToLower().Trim().Contains                                                        (userNameSearchStringStandardized))
+                                           .OrderByDescending(x => x.Feedbacks.Count)
+                                           .AsNoTracking()
+                                           .ToListAsync();
+
+            var usersMap = _mapper.Map<IEnumerable<UserBaseVM>>(users);
+
+            return usersMap;
+        }
+
         public async Task<UserVM> UpdateUserAsync(UserUpdateRequest req)
         {
             var user = await _context.Users.FindAsync(req.UserId);

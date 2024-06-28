@@ -29,6 +29,8 @@
 
         public ICollection<CommentBaseVM>? Comments { get; set; }
 
+        public ICollection<TravelPlanBaseVM>? TravelPlans { get; set; }
+
         public CityBaseVM? City { get; set; }
     }
 }

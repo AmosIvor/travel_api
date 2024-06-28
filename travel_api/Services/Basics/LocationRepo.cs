@@ -25,6 +25,7 @@ namespace travel_api.Services.Basics
                                                    .Include(l => l.Posts)
                                                    .Include(l => l.LocationMedias)
                                                    .Include(l => l.City)
+                                                   .AsNoTracking()
                                                    .SingleOrDefaultAsync(l => l.LocationId == locationId);
 
             if (location == null)
@@ -94,6 +95,7 @@ namespace travel_api.Services.Basics
 
             var locations = await _context.Locations.Include(x => x.LocationMedias)
                                                     .Include(x => x.City)
+                                                    .AsNoTracking()
                                                     .ToListAsync();
 
             var locationResults = locations
@@ -125,12 +127,35 @@ namespace travel_api.Services.Basics
             return cityResults.Concat(locationResults);
         }
 
-        public async Task<IEnumerable<LocationVM>> GetLocationsByCity(int cityId)
+        public IEnumerable<LocationVM> GetLocationsByCity(int cityId)
         {
-            var locations = await _context.Locations
-                .Where(l => l.CityId == cityId)
-                .ToListAsync();
-                var locationsMap = _mapper.Map<IEnumerable<LocationVM>>(locations);
+            var locations = _context.Locations
+                        .Where(l => l.CityId == cityId)
+                        .Include(l => l.Feedbacks)
+                        .Include(l => l.LocationMedias)
+                        .ToList()
+                        .Select(l =>
+                        {
+                            var decimalRateAverage = l.Feedbacks.Any() ? (decimal)l.Feedbacks.Average(f => f.FeedbackRate) : 0;
+
+                            var locationMedias = _mapper.Map<ICollection<LocationMediaBaseVM>>(l.LocationMedias);
+
+                            return new LocationVM
+                            {
+                                LocationId = l.LocationId,
+                                LocationName = l.LocationName,
+                                LocationAddress = l.LocationAddress,
+                                LocationOpenTime = l.LocationOpenTime,
+                                LocationLongtitude = l.LocationLongtitude,
+                                LocationLatitude = l.LocationLatitude,
+                                LocationDescription = l.LocationDescription,
+                                CityId = l.CityId,
+                                LocationRateAverage = decimalRateAverage,
+                                LocationMedias = locationMedias
+                            };
+                        });
+
+            var locationsMap = _mapper.Map<IEnumerable<LocationVM>>(locations);
 
             return locationsMap;
         }
@@ -140,6 +165,7 @@ namespace travel_api.Services.Basics
             var locations = await _context.Locations.OrderByDescending(l => l.LocationRateAverage)
                                                     .Include(l => l.LocationMedias)
                                                     .Include(l => l.City)
+                                                    .AsNoTracking()
                                                     .ToListAsync();
 
             var locationsMap = _mapper.Map<IEnumerable<LocationVM>>(locations);
@@ -154,6 +180,7 @@ namespace travel_api.Services.Basics
                                     .Include(l => l.LocationMedias)
                                     .Include(l => l.City)
                                     .Take(10)
+                                    .AsNoTracking()
                                     .ToListAsync();
 
             var top10LocationMap = _mapper.Map<IEnumerable<LocationVM>>(top10Location);

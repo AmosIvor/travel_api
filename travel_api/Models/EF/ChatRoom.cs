@@ -12,6 +12,7 @@ namespace travel_api.Models.EF
         public string? RoomName { get; set; }
 
         public virtual ICollection<RoomDetail>? RoomDetails { get; set; }
+
         public virtual ICollection<Message>? Messages { get; set; }
     }
 }

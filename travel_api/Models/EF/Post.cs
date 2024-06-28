@@ -9,7 +9,7 @@ namespace travel_api.Models.EF
         [Key]
         public int PostId { get; set; }
 
-        public DateTime PostDate { get; set; } = new DateTime();
+        public DateTime PostDate { get; set; } = DateTime.Now;
 
         public int PostTotalLike { get; set; }
 

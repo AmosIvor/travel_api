@@ -1,7 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using travel_api.Exceptions;
 using travel_api.Models.EF;
 using travel_api.Repositories;
 using travel_api.Repositories.Basics;
+using travel_api.ViewModels.Requests.EFRequest;
 using travel_api.ViewModels.Responses.EFViewModel;
 
 namespace travel_api.Services.Basics
@@ -9,55 +12,69 @@ namespace travel_api.Services.Basics
     public class TravelPlanRepo : ITravelPlanRepo
     {
         private readonly DataContext _context;
+        private readonly IMapper _mapper;
 
-        public TravelPlanRepo(DataContext context)
+        public TravelPlanRepo(DataContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
-        public async Task<TravelPlan> AddPlan(TravelPlanVM vm)
+        public async Task<IEnumerable<PlanDetailVM>> GetPlanDetailByTravelPlanIdAsync(int travelPlanId)
         {
-            var travelPlan = new TravelPlan
+            var planDetail = await _context.PlanDetails.Where(x => x.TravelPlanId == travelPlanId)
+                                                         .Include(x => x.Location)
+                                                         .AsNoTracking()
+                                                         .ToListAsync();
+
+            var planDetailMap = _mapper.Map<IEnumerable<PlanDetailVM>>(planDetail);
+
+            return planDetailMap;
+        }
+
+        public async Task<TravelPlanVM> GetTravelPlanByIdAsync(int travelPlanId)
+        {
+            var travelPlan = await _context.TravelPlans.Where(x => x.TravelPlanId == travelPlanId)
+                                                       .Include(x => x.User)
+                                                       .Include(x => x.PlanDetails)
+                                                       .AsNoTracking()
+                                                       .FirstOrDefaultAsync();
+
+            var travelPlanMap = _mapper.Map<TravelPlanVM>(travelPlan);
+
+            return travelPlanMap;
+        }
+
+        public async Task<IEnumerable<TravelPlanVM>> GetTravelPlansAsync()
+        {
+            var travelPlans = await _context.TravelPlans.OrderByDescending(x => x.PlanCreateAt)
+                                                        .Include(x => x.User)
+                                                        .AsNoTracking()
+                                                        .ToListAsync();
+
+            var travelPlansMap = _mapper.Map<IEnumerable<TravelPlanVM>>(travelPlans);
+
+            return travelPlansMap;
+        }
+
+        public async Task<IEnumerable<TravelPlanVM>> GetTravelPlansByUserIdAsync(string userId)
+        {
+            var user = await _context.Users.FindAsync(userId);
+
+            if (user == null)
             {
-                PlanId = Guid.NewGuid().ToString(),
-                PlanName = vm.PlanName,
-                CreateTime = DateTime.Now,
-            };
-
-            _context.Add(travelPlan);
-            await _context.SaveChangesAsync();
-
-            if (vm.PlanDetails != null)
-            {
-                foreach (var d in vm.PlanDetails)
-                {
-                    _context.PlanDetails.Add(new PlanDetail
-                    {
-                        PlanId = travelPlan.PlanId,
-                        LocationId = d.LocationId,
-                    });
-                }
-
-                await _context.SaveChangesAsync();
+                throw new NotFoundException("User not found");
             }
 
-            return travelPlan;
-        }
+            var travelPlans = await _context.TravelPlans.Where(x => x.UserId == userId)
+                                                        .OrderByDescending(x => x.PlanCreateAt)
+                                                        .Include(x => x.User)
+                                                        .AsNoTracking()
+                                                        .ToListAsync();
 
-        public async Task<IEnumerable<TravelPlan>> GetPlans(string userId)
-        {
-            var plans = await _context.TravelPlans
-                .Where(p => p.UserId == userId)
-                .ToListAsync();
+            var travelPlansMap = _mapper.Map<IEnumerable<TravelPlanVM>>(travelPlans);
 
-            return plans;
-        }
-
-        async Task<IEnumerable<PlanDetail>> ITravelPlanRepo.GetPlanDetails(string planId)
-        {
-            return await _context.PlanDetails
-                .Where(d => d.PlanId == planId)
-                .ToListAsync();
+            return travelPlansMap;
         }
     }
 }

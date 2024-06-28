@@ -27,8 +27,9 @@ namespace travel_api.Services.Basics
                 .Select(d => new ChatRoomVM
                 {
                     RoomId = d.RoomId,
-                    RoomName = d.Room!.RoomName
+                    RoomName = d.ChatRoom!.RoomName
                 })
+                .AsNoTracking()
                 .ToListAsync();
 
             return rooms;
@@ -40,7 +41,7 @@ namespace travel_api.Services.Basics
                 .Where(m => m.RoomId == roomId)
                 .Include(m => m.MessageMedias)
                 .Include(m => m.User)
-                .Include(m => m.Room)
+                .Include(m => m.ChatRoom)
                 .OrderBy(m => m.MessageCreateAt)
                 .AsNoTracking()
                 .ToListAsync();
@@ -84,7 +85,6 @@ namespace travel_api.Services.Basics
                         UserId = userId
                     });
                 }
-
             }
 
             await _context.SaveChangesAsync();
@@ -181,6 +181,26 @@ namespace travel_api.Services.Basics
             var roomMap = _mapper.Map<ChatRoomVM>(room);
 
             return roomMap;
+        }
+
+        public async Task<MessageVM> SendMessageAsync(MessageRequest req)
+        {
+            var message = _mapper.Map<Message>(req);
+
+            _context.Messages.Add(message);
+
+            await _context.SaveChangesAsync();
+
+            var messageFullInfo = await _context.Messages.Include(x => x.User)
+                                                         .Include(x => x.ChatRoom)
+                                                         .Include(x => x.MessageMedias)
+                                                         .AsNoTracking()
+                                                         .FirstOrDefaultAsync(x => x.MessageId == message.MessageId);
+
+
+            var messageMap = _mapper.Map<MessageVM>(messageFullInfo);
+
+            return messageMap;
         }
     }
 }

@@ -136,14 +136,14 @@ namespace travel_api.Repositories
 
             // ChatRoom - RoomDetail
             modelBuilder.Entity<RoomDetail>()
-                .HasOne(l => l.Room)
+                .HasOne(l => l.ChatRoom)
                 .WithMany(r => r.RoomDetails)
                 .HasForeignKey(r => r.RoomId)
                 .OnDelete(DeleteBehavior.NoAction);
 
             // Messages - Room
             modelBuilder.Entity<Message>()
-                .HasOne(m => m.Room)
+                .HasOne(m => m.ChatRoom)
                 .WithMany(r => r.Messages)
                 .HasForeignKey(m => m.RoomId)
                 .OnDelete(DeleteBehavior.NoAction);
@@ -153,6 +153,13 @@ namespace travel_api.Repositories
                 .HasOne(me => me.Message)
                 .WithMany(m => m.MessageMedias)
                 .HasForeignKey(me => me.MessageId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            // User - RoomDetail
+            modelBuilder.Entity<RoomDetail>()
+                .HasOne(me => me.User)
+                .WithMany(m => m.RoomDetails)
+                .HasForeignKey(me => me.UserId)
                 .OnDelete(DeleteBehavior.NoAction);
 
             // User - TravelPlan

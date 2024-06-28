@@ -21,7 +21,9 @@ namespace travel_api.Services.Basics
         {
             var comments = await _context.Comments
                               .Include(c => c.CommentMedias)
+                              .Include(c => c.User)
                               .OrderByDescending(c => c.CommentDate)
+                              .AsNoTracking()
                               .ToListAsync();
 
             var commentsVM = _mapper.Map<IEnumerable<CommentVM>>(comments);
@@ -35,6 +37,7 @@ namespace travel_api.Services.Basics
                                     .Include(c => c.CommentMedias)
                                     .Where(c => c.UserId == userId)
                                     .OrderByDescending(c => c.CommentDate)
+                                    .AsNoTracking()
                                     .ToListAsync();
 
             // mapper
@@ -48,6 +51,8 @@ namespace travel_api.Services.Basics
             // find comment
             var comment = await _context.Comments
                                     .Include(c => c.CommentMedias)
+                                    .Include(c => c.User)
+                                    .AsNoTracking()
                                     .SingleOrDefaultAsync(c => c.CommentId == commentId);
 
             if (comment == null)
@@ -64,8 +69,10 @@ namespace travel_api.Services.Basics
         {
             var comments = await _context.Comments
                                     .Include(c => c.CommentMedias)
+                                    .Include(c => c.User)
                                     .Where(c => c.PostId == postId)
                                     .OrderByDescending(c => c.CommentDate)
+                                    .AsNoTracking()
                                     .ToListAsync();
 
             // mapper

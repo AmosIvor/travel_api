@@ -20,7 +20,7 @@ namespace travel_api.Models.EF
         public string UserId { get; set; }
 
         [ForeignKey("RoomId")]
-        public virtual ChatRoom? Room { get; set; }
+        public virtual ChatRoom? ChatRoom { get; set; }
 
         [ForeignKey("UserId")]
         public virtual User? User { get; set; }

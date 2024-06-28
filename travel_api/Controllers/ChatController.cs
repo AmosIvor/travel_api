@@ -65,7 +65,8 @@ namespace travel_api.Controllers
         [HttpPost("send-message")]
         public async Task<IActionResult> SendMessage(MessageRequest vm)
         {
-            var result = await _baseRepo.AddAsync(vm);
+            var result = await _service.SendMessageAsync(vm);
+
             await _hub.Clients.All.SendAsync("ReceiveMessage", result);
 
             return Ok(new SuccessResponseVM<MessageVM>()

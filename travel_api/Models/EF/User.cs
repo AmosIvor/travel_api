@@ -26,5 +26,7 @@ namespace travel_api.Models.EF
 
         [ForeignKey("CityId")]
         public virtual City City { get; set; }
+
+        public virtual ICollection<RoomDetail> RoomDetails { get; set; }
     }
 }

@@ -72,9 +72,9 @@ namespace travel_api.Controllers
         }
         
         [HttpGet("search")]
-        public async Task<IActionResult> SearchUsersByUserName([FromQuery] string userNameSearchString)
+        public async Task<IActionResult> SearchUsersByUserName([FromQuery] string userNameSearchString, [FromQuery] string userIdNotInList)
         {
-            var usersVM = await _userRepo.SearchUsersByUserNameAsync(userNameSearchString);
+            var usersVM = await _userRepo.SearchUsersByUserNameAsync(userNameSearchString, userIdNotInList);
 
             return Ok(new SuccessResponseVM<IEnumerable<UserBaseVM>>()
             {

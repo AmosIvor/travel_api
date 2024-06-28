@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using travel_api.Exceptions;
 using travel_api.Models.EF;
 using travel_api.Repositories;
 using travel_api.Repositories.Basics;
@@ -35,9 +36,13 @@ namespace travel_api.Services.Basics
 
         public async Task<IEnumerable<MessageVM>> GetMessages(int roomId)
         {
-            var messages = await _context.ChatRooms
-                .Where(r => r.RoomId == roomId)
-                .Select(r => r.Messages)
+            var messages = await _context.Messages
+                .Where(m => m.RoomId == roomId)
+                .Include(m => m.MessageMedias)
+                .Include(m => m.User)
+                .Include(m => m.Room)
+                .OrderBy(m => m.MessageCreateAt)
+                .AsNoTracking()
                 .FirstOrDefaultAsync();
 
             var messagesMap = _mapper.Map<IEnumerable<MessageVM>>(messages);
@@ -69,9 +74,9 @@ namespace travel_api.Services.Basics
             _context.ChatRooms.Add(room);
             await _context.SaveChangesAsync();
 
-            if (req.userIds != null)
+            if (req.userIdsJoin != null)
             {
-                foreach (var userId in req.userIds)
+                foreach (var userId in req.userIdsJoin)
                 {
                     _context.RoomDetails.Add(new RoomDetail
                     {
@@ -80,8 +85,9 @@ namespace travel_api.Services.Basics
                     });
                 }
 
-                await _context.SaveChangesAsync();
             }
+
+            await _context.SaveChangesAsync();
 
             var roomMap = _mapper.Map<ChatRoomVM>(room);
 
@@ -91,19 +97,19 @@ namespace travel_api.Services.Basics
         public async Task<string> GetRoomName(ChatRoomRequest req)
         {
             
-            if (req.userIds != null && req.userIds.Count == 2)
+            if (req.userIdsJoin != null && req.userIdsJoin.Count == 2)
             {
                 return "";
             }
 
-            if (req.userIds != null && req.userIds.Count > 2)
+            if (req.userIdsJoin != null && req.userIdsJoin.Count > 2)
             {
                 if (!string.IsNullOrEmpty(req.RoomName))
                 {
                     return req.RoomName;
                 }
 
-                var users = await _context.Users.Where(x => req.userIds.Contains(x.Id))
+                var users = await _context.Users.Where(x => req.userIdsJoin.Contains(x.Id))
                                                 .AsNoTracking()
                                                 .ToListAsync();
                                                 
@@ -113,15 +119,68 @@ namespace travel_api.Services.Basics
                     roomName += ", " + users.ElementAt(i).UserName;
                 }
 
-                if (req.userIds.Count > 3)
+                if (req.userIdsJoin.Count > 3)
                 {
-                    roomName += $" + {req.userIds.Count - 1}";
+                    roomName += $" + {req.userIdsJoin.Count - 1}";
                 }
 
                 return roomName;
             }
 
             return "";
+        }
+
+        public async Task<ChatRoomVM> UpdateRoomAsync(ChatRoomRequest req)
+        {
+            var room = await _context.ChatRooms.Include(x => x.RoomDetails)
+                                               .AsNoTracking()
+                                               .FirstOrDefaultAsync(r => r.RoomId == req.RoomId);
+
+            if (room == null)
+            {
+                throw new NotFoundException("Room not found");
+            }
+
+            if (req.RoomName != null)
+            {
+                room.RoomName = req.RoomName;
+            }
+
+            var roomDetails = room.RoomDetails;
+
+            if (req.userIdsLeave != null)
+            {
+                foreach (var userId in req.userIdsLeave)
+                {
+                    var roomDetail = roomDetails.FirstOrDefault(rd => rd.UserId == userId);
+
+                    if (roomDetail != null)
+                    {
+                        _context.RoomDetails.Remove(roomDetail);
+                    }
+                }
+            }
+
+            if (req.userIdsJoin != null)
+            {
+                foreach (var userId in req.userIdsJoin)
+                {
+                    if (!roomDetails.Any(rd => rd.UserId == userId))
+                    {
+                        _context.RoomDetails.Add(new RoomDetail 
+                        {
+                            UserId = userId,
+                            RoomId = room.RoomId 
+                        });
+                    }
+                }
+            }
+
+            await _context.SaveChangesAsync();
+
+            var roomMap = _mapper.Map<ChatRoomVM>(room);
+
+            return roomMap;
         }
     }
 }

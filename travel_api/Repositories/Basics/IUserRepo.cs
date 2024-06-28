@@ -8,6 +8,6 @@ namespace travel_api.Repositories.Basics
         Task<ICollection<UserVM>> GetUsersAsync();
         Task<UserVM> GetUserByIdAsync(string userId);
         Task<UserVM> UpdateUserAsync(UserUpdateRequest req);
-        Task<IEnumerable<UserBaseVM>> SearchUsersByUserNameAsync(string userNameSearchString);
+        Task<IEnumerable<UserBaseVM>> SearchUsersByUserNameAsync(string userNameSearchString, string userIdNotInList);
     }
 }

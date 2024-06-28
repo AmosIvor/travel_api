@@ -13,6 +13,8 @@ namespace travel_api.Models.EF
 
         public string? MessageType { get; set; }
 
+        public DateTime? MessageCreateAt { get; set; }
+
         public int RoomId { get; set; }
 
         public string UserId { get; set; }

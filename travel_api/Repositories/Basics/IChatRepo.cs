@@ -10,5 +10,6 @@ namespace travel_api.Repositories.Basics
         Task<IEnumerable<MessageVM>> GetMessages(int roomId);
         Task<IEnumerable<ChatRoomVM>> FindConversations(string search);
         Task<ChatRoomVM> CreateNewRoom(ChatRoomRequest vm);
+        Task<ChatRoomVM> UpdateRoomAsync(ChatRoomRequest vm);
     }
 }

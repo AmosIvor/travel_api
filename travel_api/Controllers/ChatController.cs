@@ -76,13 +76,25 @@ namespace travel_api.Controllers
         }
 
         [HttpPost("new-room")]
-        public async Task<IActionResult> NewRoom(ChatRoomRequest vm)
+        public async Task<IActionResult> CreateRoom(ChatRoomRequest vm)
         {
             var result = await _service.CreateNewRoom(vm);
 
             return Ok(new SuccessResponseVM<ChatRoomVM>()
             {
-                Message = "Get chat room successfully",
+                Message = "Create chat room successfully",
+                Data = result
+            });
+        }
+
+        [HttpPut("update-room")]
+        public async Task<IActionResult> UpdateRoom(ChatRoomRequest vm)
+        {
+            var result = await _service.UpdateRoomAsync(vm);
+
+            return Ok(new SuccessResponseVM<ChatRoomVM>()
+            {
+                Message = "Update chat room successfully",
                 Data = result
             });
         }

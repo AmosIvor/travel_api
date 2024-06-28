@@ -10,6 +10,8 @@
 
         public string? RoomName { get; set; }
 
-        public List<string> userIds { get; set; }
+        public List<string>? userIdsJoin { get; set; }
+
+        public List<string>? userIdsLeave { get; set; }
     }
 }

@@ -10,6 +10,8 @@ namespace travel_api.ViewModels.Requests.EFRequest
 
         public string? MessageType { get; set; }
 
+        public DateTime? MessageCreateAt { get; set; } = DateTime.Now;
+
         public int RoomId { get; set; }
 
         public string? UserId { get; set; }

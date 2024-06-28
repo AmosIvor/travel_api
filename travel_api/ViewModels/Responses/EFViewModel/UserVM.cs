@@ -32,5 +32,7 @@
         public ICollection<TravelPlanBaseVM>? TravelPlans { get; set; }
 
         public CityBaseVM? City { get; set; }
+
+        public ICollection<RoomDetailBaseVM>? RoomDetails { get; set; }
     }
 }

@@ -43,11 +43,11 @@ namespace travel_api.Services.Basics
             return usersVM;
         }
 
-        public async Task<IEnumerable<UserBaseVM>> SearchUsersByUserNameAsync(string userNameSearchString)
+        public async Task<IEnumerable<UserBaseVM>> SearchUsersByUserNameAsync(string userNameSearchString, string userIdNotInList)
         {
             var userNameSearchStringStandardized = userNameSearchString.ToLower().Trim();
             var users = await _context.Users
-                                           .Where(x => x.UserName.ToLower().Trim().Contains                                                        (userNameSearchStringStandardized))
+                                           .Where(x => x.UserName.ToLower().Trim().Contains                                      (userNameSearchStringStandardized) && x.Id != userIdNotInList)
                                            .OrderByDescending(x => x.Feedbacks.Count)
                                            .AsNoTracking()
                                            .ToListAsync();

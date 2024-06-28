@@ -1,4 +1,6 @@
-﻿namespace travel_api.ViewModels.Responses.EFViewModel
+﻿using travel_api.Models.EF;
+
+namespace travel_api.ViewModels.Responses.EFViewModel
 {
     public class RoomDetailBaseVM
     {
@@ -12,5 +14,7 @@
     public class RoomDetailVM : RoomDetailBaseVM
     {
         public ChatRoomBaseVM? ChatRoom { get; set; }
+
+        public UserBaseVM? User { get; set; }
     }
 }

@@ -12,8 +12,11 @@ namespace travel_api.Models.EF
         public int RoomId { get; set; }
 
         [ForeignKey("RoomId")]
-        public virtual ChatRoom? Room { get; set; }
+        public virtual ChatRoom Room { get; set; }
 
         public string UserId { get; set; }
+
+        [ForeignKey("UserId")]
+        public virtual User User { get; set; }
     }
 }

@@ -20,16 +20,31 @@ namespace travel_api.Services.Basics
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<PlanDetailVM>> GetPlanDetailByTravelPlanIdAsync(int travelPlanId)
+        public async Task<IEnumerable<PlanDetailWithLocationMediaVM>> GetPlanDetailByTravelPlanIdAsync(int travelPlanId)
         {
-            var planDetail = await _context.PlanDetails.Where(x => x.TravelPlanId == travelPlanId)
+            var planDetails = await _context.PlanDetails.Where(x => x.TravelPlanId == travelPlanId)
                                                          .Include(x => x.Location)
+                                                         .ThenInclude(x => x.LocationMedias)
                                                          .AsNoTracking()
                                                          .ToListAsync();
 
-            var planDetailMap = _mapper.Map<IEnumerable<PlanDetailVM>>(planDetail);
+            var planDetailsVM = planDetails.Select(x =>
+            {
+                var locationMap = _mapper.Map<LocationBaseVM>(x.Location);
+                var locationMediasMap = _mapper.Map<ICollection<LocationMediaBaseVM>>(x.Location.LocationMedias);
 
-            return planDetailMap;
+                return new PlanDetailWithLocationMediaVM
+                {
+                    PlanDetailId = x.PlanDetailId,
+                    TravelPlanId = x.TravelPlanId,
+                    PlanDetailDescription = x.PlanDetailDescription,
+                    LocationId = x.LocationId,
+                    Location = locationMap,
+                    LocationMedias = locationMediasMap
+                };
+            }).ToList();
+
+            return planDetailsVM;
         }
 
         public async Task<TravelPlanVM> GetTravelPlanByIdAsync(int travelPlanId)

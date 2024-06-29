@@ -15,8 +15,15 @@ namespace travel_api.ViewModels.Responses.EFViewModel
 
     public class PlanDetailVM : PlanDetailBaseVM
     {
-        public Location? Location { get; set; }
+        public LocationBaseVM? Location { get; set; }
 
-        public TravelPlan? TravelPlan { get; set; }
+        public TravelPlanBaseVM? TravelPlan { get; set; }
+    }
+
+    public class PlanDetailWithLocationMediaVM : PlanDetailBaseVM
+    {
+        public LocationBaseVM? Location { get; set; }
+
+        public ICollection<LocationMediaBaseVM>? LocationMedias { get; set;  }
     }
 }

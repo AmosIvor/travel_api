@@ -7,7 +7,7 @@ namespace travel_api.Repositories.Basics
     {
         Task<IEnumerable<TravelPlanVM>> GetTravelPlansAsync();
         Task<IEnumerable<TravelPlanVM>> GetTravelPlansByUserIdAsync(string userId);
-        Task<IEnumerable<PlanDetailVM>> GetPlanDetailByTravelPlanIdAsync(int travelPlanId);
+        Task<IEnumerable<PlanDetailWithLocationMediaVM>> GetPlanDetailByTravelPlanIdAsync(int travelPlanId);
         Task<TravelPlanVM> GetTravelPlanByIdAsync(int travelPlanId);
     }
 }

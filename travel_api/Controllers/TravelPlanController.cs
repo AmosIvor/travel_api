@@ -73,7 +73,7 @@ namespace travel_api.Controllers
         {
             var planDetailsVMResult = await _travelPlanRepo.GetPlanDetailByTravelPlanIdAsync(travelPlanId);
 
-            return Ok(new SuccessResponseVM<IEnumerable<PlanDetailVM>>()
+            return Ok(new SuccessResponseVM<IEnumerable<PlanDetailWithLocationMediaVM>>()
             {
                 Message = "Get list plan detail by travel plan successfully",
                 Data = planDetailsVMResult

@@ -16,6 +16,6 @@ namespace travel_api.ViewModels.Requests.EFRequest
 
         public string? UserId { get; set; }
 
-        public ICollection<MessageMediaBaseVM>? Files { get; set; }
+        public List<string>? MessageUrls { get; set; }
     }
 }

@@ -191,11 +191,42 @@ namespace travel_api.Services.Basics
 
             await _context.SaveChangesAsync();
 
+            var messageMedias = new List<MessageMedia>();
+
+            if (req.MessageUrls != null)
+            {
+                int order = 1;
+
+                foreach (var url in req.MessageUrls)
+                {
+                    var messageMedia = new MessageMedia
+                    {
+                        MessageId = message.MessageId,
+                        Order = order,
+                        URL = url
+                    };
+
+                    _context.MessageMedias.Add(messageMedia);
+
+                    messageMedias.Add(messageMedia);
+
+                    order++;
+                }
+
+                await _context.SaveChangesAsync();
+            }
+
             var messageFullInfo = await _context.Messages.Include(x => x.User)
                                                          .Include(x => x.ChatRoom)
-                                                         .Include(x => x.MessageMedias)
                                                          .AsNoTracking()
                                                          .FirstOrDefaultAsync(x => x.MessageId == message.MessageId);
+
+            if (messageFullInfo == null)
+            {
+                throw new Exception("Send message fail");
+            }
+
+            messageFullInfo.MessageMedias = messageMedias;
 
 
             var messageMap = _mapper.Map<MessageVM>(messageFullInfo);

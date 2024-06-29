@@ -17,7 +17,7 @@
 
     public class MessageVM : MessageBaseVM
     {
-        public ICollection<MessageMediaBaseVM>? Files { get; set; }
+        public ICollection<MessageMediaBaseVM>? MessageMedias { get; set; }
 
         public ChatRoomBaseVM? ChatRoom { get; set; }
         

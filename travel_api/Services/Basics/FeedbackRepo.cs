@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore;
 using travel_api.Enums;
 using travel_api.Exceptions;
 using travel_api.Helpers;
+using travel_api.Models.EF;
 using travel_api.Repositories;
 using travel_api.Repositories.Basics;
 using travel_api.Services.Utils;
 using travel_api.ViewModels.Responses.EFViewModel;
+using travel_api.ViewModels.Responses.UtilViewModel;
 
 namespace travel_api.Services.Basics
 {
@@ -105,9 +107,39 @@ namespace travel_api.Services.Basics
             return listFeedbackMapping;
         }
 
-        public async Task AddFeedback(int fbId, int score, string userId, string comment)
+        public async Task<Feedback> AddFeedback(FeedbackBCVM vm)
         {
-            await _chain.SubmitAFeedback(fbId, score, userId, comment);
+            await _chain.NewFeedback(vm);
+
+            var newFB = new Feedback
+            {
+                FeedbackDate = DateTime.Now,
+                FeedbackContent = vm.Comment,
+                FeedbackRate = vm.Score,
+                TripType = vm.TripType,
+                UserId = vm.UserId,
+                LocationId = vm.LocationId
+            };
+
+            _context.Feedbacks.Add(newFB);
+            await _context.SaveChangesAsync();
+
+            var medias = vm.Medias.Split('_');
+
+            int order = 1;
+            foreach (var media in medias)
+            {
+                _context.FeedbackMedias.Add(new FeedbackMedia
+                {
+                    FeedbackId = newFB.FeedbackId,
+                    FeedbackMediaOrder = order,
+                    FeedbackMediaUrl = media
+                });
+
+                await _context.SaveChangesAsync();
+            }
+
+            return newFB;
         }
 
         public async Task<IEnumerable<FeedbackVM>> GetFeedbacksByUserIdAndCityIdAsync(string userId, int cityId)
@@ -127,7 +159,7 @@ namespace travel_api.Services.Basics
 
         public async Task<object> GetBlockDetail(int feedbackId)
         {
-            var feedback = await _chain.GetFeedbackDetail(feedbackId);
+            var feedback = await _chain.GetBlockData(feedbackId);
 
             if (feedback == null)
             {
@@ -137,9 +169,9 @@ namespace travel_api.Services.Basics
             return feedback;
         }
 
-        public async Task<IEnumerable<Rating>> GetChain()
+        public async Task<IEnumerable<FeedbackBC>> GetChainData()
         {
-            var feedbacks = await _chain.GetFeedbacks();
+            var feedbacks = await _chain.GetChainData();
             return feedbacks;
         }
     }

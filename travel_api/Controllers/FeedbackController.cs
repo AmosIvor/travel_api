@@ -5,6 +5,7 @@ using travel_api.Repositories.Basics;
 using travel_api.ViewModels.Requests.EFRequest;
 using travel_api.ViewModels.Responses.EFViewModel;
 using travel_api.ViewModels.Responses.ResultResponseViewModel;
+using travel_api.ViewModels.Responses.UtilViewModel;
 
 namespace travel_api.Controllers
 {
@@ -70,9 +71,9 @@ namespace travel_api.Controllers
         }
 
         [HttpPost("add-to-block")]
-        public async Task<IActionResult> AddToBlock(int fbId, int score, string userId, string comment)
+        public async Task<IActionResult> AddToBlock(FeedbackBCVM vm)
         {
-            await _feedbackRepo.AddFeedback(fbId, score, userId, comment);
+            await _feedbackRepo.AddFeedback(vm);
             return Ok();
         }
 
